@@ -1,9 +1,9 @@
 ---
 name: "dokploy"
-description: "Manage Dokploy server remotely. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
-version: "1.0.0"
+description: "Manage Dokploy server remotely via API and CLI. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
+version: "1.1.0"
 author: "Agent Zero Team"
-tags: ["deployment", "dokploy", "sveltekit", "github", "devops"]
+tags: ["deployment", "dokploy", "sveltekit", "github", "devops", "api"]
 trigger_patterns:
   - "dokploy"
   - "deploy"
@@ -22,288 +22,212 @@ allowed_tools:
 # Dokploy Deployment Skill
 
 ## Overview
-This skill provides automated workflows for managing a Dokploy server and deploying SvelteKit applications from GitHub repositories.
+This skill provides workflows for managing a Dokploy server using both the **CLI** and the **REST API**. It focuses on deploying SvelteKit applications from GitHub repositories.
 
 ## Prerequisites
 
 ### Installation
-1. Install Bun package manager:
+1. **Install Bun package manager**:
    ```bash
    curl -fsSL https://bun.sh/install | bash
    export PATH="$HOME/.bun/bin:$PATH"
    ```
 
-2. Install Dokploy CLI:
+2. **Install Dokploy CLI**:
    ```bash
    bun install -g @dokploy/cli
    ```
 
 ### Authentication
-The Dokploy CLI requires authentication with a server URL and API token.
+The Dokploy CLI and API require authentication with a server URL and an API token.
 
 **Credentials:**
 - Server URL: `http://192.168.1.110:3000/`
-- API Token: Available in environment variables or Dokploy web interface
+- API Token: Available in environment variable `DOKPLOY_API_KEY` or user settings
 - Email: `a0@ludoapex.fr`
-- Password: `6dlQz6HEeQq8ldn31pAC6LzOqcFwLi`
 
 **Authenticating the CLI:**
 ```bash
 export PATH="$HOME/.bun/bin:$PATH"
-dokploy authenticate --url http://192.168.1.110:3000/ --token YOUR_API_TOKEN
+dokploy authenticate --url http://192.168.1.110:3000/ --token $DOKPLOY_API_KEY
 ```
 
-**Verify Authentication:**
+**Verifying Authentication:**
 ```bash
 dokploy verify
 ```
 
-## Core Commands
+**API Authentication:**
+All API requests must include the header: `x-api-key: YOUR_API_TOKEN`
 
-### Project Management
+## API Endpoints Reference
 
-**List all projects:**
-```bash
-dokploy project list
-```
+### Projects
+- **List Projects**: `GET /api/project.all`
+- **Project Info**: `GET /api/project.info` (Body: `{ "projectId": "..." }`)
 
-**Get project information:**
-```bash
-dokploy project info --projectId PROJECT_ID
-```
+### Applications
+- **Create Application**: `POST /api/application.create`
+  ```json
+  { "name": "app-name", "description": "desc", "environmentId": "env-id" }
+  ```
+- **Update Application**: `POST /api/application.update`
+  ```json
+  { "applicationId": "...", "repository": "repo", "owner": "org", "branch": "main" }
+  ```
+- **Save Build Type**: `POST /api/application.saveBuildType`
+  ```json
+  { "applicationId": "...", "buildType": "dockerfile", "dockerContextPath": "." }
+  ```
+- **Deploy Application**: `POST /api/application.deploy`
+  ```json
+  { "applicationId": "..." }
+  ```
 
-**Create a new project:**
-```bash
-dokploy project create --name "my-project" --description "My project description"
-```
+### Deployments
+- **List Deployments**: `GET /api/deployment.all?applicationId=...`
 
-### Application Management
+## Core Workflows via API
 
-**Create a new application:**
-```bash
-dokploy app create --projectId PROJECT_ID --name "my-app" --description "My app" --appName "docker-app-name" --skipConfirm
-```
+### Workflow 1: Deploy a SvelteKit Application (API Method)
 
-**Deploy an application:**
-```bash
-dokploy app deploy --projectId PROJECT_ID --applicationId APPLICATION_ID --skipConfirm
-```
+This is the preferred method for automation.
 
-**Stop an application:**
-```bash
-dokploy app stop --projectId PROJECT_ID --applicationId APPLICATION_ID --skipConfirm
-```
+1. **Get Project and Environment IDs**:
+   ```bash
+   curl -X GET 'http://192.168.1.110:3000/api/project.all' -H 'x-api-key: $DOKPLOY_API_KEY'
+   ```
+   Note the `projectId` (e.g., `Q1lSu64fI4nIB038SpKQa` for "Agent0") and the `environmentId` (e.g., `4xRZ7Ft4ryueLkjP_qz77` for "production").
 
-**Delete an application:**
-```bash
-dokploy app delete --projectId PROJECT_ID --applicationId APPLICATION_ID --skipConfirm
+2. **Create the Application**:
+   ```bash
+   curl -X POST 'http://192.168.1.110:3000/api/application.create' \
+     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
+     -d '{ "name": "landing", "description": "Agent Zero Landing", "environmentId": "4xRZ7Ft4ryueLkjP_qz77" }'
+   ```
+   Save the returned `applicationId`.
+
+3. **Configure GitHub Repository**:
+   ```bash
+   curl -X POST 'http://192.168.1.110:3000/api/application.update' \
+     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
+     -d '{ 
+       "applicationId": "UnsOa05EUzK4d-E0HI5yq", 
+       "repository": "agent-zero-landing", 
+       "owner": "A0-42-org", 
+       "branch": "main" 
+     }'
+   ```
+
+4. **Configure Build Settings (Dockerfile)**:
+   *Note: For SvelteKit, use a Dockerfile or configure Nixpacks correctly.*
+   ```bash
+   curl -X POST 'http://192.168.1.110:3000/api/application.saveBuildType' \
+     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
+     -d '{ 
+       "applicationId": "UnsOa05EUzK4d-E0HI5yq", 
+       "buildType": "dockerfile", 
+       "dockerContextPath": "." 
+     }'
+   ```
+
+5. **Trigger Deployment**:
+   ```bash
+   curl -X POST 'http://192.168.1.110:3000/api/application.deploy' \
+     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
+     -d '{ "applicationId": "UnsOa05EUzK4d-E0HI5yq" }'
+   ```
+
+## SvelteKit Configuration Requirements
+
+### Adapter Configuration
+Dokploy expects a server that listens on a port. SvelteKit requires an adapter.
+
+
+**Recommended**: Use `@sveltejs/adapter-node`.
+
+1. Install the adapter:
+   ```bash
+   cd /path/to/project
+   bun add -d @sveltejs/adapter-node
+   ```
+
+2. Update `svelte.config.js`:
+   ```javascript
+   import adapter from '@sveltejs/adapter-node';
+   const config = {
+     kit: { adapter: adapter() }
+   };
+   ```
+
+### Dockerfile (Optional but Recommended)
+If using the `dockerfile` build type, ensure you have a valid Dockerfile in the root of your repository.
+
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package.json bun.lock ./
+RUN npm install -g bun && bun install
+COPY . .
+RUN bun run build
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/build ./
+COPY package.json ./
+RUN npm install -g bun && bun install --production
+EXPOSE 3000
+CMD ["node", "index.js"]
 ```
 
 ## GitHub Organization Configuration
 
 **Important:** All repositories must be created in the `A0-42-org` organization.
 
-**GitHub Organization Details:**
-- Organization Name: `A0-42-org`
-- URL: https://github.com/A0-42-org
-- Repository Naming Convention: kebab-case (e.g., `my-awesome-project`)
-
-**Creating a GitHub Repository:**
-```bash
-gh repo create A0-42-org/<repo-name> --private --description "<description>"
-```
-
-## Workflows for SvelteKit Deployment
-
-### Workflow 1: Create and Deploy a SvelteKit Application
-
-1. **Create a SvelteKit project locally** (using the `sveltekit-skeleton-init` skill):
-   ```bash
-   # Use the sveltekit-skeleton-init skill to create a new SvelteKit project
-   ```
-
-2. **Create a GitHub repository in the organization**:
-   ```bash
-   gh repo create A0-42-org/my-sveltekit-app --private --description "My SvelteKit application"
-   ```
-
-3. **Push the project to GitHub**:
-   ```bash
-   cd /path/to/my-sveltekit-app
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin git@github.com:A0-42-org/my-sveltekit-app.git
-   git push -u origin main
-   ```
-
-4. **Create a project in Dokploy**:
-   ```bash
-   dokploy project create --name "sveltekit-project" --description "My SvelteKit applications"
-   ```
-
-5. **Create an application in Dokploy** (this will use the project ID from step 4):
-   ```bash
-   # First, list projects to get the ID
-   dokploy project list
-   
-   # Then create the application with the project ID
-   dokploy app create --projectId PROJECT_ID --name "my-sveltekit-app" --description "My SvelteKit application" --skipConfirm
-   ```
-
-6. **Configure the application** (via Dokploy web interface):
-   - Navigate to http://192.168.1.110:3000/
-   - Go to the project and application created
-   - Configure the repository settings (GitHub repository: `A0-42-org/my-sveltekit-app`)
-   - Configure build settings for SvelteKit:
-     - Build Command: `bun run build`
-     - Install Command: `bun install`
-     - Start Command: `node build`
-   - Set environment variables if needed
-
-7. **Deploy the application**:
-   ```bash
-   # First, list applications to get the application ID
-   dokploy project info --projectId PROJECT_ID
-   
-   # Then deploy the application
-   dokploy app deploy --projectId PROJECT_ID --applicationId APPLICATION_ID --skipConfirm
-   ```
-
-### Workflow 2: Deploy an Existing SvelteKit Project
-
-If you already have a SvelteKit project locally (e.g., `agent-zero-landing`):
-
-1. **Ensure the project is on GitHub**:
-   ```bash
-   cd /a0/usr/workdir/agent-zero-landing
-   git remote -v
-   
-   # If not on GitHub, create the repository and push
-   gh repo create A0-42-org/agent-zero-landing --private --description "Agent Zero Landing Page"
-   git remote add origin git@github.com:A0-42-org/agent-zero-landing.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-2. **Create a project in Dokploy**:
-   ```bash
-   dokploy project create --name "agent-zero" --description "Agent Zero applications"
-   ```
-
-3. **Create an application in Dokploy**:
-   ```bash
-   # First, list projects to get the ID
-   dokploy project list
-   
-   # Then create the application with the project ID
-   dokploy app create --projectId PROJECT_ID --name "landing" --description "Agent Zero Landing Page" --skipConfirm
-   ```
-
-4. **Configure the application** (via Dokploy web interface):
-   - Navigate to http://192.168.1.110:3000/
-   - Go to the project and application created
-   - Configure the repository settings (GitHub repository: `A0-42-org/agent-zero-landing`)
-   - Configure build settings for SvelteKit:
-     - Build Command: `bun run build`
-     - Install Command: `bun install`
-     - Start Command: `node build`
-   - Set environment variables if needed
-
-5. **Deploy the application**:
-   ```bash
-   # First, list applications to get the application ID
-   dokploy project info --projectId PROJECT_ID
-   
-   # Then deploy the application
-   dokploy app deploy --projectId PROJECT_ID --applicationId APPLICATION_ID --skipConfirm
-   ```
-
-## Environment Variables Management
-
-Environment variables can be configured through the Dokploy web interface:
-1. Navigate to your application in the Dokploy web interface
-2. Go to the "Environment Variables" section
-3. Add your variables (e.g., `DATABASE_URL`, `API_KEY`)
+**Repository URL format:** `A0-42-org/repository-name`
 
 ## Troubleshooting
+
+### Deployment Fails Instantly (Status: error)
+
+**Symptoms**: Deployment status changes to `error` within milliseconds (< 100ms).
+
+**Possible Causes**:
+1. **Missing Adapter**: Project uses `adapter-auto` which might not produce a server output suitable for Dokploy.
+   - **Fix**: Switch to `adapter-node` and provide a Dockerfile or use Nixpacks config.
+2. **Invalid Build Configuration**: The build type does not match the repository contents.
+   - **Fix**: Verify `buildType` matches your setup (`dockerfile`, `nixpacks`, `heroku`).
+3. **Missing Dependencies**: Required packages for the chosen adapter are not installed.
+   - **Fix**: Ensure `@sveltejs/adapter-node` is in `devDependencies`.
+
+**How to Debug**:
+- API Logs: The `deployment.all` endpoint provides a `logPath`, but logs are stored on the server filesystem (e.g., `/etc/dokploy/logs/...`). These are not always accessible via the public API.
+- Web UI: Navigate to the application in the Dokploy UI to view real-time build logs.
 
 ### Authentication Issues
 
 **Problem**: `dokploy verify` fails
 
 **Solution**:
-1. Check if the API token is valid in Dokploy web interface
+1. Check if the API token is valid in Dokploy web interface.
 2. Verify server URL is correct: `http://192.168.1.110:3000/`
 3. Re-authenticate: `dokploy authenticate --url URL --token TOKEN`
 
-### Deployment Failures
+## Existing Infrastructure
 
-**Problem**: Build or deployment fails
+- **Project Name**: Agent0
+- **Project ID**: `Q1lSu64fI4nIB038SpKQa`
+- **Environment**: Production (`4xRZ7Ft4ryueLkjP_qz77`)
 
-**Solution**:
-1. Check build logs in the Dokploy web interface
-2. Verify build commands for SvelteKit:
-   - Install: `bun install`
-   - Build: `bun run build`
-3. Check environment variables
-4. Verify repository access and branch existence
-
-### GitHub Connection Issues
-
-**Problem**: Cannot connect to GitHub repository
-
-**Solution**:
-1. Verify repository URL format: `A0-42-org/repo-name`
-2. Check GitHub permissions for the organization
-3. Ensure Dokploy has GitHub access configured
-4. Verify branch name is correct (usually `main`)
-
-## Example Use Cases
-
-### Deploy the agent-zero-landing project
-
-```bash
-# Ensure the project is on GitHub
-cd /a0/usr/workdir/agent-zero-landing
-git remote -v
-
-# If not on GitHub, create the repository and push
-gh repo create A0-42-org/agent-zero-landing --private --description "Agent Zero Landing Page"
-git remote add origin git@github.com:A0-42-org/agent-zero-landing.git
-git branch -M main
-git push -u origin main
-
-# Create a project in Dokploy (if not already created)
-dokploy project create --name "agent-zero" --description "Agent Zero applications"
-
-# List projects to get the ID
-dokploy project list
-
-# Create an application in Dokploy (replace PROJECT_ID with the actual ID)
-dokploy app create --projectId 2 --name "landing" --description "Agent Zero Landing Page" --skipConfirm
-
-# List applications to get the application ID
-dokploy project info --projectId 2
-
-# Configure the application via Dokploy web interface
-# Navigate to http://192.168.1.110:3000/ and configure:
-# - Repository: A0-42-org/agent-zero-landing
-# - Build Command: bun run build
-# - Install Command: bun install
-# - Start Command: node build
-
-# Deploy the application (replace APPLICATION_ID with the actual ID)
-dokploy app deploy --projectId 2 --applicationId APPLICATION_ID --skipConfirm
-```
+- **Organization**: `A0-42-org`
 
 ## Additional Resources
 
 - Dokploy Documentation: https://docs.dokploy.com
+- Dokploy API Reference: https://docs.dokploy.com/docs/api
 - SvelteKit Documentation: https://kit.svelte.dev
-- GitHub Webhooks: https://docs.github.com/en/developers/webhooks-and-events/webhooks
 
 ## Version History
 
-- **1.0.0** - Initial release with SvelteKit deployment support and GitHub organization integration
+- **1.1.0** - Added API workflows, troubleshooting for instant errors, and SvelteKit specific configuration.
+- **1.0.0** - Initial release.
