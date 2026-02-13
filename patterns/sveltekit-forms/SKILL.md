@@ -1,9 +1,9 @@
 ---
 name: "sveltekit-forms"
-description: "Form handling and validation patterns for SvelteKit. Covers Zod validation, server actions, error handling, progressive enhancement, and reusable form components."
-version: "1.0.0"
+description: "Form handling and validation patterns for SvelteKit. Covers Zod validation, server actions, error handling, progressive enhancement, and reusable form components using Skeleton UI."
+version: "1.1.0"
 author: "Agent Zero Team"
-tags: ["sveltekit", "forms", "validation", "zod", "server-actions", "patterns"]
+tags: ["sveltekit", "forms", "validation", "zod", "server-actions", "skeleton-ui", "patterns"]
 trigger_patterns:
   - "create form"
   - "form validation"
@@ -15,7 +15,7 @@ trigger_patterns:
 
 # SvelteKit Forms Pattern
 
-Complete guide for building forms with validation, error handling, and server actions in SvelteKit.
+Complete guide for building forms with validation, error handling, and server actions in SvelteKit using Skeleton UI components.
 
 ## Use Case
 
@@ -23,7 +23,7 @@ Use this skill when:
 - Creating forms with validation (login, signup, settings)
 - Implementing server-side form processing
 - Adding client-side validation with Zod
-- Building reusable form components
+- Building reusable form components with Skeleton UI
 - Handling form errors and success messages
 - Implementing progressive enhancement (works without JS)
 - Creating multi-step forms or wizards
@@ -34,8 +34,7 @@ Use this skill when:
 # Install Zod for validation
 bun add zod
 
-# Optional: Superforms for advanced form handling
-bun add sveltekit-superforms
+# Skeleton UI components are available via @skeletonlabs/skeleton-svelte
 ```
 
 ## Form Structure Template
@@ -43,6 +42,7 @@ bun add sveltekit-superforms
 ```svelte
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
   import type { ActionData } from './$types';
 
   // Form data interface
@@ -65,29 +65,40 @@ bun add sveltekit-superforms
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-  <input name="email" type="email" placeholder="Email" />
+  <AppInput 
+    name="email" 
+    type="email" 
+    placeholder="your@email.com" 
+    label="Email"
+  />
   {#if errors.email}
-    <span class="error">{errors.email}</span>
+    <AppAlert severity="error" title="Email Error">
+      {errors.email}
+    </AppAlert>
   {/if}
   
-  <input name="password" type="password" placeholder="Password" />
+  <AppInput 
+    name="password" 
+    type="password" 
+    placeholder="•••••••••" 
+    label="Password"
+  />
   {#if errors.password}
-    <span class="error">{errors.password}</span>
+    <AppAlert severity="error" title="Password Error">
+      {errors.password}
+    </AppAlert>
   {/if}
   
-  <button type="submit" disabled={isSubmitting}>
+  <AppButton type="submit" disabled={isSubmitting}>
     {isSubmitting ? 'Submitting...' : 'Submit'}
-  </button>
+  </AppButton>
   
   {#if success}
-    <p class="success">Form submitted successfully!</p>
+    <AppAlert severity="success" title="Success">
+      Form submitted successfully!
+    </AppAlert>
   {/if}
 </form>
-
-<style>
-  .error { color: red; font-size: 0.875rem; }
-  .success { color: green; }
-</style>
 ```
 
 ## Zod Validation
@@ -128,7 +139,7 @@ export const signupSchema = z.object({
   confirmPassword: z.string(),
   
   terms: z.literal(true, {
-    errorMap: () => ({ message: 'You must accept the terms and conditions' })
+    errorMap: () => ({ message: 'You must accept terms and conditions' })
   })
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
@@ -271,6 +282,7 @@ export const actions = {
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { zodClient } from 'sveltekit-superforms';
+  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
   import { loginSchema, type LoginFormData } from '$lib/schemas';
   
   let { form }: { form: ActionData } = $props();
@@ -307,33 +319,45 @@ export const actions = {
       clientErrors = {};
     }
   }}>
-  <input name="email" type="email" placeholder="Email" />
+  <AppInput 
+    name="email" 
+    type="email" 
+    label="Email"
+    placeholder="your@email.com"
+  />
   {#if form?.errors?.email || clientErrors?.email}
-    <span class="error">{form?.errors?.email || clientErrors?.email}</span>
+    <AppAlert severity="error" title="Email Error">
+      {form?.errors?.email || clientErrors?.email}
+    </AppAlert>
   {/if}
   
-  <input name="password" type="password" placeholder="Password" />
+  <AppInput 
+    name="password" 
+    type="password" 
+    label="Password"
+    placeholder="•••••••••"
+  />
   {#if form?.errors?.password || clientErrors?.password}
-    <span class="error">{form?.errors?.password || clientErrors?.password}</span>
+    <AppAlert severity="error" title="Password Error">
+      {form?.errors?.password || clientErrors?.password}
+    </AppAlert>
   {/if}
   
-  <button type="submit" disabled={isSubmitting}>
+  <AppButton type="submit" disabled={isSubmitting}>
     {isSubmitting ? 'Submitting...' : 'Login'}
-  </button>
+  </AppButton>
 </form>
-
-<style>
-  .error { color: red; font-size: 0.875rem; }
-</style>
 ```
 
 ## Reusable Form Components
 
-### Input Field Component
+### Input Field Component with Skeleton UI
 
 ```svelte
 <!-- src/lib/components/InputField.svelte -->
 <script lang="ts">
+  import { AppInput, AppAlert } from '@skeletonlabs/skeleton-svelte';
+  
   interface Props {
     name: string;
     label?: string;
@@ -358,65 +382,32 @@ export const actions = {
   const errorMessage = $derived(errors?.[0]);
 </script>
 
-<div class="input-field">
-  {#if label}
-    <label for={name}>
-      {label}
-      {#if required}
-      <span class="required">*</span>
-      {/if}
-    </label>
-  {/if}
-  
-  <input
+<div>
+  <AppInput
     id={name}
     name={name}
     type={type}
     placeholder={placeholder}
+    label={label}
     required={required}
     value={value}
-    class:error={hasError}
   />
   
   {#if hasError}
-    <span class="error-message">{errorMessage}</span>
+    <AppAlert severity="error" title="Error">
+      {errorMessage}
+    </AppAlert>
   {/if}
 </div>
-
-<style>
-  .input-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .label {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  .required {
-    color: red;
-  }
-  .input {
-    padding: 0.5rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.25rem;
-  }
-  .input.error {
-    border-color: red;
-  }
-  .error-message {
-    color: red;
-    font-size: 0.75rem;
-  }
-</style>
 ```
 
-### Form Component
+### Form Component with Skeleton UI
 
 ```svelte
 <!-- src/lib/components/Form.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
   import InputField from './InputField.svelte';
   import type { ActionData } from './$types';
   
@@ -443,103 +434,90 @@ export const actions = {
 >
   {@render children?.(errors)}
   
-  <button type="submit" disabled={isSubmitting}>
+  <AppButton type="submit" disabled={isSubmitting}>
     {isSubmitting ? 'Submitting...' : 'Submit'}
-  </button>
+  </AppButton>
   
   {#if success}
-    <div class="success">{success}</div>
+    <AppAlert severity="success" title="Success">
+      {success}
+    </AppAlert>
   {/if}
 </form>
-
-<style>
-  .success {
-    padding: 0.5rem;
-    background: #d1fae5;
-    color: #065f46;
-    border-radius: 0.25rem;
-  }
-</style>
 ```
 
 ## Form Patterns
 
-### Login Form
+### Login Form with Skeleton UI
 
 ```svelte
 <!-- src/routes/login/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import InputField from '$lib/components/InputField.svelte';
+  import { AppInput, AppButton, AppAlert, AppCard } from '@skeletonlabs/skeleton-svelte';
   import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
   let isSubmitting = $state(false);
 </script>
 
-<div class="login-form">
-  <h1>Login</h1>
+<AppCard>
+  <h1 slot="header">Login</h1>
   
   <form method="POST" use:enhance={() => {
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-    <InputField
+    <AppInput
       name="email"
-      label="Email"
       type="email"
+      label="Email"
       placeholder="your@email.com"
       required
-      errors={form?.errors?.email}
     />
+    {#if form?.errors?.email}
+      <AppAlert severity="error" title="Email Error">
+        {form.errors.email}
+      </AppAlert>
+    {/if}
     
-    <InputField
+    <AppInput
       name="password"
-      label="Password"
       type="password"
+      label="Password"
       placeholder="•••••••••"
       required
-      errors={form?.errors?.password}
     />
+    {#if form?.errors?.password}
+      <AppAlert severity="error" title="Password Error">
+        {form.errors.password}
+      </AppAlert>
+    {/if}
     
-    <button type="submit" disabled={isSubmitting}>
+    <AppButton type="submit" disabled={isSubmitting}>
       {isSubmitting ? 'Logging in...' : 'Login'}
-    </button>
+    </AppButton>
     
     {#if form?.success}
-      <p class="success">Logged in successfully!</p>
+      <AppAlert severity="success" title="Success">
+        Logged in successfully!
+      </AppAlert>
     {/if}
   </form>
   
   <p>
     Don't have an account? <a href="/signup">Sign up</a>
   </p>
-</div>
-
-<style>
-  .login-form {
-    max-width: 24rem;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-  }
-  .success {
-    color: green;
-    padding: 0.5rem;
-    background: #d1fae5;
-    border-radius: 0.25rem;
-  }
-</style>
+</AppCard>
 ```
 
-### Signup Form
+### Signup Form with Skeleton UI
 
 ```svelte
 <!-- src/routes/signup/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import InputField from '$lib/components/InputField.svelte';
+  import { AppInput, AppButton, AppAlert, AppCard, AppCheckbox } from '@skeletonlabs/skeleton-svelte';
   import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
@@ -548,103 +526,98 @@ export const actions = {
   const passwordsMatch = $state(true);
 </script>
 
-<div class="signup-form">
-  <h1>Sign Up</h1>
+<AppCard>
+  <h1 slot="header">Sign Up</h1>
   
   <form method="POST" use:enhance={() => {
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-    <InputField
+    <AppInput
       name="username"
+      type="text"
       label="Username"
       placeholder="yourusername"
       required
-      errors={form?.errors?.username}
     />
-    
-    <InputField
-      name="email"
-      label="Email"
-      type="email"
-      placeholder="your@email.com"
-      required
-      errors={form?.errors?.email}
-    />
-    
-    <InputField
-      name="password"
-      label="Password"
-      type="password"
-      placeholder="•••••••••"
-      required
-      errors={form?.errors?.password}
-    />
-    
-    <InputField
-      name="confirmPassword"
-      label="Confirm Password"
-      type="password"
-      placeholder="•••••••••"
-      required
-      errors={form?.errors?.confirmPassword}
-    />
-    
-    <label class="checkbox-label">
-      <input name="terms" type="checkbox" required />
-      I agree to the terms and conditions
-    </label>
-    {#if form?.errors?.terms}
-      <span class="error">{form.errors.terms[0]}</span>
+    {#if form?.errors?.username}
+      <AppAlert severity="error" title="Username Error">
+        {form.errors.username}
+      </AppAlert>
     {/if}
     
-    <button type="submit" disabled={isSubmitting}>
+    <AppInput
+      name="email"
+      type="email"
+      label="Email"
+      placeholder="your@email.com"
+      required
+    />
+    {#if form?.errors?.email}
+      <AppAlert severity="error" title="Email Error">
+        {form.errors.email}
+      </AppAlert>
+    {/if}
+    
+    <AppInput
+      name="password"
+      type="password"
+      label="Password"
+      placeholder="•••••••••"
+      required
+    />
+    {#if form?.errors?.password}
+      <AppAlert severity="error" title="Password Error">
+        {form.errors.password}
+      </AppAlert>
+    {/if}
+    
+    <AppInput
+      name="confirmPassword"
+      type="password"
+      label="Confirm Password"
+      placeholder="•••••••••"
+      required
+    />
+    {#if form?.errors?.confirmPassword}
+      <AppAlert severity="error" title="Confirm Password Error">
+        {form.errors.confirmPassword}
+      </AppAlert>
+    {/if}
+    
+    <AppCheckbox name="terms" label="I agree to terms and conditions" required />
+    {#if form?.errors?.terms}
+      <AppAlert severity="error" title="Terms Error">
+        {form.errors.terms}
+      </AppAlert>
+    {/if}
+    
+    <AppButton type="submit" disabled={isSubmitting}>
       {isSubmitting ? 'Creating account...' : 'Sign Up'}
-    </button>
+    </AppButton>
     
     {#if form?.success}
-      <p class="success">Account created successfully!</p>
+      <AppAlert severity="success" title="Success">
+        Account created successfully!
+      </AppAlert>
     {/if}
   </form>
   
   <p>
     Already have an account? <a href="/login">Login</a>
   </p>
-</div>
-
-<style>
-  .signup-form {
-    max-width: 24rem;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-  }
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-  }
-  .success {
-    color: green;
-    padding: 0.5rem;
-    background: #d1fae5;
-    border-radius: 0.25rem;
-  }
-  .error {
-    color: red;
-    font-size: 0.75rem;
-  }
-</style>
+</AppCard>
 ```
 
-## Error Handling
+## Error Handling with Skeleton UI
 
 ### Displaying Server Errors
 
 ```svelte
 <script lang="ts">
+  import { AppAlert } from '@skeletonlabs/skeleton-svelte';
+  import type { ActionData } from './$types';
+  
   let { form }: { form: ActionData } = $props();
   
   const hasErrors = $derived(
@@ -654,15 +627,15 @@ export const actions = {
 </script>
 
 {#if globalError}
-  <div class="alert alert-error">
+  <AppAlert severity="error" title="Error">
     {globalError}
-  </div>
+  </AppAlert>
 {/if}
 
 {#if hasErrors}
-  <div class="alert alert-warning">
+  <AppAlert severity="warning" title="Warning">
     Please fix the errors below.
-  </div>
+  </AppAlert>
 {/if}
 ```
 
@@ -703,9 +676,9 @@ The form should work without JavaScript:
 ```svelte
 <form method="POST" action="/login">
   <!-- This works without JavaScript -->
-  <input name="email" type="email" required />
-  <input name="password" type="password" required />
-  <button type="submit">Login</button>
+  <AppInput name="email" type="email" label="Email" required />
+  <AppInput name="password" type="password" label="Password" required />
+  <AppButton type="submit">Login</AppButton>
 </form>
 ```
 
@@ -714,6 +687,7 @@ The form should work without JavaScript:
 ```svelte
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { AppInput, AppButton } from '@skeletonlabs/skeleton-svelte';
   
   let isSubmitting = $state(false);
 </script>
@@ -723,22 +697,23 @@ The form should work without JavaScript:
     onresult: () => { isSubmitting = false; }
   }}>
   <!-- Enhanced with JavaScript -->
-  <input name="email" type="email" required />
-  <input name="password" type="password" required />
-  <button type="submit" disabled={isSubmitting}>
+  <AppInput name="email" type="email" label="Email" required />
+  <AppInput name="password" type="password" label="Password" required />
+  <AppButton type="submit" disabled={isSubmitting}>
     {isSubmitting ? 'Submitting...' : 'Login'}
-  </button>
+  </AppButton>
 </form>
 ```
 
 ## Multi-Step Forms (Wizard)
 
-### Wizard Component
+### Wizard Component with Skeleton UI
 
 ```svelte
 <!-- src/routes/create/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { AppButton, AppCard } from '@skeletonlabs/skeleton-svelte';
   import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
@@ -763,7 +738,7 @@ The form should work without JavaScript:
   }
 </script>
 
-<div class="wizard">
+<AppCard>
   <div class="steps">
     {#each steps as step, index}
       <div class="step" class:active={index === currentStep}>
@@ -785,23 +760,18 @@ The form should work without JavaScript:
     
     <div class="actions">
       {#if currentStep > 0}
-        <button type="button" onclick={prevStep}>Back</button>
+        <AppButton onclick={prevStep} variant="outline">Back</AppButton>
       {/if}
       {#if currentStep < steps.length - 1}
-        <button type="button" onclick={nextStep}>Next</button>
+        <AppButton onclick={nextStep}>Next</AppButton>
       {:else}
-        <button type="submit">Create Page</button>
+        <AppButton type="submit">Create Page</AppButton>
       {/if}
     </div>
   </form>
-</div>
+</AppCard>
 
 <style>
-  .wizard {
-    max-width: 32rem;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
   .steps {
     display: flex;
     justify-content: space-between;
@@ -861,21 +831,19 @@ export const actions = {
 </form>
 ```
 
-### 3. Use enhance() for Client-Side Enhancement
+### 3. Use Skeleton UI Components
 
 ```svelte
-<!-- ✅ GOOD -->
-<form use:enhance={() => {
-  onsubmit: () => { console.log('Submitting...'); },
-  onresult: () => { console.log('Done!'); }
-}}>
-  <!-- Form fields -->
-</form>
+<!-- ✅ GOOD - Use Skeleton UI components -->
+<AppInput name="email" type="email" label="Email" />
+<AppButton type="submit">Submit</AppButton>
+<AppAlert severity="error">Error message</AppAlert>
 
-<!-- ❌ BAD - Manual fetch -->
-<form onsubmit={handleSubmit}>
-  <!-- Form fields -->
-</form>
+
+<!-- ❌ BAD - Custom components -->
+<input name="email" type="email" />
+<button>Submit</button>
+<div class="error">Error message</div>
 ```
 
 ### 4. Return Proper Error Responses
@@ -906,12 +874,22 @@ Before finishing a form:
 - [ ] Accessible labels for all inputs
 - [ ] Password fields have proper type
 - [ ] CSRF protection (handled by SvelteKit)
-- [ ] Form tested with valid and invalid data
-
+- [ ] Skeleton UI components used (AppInput, AppButton, AppAlert)
 
 ## Common Pitfalls
 
-### 1. Not Validating on Server-Side
+### 1. Not Using Skeleton UI Components
+```svelte
+<!-- ❌ BAD - Custom components -->
+<input name="email" type="email" class="custom-input" />
+<div class="error">{form.errors.email}</div>
+
+<!-- ✅ GOOD - Skeleton UI components -->
+<AppInput name="email" type="email" label="Email" />
+<AppAlert severity="error">{form.errors.email}</AppAlert>
+```
+
+### 2. Not Validating on Server-Side
 ```typescript
 // ❌ BAD - No validation
 export const actions = {
@@ -934,64 +912,34 @@ export const actions = {
 };
 ```
 
-### 2. Not Using Progressive Enhancement
+### 3. Not Using Progressive Enhancement
 ```svelte
 <!-- ❌ BAD - Doesn't work without JavaScript -->
 <form onsubmit={handleSubmit}>
-  <button type="submit">Submit</button>
+  <AppButton type="submit">Submit</AppButton>
 </form>
 
 <!-- ✅ GOOD - Works without JavaScript -->
 <form method="POST" action="/submit" use:enhance={() => { onsubmit: () => {...} }}>
-  <button type="submit">Submit</button>
+  <AppButton type="submit">Submit</AppButton>
 </form>
 ```
 
-### 3. Not Handling Errors Properly
+### 4. Not Handling Errors Properly
 ```svelte
 <!-- ❌ BAD - No error display -->
 <form method="POST">
-  <input name="email" />
+  <AppInput name="email" type="email" />
 </form>
 
-<!-- ✅ GOOD - Show errors -->
+<!-- ✅ GOOD - Show errors with Skeleton UI -->
 <form method="POST">
-  <input name="email" />
+  <AppInput name="email" type="email" label="Email" />
   {#if form?.errors?.email}
-    <span class="error">{form.errors.email}</span>
+    <AppAlert severity="error" title="Email Error">
+      {form.errors.email}
+    </AppAlert>
   {/if}
-</form>
-```
-
-### 4. Not Using enhance() for Client-Side Enhancement
-```svelte
-<!-- ❌ BAD - Manual fetch
-<form onsubmit={async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  await fetch('/submit', { method: 'POST', body: formData });
-}}>
-
-<!-- ✅ GOOD - Use enhance() -->
-<form method="POST" use:enhance={() => { onsubmit: () => {...} }}>
-```
-
-### 5. Not Providing Loading State
-```svelte
-<!-- ❌ BAD - No loading state -->
-<form method="POST">
-  <button type="submit">Submit</button>
-</form>
-
-<!-- ✅ GOOD - Show loading -->
-<script lang="ts">
-  let isSubmitting = $state(false);
-</script>
-
-<form method="POST" use:enhance={() => { onsubmit: () => { isSubmitting = true; } }}>
-  <button type="submit" disabled={isSubmitting}>
-    {isSubmitting ? 'Submitting...' : 'Submit'}
-  </button>
 </form>
 ```
 
@@ -1002,7 +950,7 @@ After creating forms, verify:
 1. Form works without JavaScript
 2. Client-side validation works
 3. Server-side validation works
-4. Error messages display correctly
+4. Error messages display correctly with Skeleton UI
 5. Loading state shows during submission
 6. Success message displays on completion
 7. Redirect works (if applicable)
@@ -1011,4 +959,4 @@ After creating forms, verify:
 10. CSRF protection enabled
 
 ---
-**Use this skill to create forms with validation, error handling, and progressive enhancement in SvelteKit.**
+**Use this skill to create forms with validation, error handling, and Skeleton UI components in SvelteKit.**
