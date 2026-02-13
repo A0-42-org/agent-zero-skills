@@ -54,11 +54,19 @@ Add `data-theme` attribute to the html tag:
 
 ### 3. Create src/routes/layout.css
 
-**IMPORTANT**: Use the correct single import format:
+**IMPORTANT**: Use the correct import format:
 
 ```css
-/* Correct format for Skeleton UI v4 */
-@import "@skeletonlabs/skeleton-svelte";
+/* Tailwind CSS v4 */
+@import 'tailwindcss';
+
+/* Tailwind CSS plugins */
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* Skeleton UI v4 imports */
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
 
 /* Custom theme adjustments */
 :root {
@@ -66,15 +74,7 @@ Add `data-theme` attribute to the html tag:
 }
 ```
 
-**DO NOT use**:
-```css
-/* ❌ WRONG - Do NOT use this format */
-@import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
-```
+**NOTE**: Do NOT import components from '@skeletonlabs/skeleton-svelte' in your Svelte files. Use Tailwind utility classes and Skeleton UI themes instead.
 
 ### 4. Update src/routes/+layout.svelte
 
@@ -94,7 +94,16 @@ Import the CSS file:
 
 ```css
 /* src/routes/layout.css */
-@import "@skeletonlabs/skeleton-svelte";
+/* Tailwind CSS v4 */
+@import 'tailwindcss';
+
+/* Tailwind CSS plugins */
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* Skeleton UI v4 imports */
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
 
 /* Import custom brand styles */
 @import "../lib/themes/brand-styles/svelteforge.css";
@@ -166,10 +175,10 @@ export default {
 
 ## Important Notes
 
-1. **Single import**: Use only `@import "@skeletonlabs/skeleton-svelte";` in layout.css
+1. **Import order**: Must follow the order: tailwindcss → plugins → skeleton → skeleton-svelte
 2. **No component imports**: Do NOT import components from '@skeletonlabs/skeleton-svelte' - they are not available as ES modules in SvelteKit 2
 3. **Tailwind CSS v4**: Use Tailwind utility classes instead of importing components
-4. **Custom CSS**: Import custom brand styles AFTER the main Skeleton UI import
+4. **Custom CSS**: Import custom brand styles AFTER the main Skeleton UI imports
 5. **Theme switching**: Use data-theme attribute on html element for theme switching
 
 ## Common Patterns
@@ -210,10 +219,11 @@ Verify setup:
 
 ## Common Pitfalls
 
-1. **Wrong import format**: Do NOT use multi-line import with @tailwindcss and @plugins
+1. **Wrong import order**: Must follow: tailwindcss → plugins → skeleton → skeleton-svelte
 2. **Component imports**: Do NOT import components from '@skeletonlabs/skeleton-svelte'
-3. **CSS order**: Import custom CSS AFTER the main Skeleton UI import
+3. **CSS order**: Import custom CSS AFTER the main Skeleton UI imports
 4. **Theme attribute**: Set data-theme on html element, not body
+5. **Missing plugins**: Don't forget @tailwindcss/forms and @tailwindcss/typography plugins
 
 ---
 **Skill updated with correct import format from Segre.vip project commit.**
