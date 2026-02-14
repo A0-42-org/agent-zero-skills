@@ -1,7 +1,7 @@
 ---
 name: "dokploy"
 description: "Manage Dokploy server remotely via API and CLI. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
-version: "1.3.0"
+version: "1.4.0"
 author: "Agent Zero Team"
 tags: ["deployment", "dokploy", "sveltekit", "github", "devops", "api"]
 trigger_patterns:
@@ -236,6 +236,38 @@ The build type should be configured accordingly in Dokploy:
 
 **Important**: Consult SvelteKit documentation for proper Dockerfile configuration.
 
+## Package.json Configuration for Nixpacks
+
+### Critical: Engines Field
+
+**IMPORTANT**: When using Nixpacks, always specify the Node.js version in `package.json` using the `engines` field.
+
+Without this field, Nixpacks may default to Node.js 18.x which is End-Of-Life and has been removed, causing build failures.
+
+**Example package.json with engines field:**
+```json
+{
+  "name": "my-sveltekit-app",
+  "version": "0.0.1",
+  "type": "module",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+}
+```
+
+**Supported Node versions** (as of 2026):
+- Node.js 22 (recommended)
+- Node.js 20
+- Node.js 18 (EOL, do not use)
+
+**Best Practice**: Always test with the same Node.js version locally before deploying.
+
 ## GitHub Organization Configuration
 
 **Important:** All repositories must be created in the `A0-42-org` organization.
@@ -265,9 +297,22 @@ The build type should be configured accordingly in Dokploy:
 4. **Missing Environment Variables**: Application requires env vars that are not configured.
    - **Fix**: Use `/api/application.saveEnvironment` to configure required variables.
 
-**How to Debug**:
-- API Logs: The `deployment.all` endpoint provides a `logPath`, but logs are stored on the server filesystem (e.g., `/etc/dokploy/logs/...`). These are not always accessible via the public API.
-- Web UI: Navigate to the application in the Dokploy UI to view real-time build logs.
+### Node.js Version Issues with Nixpacks
+
+**Symptom**: Build fails with "Node.js 18.x has reached End-Of-Life and has been removed"
+
+**Cause**: Nixpacks defaults to Node.js 18.x which has been removed from Nixpkgs.
+
+**Solution**: Add `engines` field to `package.json`:
+```json
+{
+  "engines": {
+    "node": "22"
+  }
+}
+```
+
+**This is CRITICAL** - Nixpacks respects the `engines` field and will use the specified Node.js version.
 
 ### Authentication Issues
 
@@ -295,6 +340,7 @@ The build type should be configured accordingly in Dokploy:
 
 ## Version History
 
+- **1.4.0** - Added critical lesson about `engines` field in package.json for Nixpacks. This is essential to force Node.js version and avoid EOL errors.
 - **1.3.0** - Removed incorrect Dockerfile example (was invalid for SvelteKit adapter-node). Added application.saveGithubProvider endpoint documentation.
 - **1.2.0** - Updated API endpoints from OpenAPI documentation, fixed authentication header (x-api-key), removed hardcoded tokens.
 - **1.1.0** - Added API workflows, troubleshooting for instant errors, and SvelteKit specific configuration.
