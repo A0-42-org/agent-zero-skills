@@ -1,7 +1,7 @@
 ---
 name: "dokploy"
 description: "Manage Dokploy server remotely via API and CLI. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
-version: "1.4.0"
+version: "1.5.0"
 author: "Agent Zero Team"
 tags: ["deployment", "dokploy", "sveltekit", "github", "devops", "api"]
 trigger_patterns:
@@ -40,6 +40,7 @@ This skill provides workflows for managing a Dokploy server using both the **CLI
 
 ### Authentication
 The Dokploy CLI and API require authentication with a server URL and an API token.
+
 
 **Important Security Note**: NEVER hardcode API tokens in code or documentation. Always use environment variables.
 
@@ -136,6 +137,8 @@ curl -X POST "http://192.168.1.110:3000/api/application.saveGithubProvider" \
   }
   ```
 
+**CRITICAL**: The `publishDirectory` parameter tells Dokploy where to find the built application. This is essential for deployment success.
+
 #### Save Environment
 - **Endpoint**: `POST /api/application.saveEnvironment`
 - **Description**: Configure environment variables and build arguments for an application
@@ -183,7 +186,6 @@ curl -X POST "http://192.168.1.110:3000/api/application.saveEnvironment" \
 
 #### List Projects
 - **Endpoint**: `GET /api/project.all`
-
 #### Create Environment
 - **Endpoint**: `POST /api/environment.create`
 - **Request Body**:
@@ -194,12 +196,10 @@ curl -X POST "http://192.168.1.110:3000/api/application.saveEnvironment" \
     "projectId": "string"
   }
   ```
-
 #### Get Environment by Project
 - **Endpoint**: `GET /api/environment.byProjectId?projectId=...`
 
 ### User Authentication
-
 #### Get Current User
 - **Endpoint**: `GET /api/user.get`
 - **Description**: Get authenticated user information
@@ -236,6 +236,104 @@ The build type should be configured accordingly in Dokploy:
 
 **Important**: Consult SvelteKit documentation for proper Dockerfile configuration.
 
+## CRITICAL: Publish Directory Configuration
+
+### Why Publish Directory is Essential
+
+The `publishDirectory` parameter in Dokploy's build configuration tells Dokploy **where to find the built application** inside the container. This is a CRITICAL setting that often causes deployment failures when misconfigured.
+
+### How it Works
+
+1. **SvelteKit Build**: `adapter-node` generates the application in `.svelte-kit/output/`
+2. **Docker/Nixpacks**: The build process copies files to a specific directory
+3. **Dokploy**: Looks in the `publishDirectory` to find the built application
+
+### Correct Configuration for SvelteKit + adapter-node
+
+#### Using Dockerfile
+
+**Dockerfile**:
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN bun install --frozen-lockfile
+RUN bun run build
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/.svelte-kit/output ./build
+CMD ["node", "build/server/index.js"]
+```
+
+**Dokploy Configuration**:
+- **Build Type**: `dockerfile`
+- **Publish Directory**: `./build`
+
+**Explanation**:
+- SvelteKit builds to `.svelte-kit/output/`
+- Dockerfile copies `.svelte-kit/output/` to `./build`
+- Dokploy looks in `./build` to find the application
+
+#### Using Nixpacks
+
+**package.json** (for Nixpacks):
+```json
+{
+  "engines": {
+    "node": "22"
+  }
+}
+```
+
+**Dokploy Configuration**:
+- **Build Type**: `nixpacks`
+- **Publish Directory**: `./build`
+
+**Explanation**:
+- Nixpacks builds the application
+- Output is typically in `./build` or `.svelte-kit/output/`
+- Dokploy looks in `./build` to find the application
+### Common Mistakes
+
+**❌ WRONG - Missing publishDirectory**:
+```bash
+curl -X POST "http://192.168.1.110:3000/api/application.saveBuildType" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $DOKPLOY_API_KEY" \
+  -d '{
+    "applicationId": "app_xxx",
+    "buildType": "dockerfile"
+    # publishDirectory is MISSING!
+  }'
+```
+**Result**: Deployment fails instantly or returns 404.
+
+**❌ WRONG - Wrong publishDirectory**:
+```bash
+curl -X POST "http://192.168.1.110:3000/api/application.saveBuildType" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $DOKPLOY_API_KEY" \
+  -d '{
+    "applicationId": "app_xxx",
+    "buildType": "dockerfile",
+    "publishDirectory": ".svelte-kit/output" # WRONG!
+  }'
+```
+**Result**: Dokploy cannot find the application in `.svelte-kit/output/` (it was copied to `./build` by Dockerfile).
+
+**✅ CORRECT - Proper publishDirectory**:
+```bash
+curl -X POST "http://192.168.1.110:3000/api/application.saveBuildType" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $DOKPLOY_API_KEY" \
+  -d '{
+    "applicationId": "app_xxx",
+    "buildType": "dockerfile",
+    "publishDirectory": "./build" # CORRECT!
+  }'
+```
+**Result**: Deployment succeeds because Dokploy finds the application in `./build`.
 ## Package.json Configuration for Nixpacks
 
 ### Critical: Engines Field
@@ -288,13 +386,15 @@ Without this field, Nixpacks may default to Node.js 18.x which is End-Of-Life an
 **Symptoms**: Deployment status changes to `error` within milliseconds (< 100ms).
 
 **Possible Causes**:
-1. **Missing Adapter**: Project uses `adapter-auto` which might not produce a server output suitable for Dokploy.
+1. **Missing Publish Directory**: The `publishDirectory` is not set or is incorrect.
+   - **Fix**: Set `publishDirectory: "./build"` in `/api/application.saveBuildType`
+2. **Missing Adapter**: Project uses `adapter-auto` which might not produce a server output suitable for Dokploy.
    - **Fix**: Switch to `adapter-node` and provide a Dockerfile or use Nixpacks config.
-2. **Invalid Build Configuration**: The build type does not match the repository contents.
+3. **Invalid Build Configuration**: The build type does not match the repository contents.
    - **Fix**: Verify `buildType` matches your setup (`dockerfile`, `nixpacks`, `heroku`).
-3. **Missing Dependencies**: Required packages for the chosen adapter are not installed.
+4. **Missing Dependencies**: Required packages for the chosen adapter are not installed.
    - **Fix**: Ensure `@sveltejs/adapter-node` is in `devDependencies`.
-4. **Missing Environment Variables**: Application requires env vars that are not configured.
+5. **Missing Environment Variables**: Application requires env vars that are not configured.
    - **Fix**: Use `/api/application.saveEnvironment` to configure required variables.
 
 ### Node.js Version Issues with Nixpacks
@@ -319,8 +419,8 @@ Without this field, Nixpacks may default to Node.js 18.x which is End-Of-Life an
 **Problem**: `dokploy verify` fails
 
 **Solution**:
-1. Check if the API token is valid in Dokploy web interface.
-2. Verify server URL is correct: `http://192.168.1.110:3000/`
+1. Check if the API token is valid in the Dokploy web interface.
+2. Verify the server URL is correct: `http://192.168.1.110:3000/`
 3. Re-authenticate: `dokploy authenticate --url URL --token TOKEN`
 
 ### API Issues
@@ -329,7 +429,7 @@ Without this field, Nixpacks may default to Node.js 18.x which is End-Of-Life an
 
 **Solution**:
 1. Use `x-api-key` header, NOT `Authorization: Bearer`
-2. Verify token is correct: Use `$DOKPLOY_API_KEY` environment variable
+2. Verify the token is correct: Use `$DOKPLOY_API_KEY` environment variable
 3. Test authentication: `curl -H "x-api-key: $DOKPLOY_API_KEY" http://192.168.1.110:3000/api/user.get`
 
 ## Additional Resources
@@ -340,6 +440,7 @@ Without this field, Nixpacks may default to Node.js 18.x which is End-Of-Life an
 
 ## Version History
 
+- **1.5.0** - Added CRITICAL section on Publish Directory configuration. This setting tells Dokploy where to find the built application and is essential for deployment success.
 - **1.4.0** - Added critical lesson about `engines` field in package.json for Nixpacks. This is essential to force Node.js version and avoid EOL errors.
 - **1.3.0** - Removed incorrect Dockerfile example (was invalid for SvelteKit adapter-node). Added application.saveGithubProvider endpoint documentation.
 - **1.2.0** - Updated API endpoints from OpenAPI documentation, fixed authentication header (x-api-key), removed hardcoded tokens.
