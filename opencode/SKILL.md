@@ -21,7 +21,7 @@ trigger_patterns:
 
 | Élément | Valeur |
 |---------|--------|
-| **Version** | v1.1.61 |
+| **Version** | v1.1.65 |
 | **Installation** | npm install -g opencode-ai@latest |
 | **Emplacement** | /usr/local/bin/opencode |
 | **PATH** | Ajouté à ~/.bashrc et ~/.profile |
@@ -37,14 +37,6 @@ trigger_patterns:
 }
 ```
 **Emplacement** : `~/.local/share/opencode/auth.json`
-
-### Note Importante sur Connectivité
-
-Le domaine `api.zai.ai` **N'EXISTE PAS**.
-
-Ce n'est PAS un problème de Docker - même sur le système hôte, `curl -I api.zai.ai` échoue avec "Could not resolve host".
-
-L'authentification OpenCode est configurée correctement (1 credentials reconnus), mais OpenCode NE peut PAS utiliser l'API Zai car l'URL n'existe pas.
 
 ### Fichiers de Configuration
 - `~/.local/share/opencode/auth.json` : Fichier d'authentification
@@ -327,38 +319,90 @@ opencode auth list
 ```
 Devrait afficher `1 credentials` avec `Z.AI Coding Plan api`
 
-### Problème de Connexion API Zai
-Le domaine `api.zai.ai` **N'EXISTE PAS**.
+---
 
-Ce n'est PAS un problème de Docker - même sur le système hôte, ce domaine n'est pas résolvable.
+**Skill créée et mise à jour par Agent Zero pour l'intégration OpenCode (2026-02-14)**
+Référence documentation: /a0/usr/workdir/OPencode_CLI_Documentation.md
+Intégration MCP: https://gitmcp.io/anomalyco/opencode
 
-L'authentification est correcte, mais OpenCode NE peut PAS utiliser l'API Zai car l'URL n'existe pas.
 
-## Comparaison: OpenCode vs code_execution_tool
+**Note Modèle:** Le modèle `glm-4.7-flash` est recommandé pour un équilibre optimal vitesse/qualité dans le développement quotidien.
+## Workflow: Initialisation de Projet (`/init`)
 
-| Fonctionnalité | OpenCode | code_execution_tool |
-|---------------|-----------|------------------|
-| **Cas d'usage** | Codage complexe, architecture | Scripts simples, terminal |
-| **Compréhension du code** | Approfondie (LSP, analyse IA) | Basique (exécution directe) |
-| **Multi-fichiers** | Excellent | Limité |
-| **Refactoring** | Excellent | Manuel |
-| **Vitesse** | Moyenne | Rapide |
-| **Dépendances** | CLI OpenCode | Aucune |
-| **Support LSP** | Oui | Non |
-| **Agents IA** | 3 agents spécialisés | Aucun |
-| **Choix de provider** | Agnostic | LLM d'Agent Zero |
+Lors de la création d'un nouveau projet (ex: via `sveltekit-skeleton-init`), l'agent Svelte doit impérativement exécuter la commande **`/init`**.
 
-## Conclusion
+### Objectif
+Créer une mémoire de projet pour assurer la traçabilité et la continuité du développement par les agents.
 
-OpenCode est **idéal pour les tâches de codage complexes** nécessitant une compréhension approfondie du code, des modifications multi-fichiers ou une planification d'architecture.
+### Action
+Créer un fichier `agents.md` à la racine du projet.
 
-code_execution_tool est **idéal pour les tâches simples** comme exécuter des scripts, faire des éditions rapides ou exécuter des commandes terminal.
+### Structure du fichier `agents.md`
 
-**Bonne pratique :** Utilisez les deux outils de manière stratégique en fonction de la complexité de la tâche.
+```markdown
+# Projet: [Nom du Projet]
+
+## 📋 Contexte
+- **Date de création** : JJ-MM-AAAA
+- **Stack** : SvelteKit 5, TypeScript, Tailwind, etc.
+- **Objectif principal** : Description courte.
+
+## 🏗️ Architecture
+- Dossier principal : `src/`
+- Fichiers clés : `src/app.html`, `src/routes/+page.svelte`
+
+## 🎯 Tâches en cours / TODO
+- [ ] Feature A
+- [ ] Bug fix B
+
+## 📝 Notes agents
+- Note importante pour les futures itérations.
+```
+
+### Maintenance
+- Le fichier `agents.md` doit être **mis à jour régulièrement** (ex: à la fin de chaque session ou lors de changements majeurs).
+- Il sert de "mémoire vive" pour les agents Svelte et développeurs.
 
 ---
 
-**Skill créée et mise à jour par Agent Zero pour l'intégration OpenCode (2026-02-12)**
-Version: 1.2.0 (Configuration Docker réussie, correction sur api.zai.ai)
-Référence documentation: /a0/usr/workdir/OPencode_CLI_Documentation.md
-Intégration MCP: https://gitmcp.io/anomalyco/opencode
+## Workflow: Initialisation de Projet (`/init`)
+
+**Instruction importante pour l'Agent Svelte :**
+
+Lors de la création d'un nouveau projet (ex: via `sveltekit-skeleton-init`), l'agent doit impérativement exécuter l'étape **`/init`**.
+
+### Objectif
+Créer une "mémoire de projet" (`agents.md`) pour assurer la traçabilité et la continuité du développement entre les sessions et les agents.
+
+### Action à exécuter
+Créer un fichier `agents.md` à la racine du projet.
+
+### Structure recommandée du fichier `agents.md`
+
+```markdown
+# Projet: [Nom du Projet]
+
+## 📋 Contexte
+- **Date de création** : JJ-MM-AAAA
+- **Type** : SvelteKit / Svelte 5
+- **Stack** : TypeScript, Tailwind, Vite, etc.
+- **Objectif principal** : Description courte de la finalité du projet.
+
+## 🏗️ Architecture
+- Dossier principal : `src/`
+- Fichiers clés : `src/app.html`, `src/routes/+page.svelte`
+- Structure des routes : `src/routes/...`
+
+## 🎯 Tâches en cours / TODO
+- [ ] Feature A à implémenter
+- [ ] Bug fix B en cours
+
+## 📝 Notes agents
+- Note importante pour les futures itérations ou rappels de dépendances spécifiques.
+```
+
+### Maintenance
+- Le fichier `agents.md` doit être **mis à jour régulièrement** (ex: à la fin de chaque session, lors de changements majeurs d'architecture ou de l'ajout de fonctionnalités clés).
+- Il sert de "mémoire vive" pour les agents Svelte et développeurs.
+
+---
