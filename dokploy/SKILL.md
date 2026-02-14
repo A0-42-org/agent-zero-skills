@@ -1,7 +1,7 @@
 ---
 name: "dokploy"
 description: "Manage Dokploy server remotely via API and CLI. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
-version: "1.2.0"
+version: "1.3.0"
 author: "Agent Zero Team"
 tags: ["deployment", "dokploy", "sveltekit", "github", "devops", "api"]
 trigger_patterns:
@@ -48,7 +48,7 @@ The Dokploy CLI and API require authentication with a server URL and an API toke
 - API Token: Available in environment variable `$DOKPLOY_API_KEY` (from user settings)
 - Email: `a0@ludoapex.fr`
 
-**Authenticating the CLI:**
+**Authenticating CLI:**
 ```bash
 export PATH="$HOME/.bun/bin:$PATH"
 dokploy authenticate --url http://192.168.1.110:3000/ --token $DOKPLOY_API_KEY
@@ -71,9 +71,72 @@ dokploy verify
 
 **NEVER use `Authorization: Bearer`** - all requests use `x-api-key` header.
 
-### Environment Configuration Endpoints
+### Application Management Endpoints
 
-#### Save Application Environment Variables
+#### Create Application
+- **Endpoint**: `POST /api/application.create`
+- **Request Body**:
+  ```json
+  {
+    "name": "string (minLength: 1)",
+    "appName": "string (minLength: 1, maxLength: 63, pattern: ^[a-zA-Z0-9._-]+$)",
+    "description": "string (nullable)",
+    "environmentId": "string",
+    "serverId": "string (nullable)"
+  }
+  ```
+
+#### Update Application
+- **Endpoint**: `POST /api/application.update`
+- **Description**: Update application configuration (repository, build type, etc.)
+- **Request Body**: Contains all application configuration (see OpenAPI for full schema)
+
+#### Save GitHub Provider
+- **Endpoint**: `POST /api/application.saveGithubProvider`
+- **Description**: Configure GitHub repository for the application
+- **Request Body**:
+  ```json
+  {
+    "applicationId": "string (required)",
+    "githubId": "string (required)",
+    "owner": "string (required)",
+    "repository": "string (required)",
+    "branch": "string (required)",
+    "buildPath": "string"
+  }
+  ```
+
+**Example**:
+```bash
+curl -X POST "http://192.168.1.110:3000/api/application.saveGithubProvider" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $DOKPLOY_API_KEY" \
+  -d '{
+    "applicationId": "app_xxx",
+    "githubId": "ghprov_xxx",
+    "owner": "A0-42-org",
+    "repository": "segre-vip",
+    "branch": "main",
+    "buildPath": "."
+  }'
+```
+
+#### Save Build Type
+- **Endpoint**: `POST /api/application.saveBuildType`
+- **Request Body**:
+  ```json
+  {
+    "applicationId": "string (required)",
+    "buildType": "dockerfile | heroku_buildpacks | paketo_buildpacks | nixpacks | static | railpack",
+    "dockerfile": "string (nullable)",
+    "dockerContextPath": "string (nullable)",
+    "dockerBuildStage": "string (nullable)",
+    "publishDirectory": "string (nullable)",
+    "isStaticSpa": "boolean (nullable)"
+  }
+  ```
+
+#### Save Environment
 - **Endpoint**: `POST /api/application.saveEnvironment`
 - **Description**: Configure environment variables and build arguments for an application
 - **Request Body**:
@@ -97,41 +160,6 @@ curl -X POST "http://192.168.1.110:3000/api/application.saveEnvironment" \
     "env": "DATABASE_URL=postgres://...\nSECRET=value"
   }'
 ```
-
-### Application Management Endpoints
-
-#### Create Application
-- **Endpoint**: `POST /api/application.create`
-- **Request Body**:
-  ```json
-  {
-    "name": "string (minLength: 1)",
-    "appName": "string (minLength: 1, maxLength: 63, pattern: ^[a-zA-Z0-9._-]+$)",
-    "description": "string (nullable)",
-    "environmentId": "string",
-    "serverId": "string (nullable)"
-  }
-  ```
-
-#### Update Application
-- **Endpoint**: `POST /api/application.update`
-- **Description**: Update application configuration (repository, build type, etc.)
-- **Request Body**: Contains all application configuration (see OpenAPI for full schema)
-
-#### Save Build Type
-- **Endpoint**: `POST /api/application.saveBuildType`
-- **Request Body**:
-  ```json
-  {
-    "applicationId": "string (required)",
-    "buildType": "dockerfile | heroku_buildpacks | paketo_buildpacks | nixpacks | static | railpack",
-    "dockerfile": "string (nullable)",
-    "dockerContextPath": "string (nullable)",
-    "dockerBuildStage": "string (nullable)",
-    "publishDirectory": "string (nullable)",
-    "isStaticSpa": "boolean (nullable)"
-  }
-  ```
 
 #### Deploy Application
 - **Endpoint**: `POST /api/application.deploy`
@@ -183,7 +211,7 @@ Dokploy expects a server that listens on a port. SvelteKit requires an adapter.
 
 **Recommended**: Use `@sveltejs/adapter-node`.
 
-1. Install the adapter:
+1. Install adapter:
    ```bash
    cd /path/to/project
    bun add -d @sveltejs/adapter-node
@@ -197,25 +225,16 @@ Dokploy expects a server that listens on a port. SvelteKit requires an adapter.
    };
    ```
 
-### Dockerfile (Recommended for dockerfile build type)
-If using the `dockerfile` build type, ensure you have a valid Dockerfile in the root of your repository.
+### Build Configuration
 
-```dockerfile
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package.json bun.lock ./
-RUN npm install -g bun && bun install
-COPY . .
-RUN bun run build
+SvelteKit with `adapter-node` generates output in `.svelte-kit/output/`.
 
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/build ./
-COPY package.json ./
-RUN npm install -g bun && bun install --production
-EXPOSE 3000
-CMD ["node", "index.js"]
-```
+The build type should be configured accordingly in Dokploy:
+- **dockerfile**: Use with a custom Dockerfile
+- **nixpacks**: Use with a `nixpacks.toml` file
+- **static**: For static sites only
+
+**Important**: Consult SvelteKit documentation for proper Dockerfile configuration.
 
 ## GitHub Organization Configuration
 
@@ -276,6 +295,7 @@ CMD ["node", "index.js"]
 
 ## Version History
 
+- **1.3.0** - Removed incorrect Dockerfile example (was invalid for SvelteKit adapter-node). Added application.saveGithubProvider endpoint documentation.
 - **1.2.0** - Updated API endpoints from OpenAPI documentation, fixed authentication header (x-api-key), removed hardcoded tokens.
 - **1.1.0** - Added API workflows, troubleshooting for instant errors, and SvelteKit specific configuration.
 - **1.0.0** - Initial release.
