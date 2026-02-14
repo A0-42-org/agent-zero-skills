@@ -1,7 +1,7 @@
 ---
 name: "dokploy"
 description: "Manage Dokploy server remotely via API and CLI. Use for deploying SvelteKit applications from GitHub, creating projects, applications, databases, and managing deployments."
-version: "1.1.0"
+version: "1.2.0"
 author: "Agent Zero Team"
 tags: ["deployment", "dokploy", "sveltekit", "github", "devops", "api"]
 trigger_patterns:
@@ -41,9 +41,11 @@ This skill provides workflows for managing a Dokploy server using both the **CLI
 ### Authentication
 The Dokploy CLI and API require authentication with a server URL and an API token.
 
+**Important Security Note**: NEVER hardcode API tokens in code or documentation. Always use environment variables.
+
 **Credentials:**
 - Server URL: `http://192.168.1.110:3000/`
-- API Token: Available in environment variable `DOKPLOY_API_KEY` or user settings
+- API Token: Available in environment variable `$DOKPLOY_API_KEY` (from user settings)
 - Email: `a0@ludoapex.fr`
 
 **Authenticating the CLI:**
@@ -57,92 +59,127 @@ dokploy authenticate --url http://192.168.1.110:3000/ --token $DOKPLOY_API_KEY
 dokploy verify
 ```
 
-**API Authentication:**
-All API requests must include the header: `x-api-key: YOUR_API_TOKEN`
+## API Endpoints Reference (from OpenAPI)
 
-## API Endpoints Reference
+### Authentication
+**Required Header**: `x-api-key: YOUR_API_TOKEN`
 
-### Projects
-- **List Projects**: `GET /api/project.all`
-- **Project Info**: `GET /api/project.info` (Body: `{ "projectId": "..." }`)
+**Security Scheme**: API Key Authentication
+- Type: apiKey
+- In: header
+- Name: x-api-key
 
-### Applications
-- **Create Application**: `POST /api/application.create`
+**NEVER use `Authorization: Bearer`** - all requests use `x-api-key` header.
+
+### Environment Configuration Endpoints
+
+#### Save Application Environment Variables
+- **Endpoint**: `POST /api/application.saveEnvironment`
+- **Description**: Configure environment variables and build arguments for an application
+- **Request Body**:
   ```json
-  { "name": "app-name", "description": "desc", "environmentId": "env-id" }
+  {
+    "applicationId": "string (required)",
+    "env": "string (multiline .env format, nullable)",
+    "buildArgs": "string (multiline build arguments, nullable)",
+    "buildSecrets": "string (multiline secrets, nullable)",
+    "createEnvFile": "boolean"
+  }
   ```
-- **Update Application**: `POST /api/application.update`
+
+**Example**:
+```bash
+curl -X POST "http://192.168.1.110:3000/api/application.saveEnvironment" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $DOKPLOY_API_KEY" \
+  -d '{
+    "applicationId": "APP_ID",
+    "env": "DATABASE_URL=postgres://...\nSECRET=value"
+  }'
+```
+
+### Application Management Endpoints
+
+#### Create Application
+- **Endpoint**: `POST /api/application.create`
+- **Request Body**:
   ```json
-  { "applicationId": "...", "repository": "repo", "owner": "org", "branch": "main" }
+  {
+    "name": "string (minLength: 1)",
+    "appName": "string (minLength: 1, maxLength: 63, pattern: ^[a-zA-Z0-9._-]+$)",
+    "description": "string (nullable)",
+    "environmentId": "string",
+    "serverId": "string (nullable)"
+  }
   ```
-- **Save Build Type**: `POST /api/application.saveBuildType`
+
+#### Update Application
+- **Endpoint**: `POST /api/application.update`
+- **Description**: Update application configuration (repository, build type, etc.)
+- **Request Body**: Contains all application configuration (see OpenAPI for full schema)
+
+#### Save Build Type
+- **Endpoint**: `POST /api/application.saveBuildType`
+- **Request Body**:
   ```json
-  { "applicationId": "...", "buildType": "dockerfile", "dockerContextPath": "." }
+  {
+    "applicationId": "string (required)",
+    "buildType": "dockerfile | heroku_buildpacks | paketo_buildpacks | nixpacks | static | railpack",
+    "dockerfile": "string (nullable)",
+    "dockerContextPath": "string (nullable)",
+    "dockerBuildStage": "string (nullable)",
+    "publishDirectory": "string (nullable)",
+    "isStaticSpa": "boolean (nullable)"
+  }
   ```
-- **Deploy Application**: `POST /api/application.deploy`
+
+#### Deploy Application
+- **Endpoint**: `POST /api/application.deploy`
+- **Request Body**:
   ```json
-  { "applicationId": "..." }
+  {
+    "applicationId": "string (required)",
+    "title": "string",
+    "description": "string"
+  }
   ```
 
-### Deployments
-- **List Deployments**: `GET /api/deployment.all?applicationId=...`
+#### List Deployments
+- **Endpoint**: `GET /api/deployment.all?applicationId=...`
+- **Description**: Get all deployments for a specific application
 
-## Core Workflows via API
+#### Get Application Details
+- **Endpoint**: `GET /api/application.one?applicationId=...`
 
-### Workflow 1: Deploy a SvelteKit Application (API Method)
+### Project & Environment Endpoints
 
-This is the preferred method for automation.
+#### List Projects
+- **Endpoint**: `GET /api/project.all`
 
-1. **Get Project and Environment IDs**:
-   ```bash
-   curl -X GET 'http://192.168.1.110:3000/api/project.all' -H 'x-api-key: $DOKPLOY_API_KEY'
-   ```
-   Note the `projectId` (e.g., `Q1lSu64fI4nIB038SpKQa` for "Agent0") and the `environmentId` (e.g., `4xRZ7Ft4ryueLkjP_qz77` for "production").
+#### Create Environment
+- **Endpoint**: `POST /api/environment.create`
+- **Request Body**:
+  ```json
+  {
+    "name": "string (minLength: 1)",
+    "description": "string (nullable)",
+    "projectId": "string"
+  }
+  ```
 
-2. **Create the Application**:
-   ```bash
-   curl -X POST 'http://192.168.1.110:3000/api/application.create' \
-     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
-     -d '{ "name": "landing", "description": "Agent Zero Landing", "environmentId": "4xRZ7Ft4ryueLkjP_qz77" }'
-   ```
-   Save the returned `applicationId`.
+#### Get Environment by Project
+- **Endpoint**: `GET /api/environment.byProjectId?projectId=...`
 
-3. **Configure GitHub Repository**:
-   ```bash
-   curl -X POST 'http://192.168.1.110:3000/api/application.update' \
-     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
-     -d '{ 
-       "applicationId": "UnsOa05EUzK4d-E0HI5yq", 
-       "repository": "agent-zero-landing", 
-       "owner": "A0-42-org", 
-       "branch": "main" 
-     }'
-   ```
+### User Authentication
 
-4. **Configure Build Settings (Dockerfile)**:
-   *Note: For SvelteKit, use a Dockerfile or configure Nixpacks correctly.*
-   ```bash
-   curl -X POST 'http://192.168.1.110:3000/api/application.saveBuildType' \
-     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
-     -d '{ 
-       "applicationId": "UnsOa05EUzK4d-E0HI5yq", 
-       "buildType": "dockerfile", 
-       "dockerContextPath": "." 
-     }'
-   ```
-
-5. **Trigger Deployment**:
-   ```bash
-   curl -X POST 'http://192.168.1.110:3000/api/application.deploy' \
-     -H 'Content-Type: application/json' -H 'x-api-key: $DOKPLOY_API_KEY' \
-     -d '{ "applicationId": "UnsOa05EUzK4d-E0HI5yq" }'
-   ```
+#### Get Current User
+- **Endpoint**: `GET /api/user.get`
+- **Description**: Get authenticated user information
 
 ## SvelteKit Configuration Requirements
 
 ### Adapter Configuration
 Dokploy expects a server that listens on a port. SvelteKit requires an adapter.
-
 
 **Recommended**: Use `@sveltejs/adapter-node`.
 
@@ -160,7 +197,7 @@ Dokploy expects a server that listens on a port. SvelteKit requires an adapter.
    };
    ```
 
-### Dockerfile (Optional but Recommended)
+### Dockerfile (Recommended for dockerfile build type)
 If using the `dockerfile` build type, ensure you have a valid Dockerfile in the root of your repository.
 
 ```dockerfile
@@ -186,6 +223,13 @@ CMD ["node", "index.js"]
 
 **Repository URL format:** `A0-42-org/repository-name`
 
+## Existing Infrastructure
+
+- **Project Name**: Agent0
+- **Project ID**: `Q1lSu64fI4nIB038SpKQa`
+- **Environment**: Production (`4xRZ7Ft4ryueLkjP_qz77`)
+- **Organization**: `A0-42-org`
+
 ## Troubleshooting
 
 ### Deployment Fails Instantly (Status: error)
@@ -199,6 +243,8 @@ CMD ["node", "index.js"]
    - **Fix**: Verify `buildType` matches your setup (`dockerfile`, `nixpacks`, `heroku`).
 3. **Missing Dependencies**: Required packages for the chosen adapter are not installed.
    - **Fix**: Ensure `@sveltejs/adapter-node` is in `devDependencies`.
+4. **Missing Environment Variables**: Application requires env vars that are not configured.
+   - **Fix**: Use `/api/application.saveEnvironment` to configure required variables.
 
 **How to Debug**:
 - API Logs: The `deployment.all` endpoint provides a `logPath`, but logs are stored on the server filesystem (e.g., `/etc/dokploy/logs/...`). These are not always accessible via the public API.
@@ -213,13 +259,14 @@ CMD ["node", "index.js"]
 2. Verify server URL is correct: `http://192.168.1.110:3000/`
 3. Re-authenticate: `dokploy authenticate --url URL --token TOKEN`
 
-## Existing Infrastructure
+### API Issues
 
-- **Project Name**: Agent0
-- **Project ID**: `Q1lSu64fI4nIB038SpKQa`
-- **Environment**: Production (`4xRZ7Ft4ryueLkjP_qz77`)
+**Problem**: `401 Unauthorized` with API requests
 
-- **Organization**: `A0-42-org`
+**Solution**:
+1. Use `x-api-key` header, NOT `Authorization: Bearer`
+2. Verify token is correct: Use `$DOKPLOY_API_KEY` environment variable
+3. Test authentication: `curl -H "x-api-key: $DOKPLOY_API_KEY" http://192.168.1.110:3000/api/user.get`
 
 ## Additional Resources
 
@@ -229,5 +276,6 @@ CMD ["node", "index.js"]
 
 ## Version History
 
+- **1.2.0** - Updated API endpoints from OpenAPI documentation, fixed authentication header (x-api-key), removed hardcoded tokens.
 - **1.1.0** - Added API workflows, troubleshooting for instant errors, and SvelteKit specific configuration.
 - **1.0.0** - Initial release.
