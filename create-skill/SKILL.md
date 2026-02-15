@@ -430,5 +430,48 @@ After creating a skill:
 - Design skills to be framework-agnostic when possible
 - Specify framework-specific requirements in the skill description
 
+
+## Best Practices for File Creation
+
+### ⚠️ AVOID `cat` with Heredoc EOF for Long Content
+
+When creating skill files or writing long content:
+
+**DO NOT USE:**
+```bash
+# ❌ BAD - Causes EOF issues with long content
+cat > /a0/usr/skills/skill-name/SKILL.md << 'EOF'
+[very long content here...]
+EOF
+```
+
+**INSTEAD, USE:**
+
+1. **Python** (Recommended for long content):
+```python
+import os
+
+content = """your long content here..."""
+
+with open('/a0/usr/skills/skill-name/SKILL.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+```
+
+2. **OpenCode** (For complex multi-file tasks):
+- Load the opencode skill: `skills_tool:load({ skill_name: "opencode" })`
+- Use the build agent for file creation
+- More stable for long content and avoids EOF issues
+
+3. **echo** (For very short content only):
+```bash
+echo 'short content' > file.txt
+```
+
+**Why Avoid `cat` Heredoc EOF?**
+- Causes blocking issues with long content
+- Unpredictable behavior with special characters
+- Difficult to debug when content gets truncated
+- Python and OpenCode are more reliable and stable
+
 ---
 **Use this skill to create well-structured, documented skills that follow the SKILL.md standard and modular architecture.**
