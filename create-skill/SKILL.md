@@ -110,47 +110,30 @@ Your skill instructions go here...
 - dashboardWorkflow
 ```
 
+
 ## Git Workflow
 
-Skills must be committed and pushed to the repository after creation.
+After creating a skill, you MUST commit and push it to the repository.
 
-### Repository
+### Use gh-cli Skill
+
+**IMPORTANT**: Use the `gh-cli` skill for all GitHub operations.
+
+Load the skill: `skills_tool:load({ skill_name: "gh-cli" })`
+
+The `gh-cli` skill handles:
+- Creating repositories
+- Committing and pushing changes
+- Creating labels, issues, and pull requests
+- Managing repositories
+
+### Repository Info
 
 - **Organization**: A0-42-org
 - **Repository**: https://github.com/A0-42-org/agent-zero-skills
 - **Location**: `/a0/usr/skills/`
 
-### Git Commands
-
-```bash
-# Navigate to skills directory
-cd /a0/usr/skills
-
-# Stage the new skill
-git add category/skill-name/
-
-# Commit with descriptive message
-git commit -m "feat: add skill-name description"
-
-# Push to origin
-git push origin main
-
-# Verify push
-git log --oneline -3
-git status
-```
-
-### Commit Message Convention
-
-```bash
-# For new skills
-feat: add skill-name description
-
-# For updates
-fix: fix-description
-chore: update-description
-docs: improve-documentation
-```
+**ALWAYS** create repositories and push to `A0-42-org` organization (NOT personal account).
 
 ## Skill Directory Structure
 
