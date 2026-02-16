@@ -1,7 +1,7 @@
 ---
 name: "create-skill"
-description: "Wizard for creating new Agent Zero skills with modular architecture (core, features, patterns, workflows). Guides through skill creation, Git workflow, and security checks."
-version: "2.0.0"
+description: "Wizard for creating new Agent Zero skills with modular architecture. Guides through skill creation, Git workflow, and security checks with updated structure."
+version: "3.0.0"
 author: "Agent Zero Team"
 tags: ["meta", "wizard", "creation", "skills", "security", "git"]
 trigger_patterns:
@@ -10,43 +10,109 @@ trigger_patterns:
   - "make skill"
   - "add skill"
   - "skill wizard"
+  - "créer skill"  # French
+  - "nouveau skill"  # French
+  - "création skill"  # French
 ---
 
 # Create Skill Wizard
 
-This skill helps you create new Agent Zero skills that follow the SKILL.md standard and the modular architecture.
+This skill helps you create new Agent Zero skills that follow SKILL.md standard and modular architecture.
 
 ## Quick Start
 
 To create a new skill, I'll guide you through these steps:
 
-1. **Category Selection** - Choose core/, features/, patterns/, or workflows/
+1. **Category Selection** - Choose the right folder for your skill
 2. **Name & Purpose** - What should this skill do?
-3. **Trigger Patterns** - When should this skill activate?
+3. **Trigger Patterns** - When should this skill activate? (Bilingual: English + French)
 4. **Content Structure** - What instructions should the agent follow?
 5. **Security Check** - Ensure no sensitive data is included
 6. **Git Workflow** - Commit and push to repository automatically
 
-## Modular Architecture
+## Updated Skills Structure
 
 Skills are organized in a modular structure at `/a0/usr/skills/`:
 
 ```
 /a0/usr/skills/
-├── core/          # Essential skills (auth, UI framework, database, bootstrap)
-├── features/      # Specific implementations (editor, theming, analytics, payments)
-├── patterns/      # Best practices (components, forms, server-actions, performance)
-└── workflows/     # Multi-step processes (auth setup, dashboard creation, admin)
+├── sveltekit/       # SvelteKit development skills (14 skills)
+├── devops/          # DevOps, Git & CI/CD skills (4 skills)
+├── installers/      # Skill installers (ClawHub, skills.sh) (2 skills)
+├── workflows/        # Meta-skills & multi-step processes (5 skills)
+├── content/         # Content creation skills (1 skill)
+└── (root)          # General tools & utilities (9 skills)
 ```
 
 ### Category Guidelines
 
 | Category | Purpose | Examples |
 |----------|---------|----------|
-| `core/` | Essential, foundational functionality | `better-auth-svelte`, `skeleton-ui-svelte`, `sveltekit-database`, `sveltekit-bootstrap` |
-| `features/` | Specific feature implementations | `sveltekit-theming`, `sveltekit-dnd-dashboard`, `sveltekit-analytics` |
-| `patterns/` | Best practices and code patterns | `sveltekit-components`, `sveltekit-forms`, `sveltekit-server-actions`, `sveltekit-performance` |
-| `workflows/` | Multi-step processes combining multiple skills | `dashboard-creation-workflow`, `auth-setup-workflow` |
+| `sveltekit/` | Svelte 5, SkeletonUI v4, Tailwind CSS v4 | `bootstrap`, `skeleton-ui`, `database`, `auth`, `forms`, `components`, `analytics`, `performance`, `themed`, `dnd-dashboard`, `tiptap` |
+| `devops/` | DevOps, Git, CI/CD, deployment | `gh-cli`, `git-commit`, `opencode`, `pr-automation`, `dokploy` |
+| `installers/` | Install skills from external marketplaces | `clawhub`, `skills-sh` |
+| `workflows/` | Meta-skills orchestrating multiple skills | `sveltekit-start`, `installers-workflow`, `devops-workflow`, `content-workflow`, `dashboard-creation-workflow` |
+| `content/` | Content creation & copywriting | `copywriting` |
+| `(root)` | General tools & utilities | `agent-browser`, `maxun`, `memory-optimizer`, `obsidian-light`, `himalaya`, `github-alert-analyzer`, `create-skill`, `stripe-integration`, `ralph-tui-prd-generator` |
+
+## Choosing the Right Category
+
+### For SvelteKit Skills
+
+Use **`sveltekit/`** if your skill:
+- Is specifically for SvelteKit development
+- Uses Svelte 5 runes ($props, $state, $derived, $effect)
+- Integrates with SkeletonUI v4
+- Uses Tailwind CSS v4
+- Implements SvelteKit patterns (server actions, forms, components)
+
+**Examples**: `bootstrap`, `skeleton-ui`, `database`, `auth`, `forms`, `components`
+
+### For DevOps Skills
+
+Use **`devops/`** if your skill:
+- Handles deployment (Dokploy, Docker, CI/CD)
+- Manages Git operations (gh-cli, git-commit)
+- Automates pull requests (pr-automation)
+- Integrates with OpenCode
+
+**Examples**: `gh-cli`, `git-commit`, `opencode`, `pr-automation`, `dokploy`
+
+### For Installer Skills
+
+Use **`installers/`** if your skill:
+- Installs skills from external marketplaces
+- Handles ClawHub or skills.sh formats
+- Performs security analysis
+
+**Examples**: `clawhub`, `skills-sh`
+
+### For Workflow Skills
+
+Use **`workflows/`** if your skill:
+- Is a meta-skill orchestrating multiple skills
+- Combines multiple skills into a complete workflow
+- Provides step-by-step guides for complex tasks
+
+**Examples**: `sveltekit-start`, `installers-workflow`, `devops-workflow`, `content-workflow`, `dashboard-creation-workflow`
+
+### For Content Skills
+
+Use **`content/`** if your skill:
+- Helps create marketing copy
+- Generates content for landing pages
+- Provides copywriting frameworks
+
+**Examples**: `copywriting`
+
+### For General Skills (Root)
+
+Use **(root)** if your skill:
+- Is a general tool or utility
+- Doesn't fit in any specific category
+- Works across multiple domains
+
+**Examples**: `agent-browser`, `maxun`, `memory-optimizer`, `obsidian-light`, `himalaya`, `github-alert-analyzer`, `create-skill`, `stripe-integration`, `ralph-tui-prd-generator`
 
 ## SKILL.md Format
 
@@ -60,8 +126,10 @@ version: "1.0.0"
 author: "Agent Zero Team"
 tags: ["category1", "category2"]
 trigger_patterns:
-  - "keyword1"
-  - "phrase that triggers this"
+  - "keyword1"  # English
+  - "phrase that triggers this"  # English
+  - "mot-clé"  # French
+  - "phrase qui déclenche"  # French
 ---
 
 # Skill Title
@@ -83,49 +151,51 @@ Your skill instructions go here...
 | `version` | Semantic version | `"1.0.0"` |
 | `author` | Creator name | `"Agent Zero Team"` |
 | `tags` | Categorization keywords | `["sveltekit", "components", "svelte-5"]` |
-| `trigger_patterns` | Words/phrases that activate skill | `["component", "reusable", "svelte 5"]` |
+| `trigger_patterns` | Words/phrases that activate skill (BILINGUAL) | `["component", "composant", "reusable", "réutilisable"]` |
 
 ## Naming Conventions
 
 ### Skill Names
 
-- **SvelteKit skills**: Prefix with `sveltekit-` (e.g., `sveltekit-components`, `sveltekit-database`)
-- **Framework-specific skills**: Prefix with framework name (e.g., `better-auth-svelte`, `skeleton-ui-svelte`)
+- **SvelteKit skills**: NO prefix (e.g., `components`, `forms`, `database`)
+  - **Exception**: Keep prefix only if essential (e.g., `skeleton-ui`, `better-auth`)
+- **Framework-specific skills**: Use framework name (e.g., `better-auth`, `skeleton-ui`, `tiptap`)
 - **General skills**: Descriptive name (e.g., `code-review`, `data-analysis`)
-- **Workflow skills**: Suffix with `-workflow` (e.g., `dashboard-creation-workflow`)
+- **Workflow skills**: Suffix with `-workflow` (e.g., `sveltekit-start`, `installers-workflow`)
 
 ### Examples
 
 ```
 ✅ GOOD:
-- sveltekit-components
-- sveltekit-forms
-- better-auth-svelte
-- dashboard-creation-workflow
+- components
+- forms
+- database
+- skeleton-ui
+- better-auth
+- sveltekit-start
+- installers-workflow
 
 ❌ BAD:
-- ComponentsSkill
+- sveltekit-components  # Unnecessary prefix
 - SvelteKit-Forms
 - auth_skill
 - dashboardWorkflow
 ```
 
-
 ## Git Workflow
 
-After creating a skill, you MUST commit and push it to the repository.
+After creating a skill, you MUST commit and push it to repository.
 
-### Use gh-cli Skill
+### Use Git Commands Directly
 
-**IMPORTANT**: Use the `gh-cli` skill for all GitHub operations.
+**IMPORTANT**: Use `git push origin main` for pushing changes.
 
-Load the skill: `skills_tool:load({ skill_name: "gh-cli" })`
+Use GitHub CLI (`gh`) only for:
+- Creating repositories (`gh repo create`)
+- Managing issues and PRs
+- Repository management
 
-The `gh-cli` skill handles:
-- Creating repositories
-- Committing and pushing changes
-- Creating labels, issues, and pull requests
-- Managing repositories
+**DO NOT** use `gh repo sync --force` - it can cause commit loss!
 
 ### Repository Info
 
@@ -134,6 +204,12 @@ The `gh-cli` skill handles:
 - **Location**: `/a0/usr/skills/`
 
 **ALWAYS** create repositories and push to `A0-42-org` organization (NOT personal account).
+
+### Workflow
+
+1. `git add <skill-folder>/`
+2. `git commit -m 'feat: add <skill-name> skill'`
+3. `git push origin main`
 
 ## Skill Directory Structure
 
@@ -199,262 +275,93 @@ Create components with Svelte 5 syntax.
 - [ ] Component exported if needed
 ```
 
-## ⚠️ Security: Handling Sensitive Data
+## Bilingual Support
 
-### CRITICAL RULE: Never Include Secrets in Skills
+For maximum accessibility, provide **bilingual trigger patterns**:
 
-When creating a skill, **NEVER** hardcode sensitive information in the `SKILL.md` file or examples.
+```yaml
+---
+name: "skill-name"
+description: "Skill description"
+version: "1.0.0"
+author: "Agent Zero Team"
+tags: ["category1", "category2"]
+trigger_patterns:
+  - "english keyword 1"
+  - "english phrase 1"
+  - "mot-clé français 1"
+  - "phrase française 1"
+---
+```
 
-**Forbidden Data (Do NOT include):**
-- API Keys (e.g., `sk-123...`, `x-api-key`, `AKIAIOSFODNN7EXAMPLE`)
-- Passwords (e.g., `mypassword`, `admin123`)
-- Tokens (e.g., `Bearer eyJhb...`, refresh tokens)
-- Private Internal URLs (unless public documentation examples)
-- Personal Credentials (Usernames/Passwords)
+**Why bilingual?** Users may speak English or French. Providing triggers in both languages ensures the skill is accessible to everyone.
 
-### What to Do Instead:
+## Security Best Practices
 
-**1. Use Placeholders or Variables**
-Indicate where the variable should come from.
+When creating a skill:
 
+1. **Never include API keys** in the skill
+2. **Never include passwords** or secrets
+3. **Use placeholders** for sensitive data
+4. **Document prerequisites** clearly
+5. **Test the skill** thoroughly before committing
+
+## Common Pitfalls
+
+### 1. Wrong Category
 ```bash
-# ❌ BAD - Hardcoded Secret
-curl -H "Authorization: Bearer sk-1234567890abcdefghij"
+# ❌ BAD - Putting a SvelteKit skill in root/
+mv sveltekit-components /a0/usr/skills/components
 
-# ✅ GOOD - Variable Placeholder
-curl -H "Authorization: Bearer $API_KEY"
+# ✅ GOOD - Putting it in sveltekit/
+mv sveltekit-components /a0/usr/skills/sveltekit/components
 ```
 
-**2. Describe Required Variable**
-Explain clearly what the user needs to set up.
-
+### 2. Not Using Bilingual Triggers
 ```yaml
-# Required Environment Variables
-# MY_API_KEY: Your secret API key from provider settings
-# DB_PASSWORD: Secure password for database instance
-```
-
-**3. Use Agent Zero Secret Placeholders**
-For operational use, rely on Agent Zero's secret management (using the replacement syntax) in prompts, not hardcoded values in documentation.
-
-```markdown
-# Use secret aliases in your tool calls:
-# The system will automatically replace secrets with real values.
-# Format: variable_name (without the prefix)
-```
-
-## Creating Your Skill: Step by Step
-
-### Step 1: Choose Category
-
-Select the appropriate category:
-
-- **core/** - Essential functionality (auth, UI, database)
-- **features/** - Specific implementations (editor, analytics, theming)
-- **patterns/** - Best practices (components, forms, performance)
-- **workflows/** - Multi-step processes (dashboard creation, auth setup)
-
-### Step 2: Define Purpose
-
-Answer these questions:
-- What problem does this skill solve?
-- When should the agent use it?
-- What's the expected output?
-
-### Step 3: Choose a Name
-
-- Use lowercase letters and hyphens
-- Prefix with `sveltekit-` for SvelteKit skills
-- Be descriptive but concise
-- Examples: `sveltekit-components`, `better-auth-svelte`, `dashboard-creation-workflow`
-
-### Step 4: Write Trigger Patterns
-
-List words/phrases that should activate this skill:
-
-```yaml
+# ❌ BAD - Only English triggers
 trigger_patterns:
   - "create component"
   - "reusable component"
-  - "svelte 5 component"
-  - "component pattern"
+
+# ✅ GOOD - Bilingual triggers
+trigger_patterns:
+  - "create component"  # English
+  - "reusable component"  # English
+  - "créer composant"  # French
+  - "composant réutilisable"  # French
 ```
 
-### Step 5: Structure Your Content
-
-Organize with clear sections:
-
-```markdown
-# Skill Title
-
-## Use Case
-When to use this skill
-
-## Installation
-Packages and setup
-
-## Patterns
-Step-by-step instructions
-
-## Examples
-Show sample code
-
-## Common Pitfalls
-What to avoid
-```
-
-### Step 6: Add Supporting Files (Optional)
-
-If your skill needs scripts or templates:
-
+### 3. Using gh repo sync --force
 ```bash
-# Create directory structure
-mkdir -p /a0/usr/skills/category/skill-name/{scripts,templates,docs}
-```
+# ❌ BAD - Can lose commits
+gh repo sync --force
 
-### Step 7: Security Check ⚠️
-
-Before saving your skill, verify it contains **NO sensitive data**:
-
-**Checklist:**
-- [ ] No API keys or tokens in examples
-- [ ] No passwords or secrets in code snippets
-- [ ] Private IPs or internal URLs are anonymized or generic
-- [ ] Credentials are referenced via variables (e.g., `$TOKEN`, `$API_KEY`)
-- [ ] I have not copied/pasted any `.env` content directly into the file
-
-### Step 8: Git Workflow
-
-Commit and push the skill to the repository:
-
-```bash
-# Navigate to skills directory
-cd /a0/usr/skills
-
-# Stage the skill
-git add category/skill-name/
-
-# Commit with descriptive message
-git commit -m "feat: add skill-name description"
-
-# Push to origin
+# ✅ GOOD - Use git push directly
+git add .
+git commit -m 'feat: add new skill'
 git push origin main
-
-# Verify
-git log --oneline -3
-git status
 ```
 
-## Existing Skills Reference
-
-### Core Skills
-- `better-auth-svelte` - Authentication with BetterAuth and SvelteKit
-- `skeleton-ui-svelte` - Skeleton UI v4 with Tailwind CSS v4
-- `sveltekit-database` - Drizzle ORM with PostgreSQL
-- `sveltekit-bootstrap` - Project initialization and setup
-
-### Feature Skills
-- `sveltekit-theming` - Theme management with Skeleton UI v4
-- `sveltekit-dnd-dashboard` - Sortable dashboards with drag-and-drop
-- `sveltekit-analytics` - Event tracking and analytics dashboards
-
-### Pattern Skills (To Be Created)
-- `sveltekit-components` - Reusable component patterns
-- `sveltekit-forms` - Form handling and validation
-- `sveltekit-server-actions` - Server actions and progressive enhancement
-- `sveltekit-performance` - Performance optimization patterns
-
-### Workflow Skills (To Be Created)
-- `dashboard-creation-workflow` - Multi-step dashboard creation process
-
-## Skill Installation
-
-### Local Installation
-
-1. Create skill directory:
-   ```bash
-   mkdir -p /a0/usr/skills/category/skill-name
-   ```
-
-2. Create SKILL.md:
-   ```bash
-   touch /a0/usr/skills/category/skill-name/SKILL.md
-   ```
-
-3. Add content and save
-
-4. Skills are automatically loaded on next agent initialization
-
-### Sharing Skills
-
-To share skills with others:
-
-1. Create a GitHub repository
-2. Include the skill directory structure
-3. Add a README with installation instructions
-4. Users can copy to their `/a0/usr/skills/` directory
-
-## Testing Your Skill
-
-After creating a skill:
-
-1. Commit and push to repository
-2. Start a new conversation
-3. Use one of your trigger patterns
-4. Verify that the agent follows your instructions
-5. Iterate and improve based on results
-
-## Global Skills
-
-**Important**: Skills are **global resources** that can be used by **any agent**, not just the Svelte agent.
-
-- Location: `/a0/usr/skills/`
-- Accessible by all agents (default, developer, researcher, hacker, svelte, agent0)
-- Design skills to be framework-agnostic when possible
-- Specify framework-specific requirements in the skill description
-
-
-## Best Practices for File Creation
-
-### ⚠️ AVOID `cat` with Heredoc EOF for Long Content
-
-When creating skill files or writing long content:
-
-**DO NOT USE:**
+### 4. Wrong Technology Stack
 ```bash
-# ❌ BAD - Causes EOF issues with long content
-cat > /a0/usr/skills/skill-name/SKILL.md << 'EOF'
-[very long content here...]
-EOF
+# ❌ BAD - Using BUN (not installed in Docker)
+bun install
+bun add @skeletonlabs/skeleton-svelte
+
+# ✅ GOOD - Using PNPM
+pnpm install
+pnpm add @skeletonlabs/skeleton-svelte
 ```
 
-**INSTEAD, USE:**
+## Next Steps
 
-1. **Python** (Recommended for long content):
-```python
-import os
+After completing this wizard, you can:
 
-content = """your long content here..."""
-
-with open('/a0/usr/skills/skill-name/SKILL.md', 'w', encoding='utf-8') as f:
-    f.write(content)
-```
-
-2. **OpenCode** (For complex multi-file tasks):
-- Load the opencode skill: `skills_tool:load({ skill_name: "opencode" })`
-- Use the build agent for file creation
-- More stable for long content and avoids EOF issues
-
-3. **echo** (For very short content only):
-```bash
-echo 'short content' > file.txt
-```
-
-**Why Avoid `cat` Heredoc EOF?**
-- Causes blocking issues with long content
-- Unpredictable behavior with special characters
-- Difficult to debug when content gets truncated
-- Python and OpenCode are more reliable and stable
+1. **Use your new skill** - Start using it immediately
+2. **Share it** - Add it to the repository
+3. **Document it** - Write examples and guides
+4. **Test it** - Ensure it works as expected
 
 ---
-**Use this skill to create well-structured, documented skills that follow the SKILL.md standard and modular architecture.**
+**Use this wizard to create new Agent Zero skills with the updated structure and bilingual support.**
