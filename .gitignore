@@ -36,3 +36,4 @@ dist/
 # Database
 *.db
 *.sqlite
+.pnpm-store/
