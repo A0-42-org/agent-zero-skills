@@ -1,420 +1,397 @@
-# Skeleton UI v4 for SvelteKit
+# Skeleton UI for SvelteKit
 
-Setup Skeleton UI v4 with Tailwind CSS v4 for SvelteKit projects.
+## Description
+Skeleton UI est un système de design et une bibliothèque de composants pour SvelteKit, construit sur Tailwind CSS. Il fournit des composants "turnkey" basés sur Zag.js qui s'adaptent automatiquement au système de design Skeleton. Cette skill est optimisée pour Svelte 5 (runes) et SvelteKit.
+
+## Catégorie
+core
+
+## Tags
+skeleton, ui, design-system, components
+
+## Trigger Patterns
+skeleton, components, design, layout
 
 ## Installation
 
+### Prérequis
+- SvelteKit (v2+)
+- Svelte (v5+)
+- Tailwind CSS (v4+)
+
+### Installation des paquets
+
 ```bash
-bun add -D @skeletonlabs/skeleton @skeletonlabs/skeleton-svelte
+pnpm add @skeletonlabs/skeleton-svelte @skeletonlabs/skeleton
 ```
 
-## Configuration
+### Configuration CSS
 
-### 1. Create skeleton.config.js
+Dans votre fichier `app.css` (global stylesheet) :
 
-```javascript
-// skeleton.config.js
-import { cerberus } from '@skeletonlabs/skeleton';
+```css
+@import '@skeletonlabs/skeleton-svelte';
+```
+
+### Configuration Tailwind v4
+
+Assurez-vous d'utiliser le plugin Vite Tailwind :
+
+```ts
+// vite.config.ts
+import tailwindcss from '@tailwindcss/vite';
+import { sveltekit } from '@sveltejs/kit/vite';
 
 export default {
-  themes: [cerberus],
-  structure: {
-    base: [{ id: 'cerberus', name: 'Cerberus', description: 'Dark theme with luxury aesthetic' }],
-    components: [],
-    presets: []
-  },
-  themesPlugin: {
-    strategy: 'default',
-    auto: {
-      cssPath: 'src/routes/layout.css',
-      cssLayer: { base: 'base', components: 'components', utilities: 'utilities', theme: 'theme' }
-    }
-  }
+  plugins: [
+    tailwindcss(),
+    sveltekit()
+  ]
 };
 ```
 
-### 2. Update src/app.html
-
-Add `data-theme` attribute to html tag:
+### Activation des Thèmes
+Pour activer un thème Skeleton (ex: winter), ajoutez l'attribut `data-theme` dans `app.html` :
 
 ```html
-<!doctype html>
-<html lang="en" data-theme="cerberus">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%sveltekit.assets%/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    %sveltekit.head%
-  </head>
-  <body data-sveltekit-preload-data="hover">
-    <div style="display: contents">%sveltekit.body%</div>
-  </body>
-</html>
+<!-- app.html -->
+<html data-theme="winter">
 ```
 
-### 3. Create src/routes/layout.css
+## Core API
 
-**IMPORTANT**: Use correct import format:
+Skeleton étend Tailwind avec des propriétés de thème personnalisées (`@theme`) et des utilitaires (`@utility`).
+
+### Thèmes et Couleurs
+Skeleton utilise des variables CSS pour les couleurs, l'espacement et la typographie.
+
+- Couleurs : `--color-primary-500`, `--color-surface-50-950`, etc.
+- Radius : `--radius-base`, `--radius-container`.
+- Espacement : accessible via la fonction `--spacing(value)`.
+
+### Thèmes Prédéfinis
+Skeleton fournit des thèmes prédéfinis que vous pouvez activer via `data-theme` :
+
+- **winter** : Thème bleu-froid, très utilisé (activé par défaut dans Vialto)
+- **cerberus** : Thème rouge/sombre
+- **midnight** : Thème nuit sombre
+- **sahara** : Thème désert chaud
+- **mona** : Thème élégant monochrome
+
+### Classes de Thème Winter (Exemples)
+Pour le thème winter, utilisez ces classes utilitaires :
+```html
+<!-- Surface colors -->
+<div class="bg-surface-950-50 text-surface-0-950">
+<div class="bg-surface-100-900 border border-surface-800-200">
+
+<!-- Primary colors -->
+<button class="bg-primary-500 hover:bg-primary-600 text-white">
+<div class="text-surface-300-700">
+
+<!-- Effects -->
+<div class="backdrop-blur-lg">  <!-- Blur arrière-plan -->
+```
+
+### Dark Mode
+Skeleton supporte plusieurs stratégies pour le Dark Mode (Media, Selector, Data Attribute). Pour un contrôle manuel (ex: switch) :
 
 ```css
-/* Tailwind CSS v4 */
-@import 'tailwindcss';
-
-/* Tailwind CSS plugins */
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
-
-/* Skeleton UI v4 imports */
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
-
-/* Custom theme adjustments */
-:root {
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
+/* app.css */
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *));
 ```
 
-**NOTE**: Do NOT import components from '@skeletonlabs/skeleton-svelte' in your Svelte files. Use Tailwind utility classes and Skeleton UI themes instead.
+```html
+<!-- app.html -->
+<html data-mode="dark">
+```
 
-### 4. Update src/routes/+layout.svelte
+## Components
 
-Import CSS file:
+Les composants Skeleton pour Svelte utilisent Svelte 5 Runes (`$props`, `$state`, snippets `{#snippet}`). Ils sont importés depuis `@skeletonlabs/skeleton-svelte`.
+
+### Structure des Composants
+La plupart des composants sont composés de sous-parties (ex: `Avatar.Root`, `Avatar.Image`).
+
+### Exemple : Avatar
 
 ```svelte
 <script lang="ts">
-  import '../layout.css';
+  import { Avatar } from '@skeletonlabs/skeleton-svelte';
 </script>
 
-<slot />
+<Avatar>
+  <Avatar.Image src="https://i.pravatar.cc/150?img=48" alt="Jane Doe" />
+  <Avatar.Fallback>SK</Avatar.Fallback>
+</Avatar>
 ```
 
-## CRITICAL: Tailwind CSS v4 + Svelte Best Practices
-
-
-### ❌ What NOT to Do with Tailwind v4
-
-**1. DO NOT use `@apply` with utility classes in Svelte `<style>` blocks**
+### Exemple : Accordion (avec Svelte 5 Runes et Snippets)
 
 ```svelte
-<!-- ❌ DON'T DO THIS -->
-<style lang="postcss">
-.my-class {
-@apply flex justify-center gap-3;
-}
-</style>
-```
-
-**Problem with Tailwind v4:**
-- Tailwind v4 does NOT correctly recognize utility classes in `@apply`
-- Build fails with errors like: "Cannot apply unknown utility class"
-- This is due to how Tailwind v4 processes plugins and directives
-
-
-**2. DO NOT mix `@apply` and inline classes**
-
-```svelte
-<!-- ❌ PROBLEMATIC COMBINATION -->
-<div class="@apply flex gap-3 p-4">
-<!-- Content -->
-</div>
-
-<style lang="postcss">
-.my-class {
-@apply flex gap-3;
-}
-</style>
-```
-
-This creates confusion and increases code maintenance.
-
-**3. DO NOT over-apply classes**
-
-```svelte
-<!-- ❌ TOO MANY INLINE CLASSES -->
-<div
-class="
-    flex cursor-pointer items-center justify-center
-    gap-2 rounded-lg px-6
-    py-4 text-lg
-    font-semibold transition-all
-    duration-200
-    hover:scale-105
-    hover:shadow-lg
-  "
->
-<!-- Content -->
-</div>
-```
-
-This makes code hard to read and maintain.
-
-### ✅ What to DO Instead
-
-**1. Use classes directly in HTML (RECOMMENDED)**
-
-```svelte
-<!-- ✅ USE INLINE CLASSES -->
-<div
-class="flex cursor-pointer items-center gap-2 rounded-lg px-6 py-4 text-lg font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg"
->
-<!-- Content -->
-</div>
-```
-
-**Advantages:**
-- Faster to develop
-- More readable code for beginners
-- Less CSS files to maintain
-- Very well supported by Tailwind v4
-
-**2. Create custom CSS classes if necessary**
-
-```svelte
-<div class="card-button">
-<!-- Content -->
-</div>
-
-<!-- ✅ CREATE CUSTOM CLASSES -->
-<style lang="postcss">
-.card-button {
-display: flex;
-align-items: center;
-gap: 0.5rem;
-padding: 1rem 1.5rem;
-border-radius: 0.5rem;
-font-size: 1.125rem;
-font-weight: 600;
-transition: all 0.2s ease;
-}
-
-.card-button:hover {
-transform: scale(1.05);
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-</style>
-```
-
-**Advantages:**
-- Cleaner and maintainable code
-- Ideal for reusable components
-- Easier to modify later
-
-**3. Use conditional classes intelligently**
-
-```svelte
-<!-- ✅ USE CONDITIONALS -->
-<div
-  class="flex items-center gap-2"
-  class:px-6={usePadding}
-  class:rounded-lg={useBorderRadius}
->
-  <!-- Content -->
-</div>
-
-<div
-  class="flex items-center gap-2"
-  class="px-6 py-4 rounded-lg"
-  class:text-lg={fontSize === 'large'}
-  class:text-base={fontSize === 'normal'}
->
-  <!-- Content -->
-</div>
-```
-
-**Advantages:**
-- Cleaner code
-- Explicit conditions
-- Helps with maintenance
-
-**4. Group classes by utility**
-
-```svelte
-<!-- ✅ GROUP CLASSES BY TYPE -->
-<div
-class="
-    /* Layout */
-    flex cursor-pointer items-center
-    /* Spacing & Shape */
-    gap-2 rounded-lg px-6 py-4
-    /* Typography */
-    text-lg font-semibold
-    /* Animation */
-    transition-all duration-200
-    /* Hover effects */
-    hover:scale-105 hover:shadow-lg
-  "
->
-<!-- Content -->
-</div>
-```
-
-## Guide to Choosing Approach
-
-### When to use inline classes?
-- ✅ For simple or unique components
-- ✅ For less complex styles
-- ✅ For rapid prototyping
-- ✅ For layout components
-
-### When to create custom classes?
-- ✅ For reusable components
-- ✅ For complex style patterns
-- ✅ For themes or recurring variations
-- ✅ When you need lots of context
-
-### When to use `@apply` (if possible)?
-- ✅ In global CSS files (not in Svelte)
-- ✅ For creating reusable theme classes
-- ✅ For complex CSS mixins
-
-## Golden Rules for Tailwind v4 + Svelte
-
-1. **AVOID `@apply` in Svelte components** - Use inline classes instead
-2. **Keep inline styles in a single line** - Use backticks
-3. **Group classes logically** - Even if not perfectly organized, it helps
-4. **Use conditional classes** - `class:condition` instead of complex JS logic
-5. **Create components with inline styles** - Svelte is made for this
-6. **Keep global styles in `layout.css`** - Use `@import` there
-
-## Custom Brand Styles
-
-### Adding Custom CSS (e.g., svelteforge.css)
-
-```css
-/* src/routes/layout.css */
-/* Tailwind CSS v4 */
-@import 'tailwindcss';
-
-/* Tailwind CSS plugins */
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
-
-/* Skeleton UI v4 imports */
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
-
-/* Import custom brand styles */
-@import "../lib/themes/brand-styles/svelteforge.css";
-
-/* Custom theme adjustments */
-:root {
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-```
-
-## Theme System
-
-### Multiple Themes
-
-```javascript
-// skeleton.config.js
-import { cerberus, modern, rocket } from '@skeletonlabs/skeleton';
-
-export default {
-  themes: [cerberus, modern, rocket],
-  structure: {
-    base: [
-      { id: 'cerberus', name: 'Cerberus', description: 'Dark theme with luxury aesthetic' },
-      { id: 'modern', name: 'Modern', description: 'Clean minimal light theme' },
-      { id: 'rocket', name: 'Rocket', description: 'Bold vibrant theme' }
-    ],
-    components: [],
-    presets: []
-  },
-  themesPlugin: {
-    strategy: 'default',
-    auto: {
-      cssPath: 'src/routes/layout.css',
-      cssLayer: { base: 'base', components: 'components', utilities: 'utilities', theme: 'theme' }
-    }
-  }
-};
-```
-
-### Theme Switching
-
-```svelte
-<!-- src/lib/components/ThemeSelector.svelte -->
 <script lang="ts">
-  import { browser } from '$app/environment';
-  
-  let theme = browser ? document.documentElement.getAttribute('data-theme') || 'cerberus' : 'cerberus';
-  
-  function setTheme(t: string) {
-    theme = t;
-    if (browser) {
-      document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem('theme', t);
-    }
-  }
-  
-  if (browser) {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) setTheme(savedTheme);
-  }
+  import { Accordion } from '@skeletonlabs/skeleton-svelte';
+  import { slide } from 'svelte/transition';
 </script>
 
-<select bind:value={theme} onchange={(e) => setTheme(e.currentTarget.value)}>
-  <option value="cerberus">Cerberus</option>
-  <option value="modern">Modern</option>
-  <option value="rocket">Rocket</option>
-</select>
+<Accordion>
+  {#each ['1', '2', '3'] as item (item)}
+    <Accordion.Item value="item-{item}">
+      <h3>
+        <Accordion.ItemTrigger>Item {item}</Accordion.ItemTrigger>
+      </h3>
+      <Accordion.ItemContent>
+        {#snippet element(attributes)}
+          {#if !attributes.hidden}
+            <div {...attributes} transition:slide>
+              Content for item {item}
+            </div>
+          {/if}
+        {/snippet}
+      </Accordion.ItemContent>
+    </Accordion.Item>
+  {/each}
+</Accordion>
 ```
 
-## Important Notes
+### Liste des Composants Principaux
+- **Avatar** : Affichage d'images utilisateur avec fallback.
+- **Button** : Boutons avec presets (`preset-filled`, `preset-outlined`).
+- **Card** : Conteneurs stylisés.
+- **Accordion** : Listes déroulantes.
+- **Tabs** (anciennement TabGroup) : Navigation par onglets.
+- **Dialog** (anciennement Modal) : Fenêtres modales et overlays.
+- **Toast** (anciennement Toaster) : Notifications.
+- **Slider** (anciennement RangeSlider) : Contrôle de valeur via glissière.
+- **Switch** (anciennement SlideToggle) : Interrupteurs.
+- **Input/Select/Textarea** : Champs de formulaire stylisés (Tailwind components).
+- **Navigation** : Barres de navigation et rails (anciennement AppRail).
 
-1. **Import order**: Must follow the order: tailwindcss → plugins → skeleton → skeleton-svelte
-2. **No component imports**: Do NOT import components from '@skeletonlabs/skeleton-svelte' - they are not available as ES modules in SvelteKit 2
-3. **Tailwind CSS v4**: Use Tailwind utility classes instead of importing components
-4. **Custom CSS**: Import custom brand styles AFTER main Skeleton UI imports
-5. **Theme switching**: Use data-theme attribute on html element for theme switching
-6. **CRITICAL**: NEVER use `@apply` with utility classes in Svelte components - this causes build failures in Tailwind v4
+### Styling Components
 
-## Common Patterns
-
-### Glassmorphism Effect
-
+Les composants acceptent l'attribut `class` pour appliquer des utilitaires Tailwind.
 ```svelte
-<div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
-  Content
+<Button class="w-full rounded-full">Click me</Button>
+```
+
+## Patterns
+
+### Composed Pattern
+Les composants sont granulaires. Vous pouvez passer des props arbitraires (`data-*`, `style`, `class`) aux sous-parties.
+
+### Data Model Pattern (Controlled)
+Skeleton suit les conventions Zag.js : prop pour la donnée entrante, event handler pour la donnée sortante.
+```svelte
+<script lang="ts">
+  import { Switch } from '@skeletonlabs/skeleton-svelte';
+  let checked = $state(false);
+</script>
+
+<Switch
+  checked={checked}
+  onCheckedChange={(e) => (checked = e.checked)}
+>
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+  <Switch.Label>Label</Switch.Label>
+  <Switch.HiddenInput />
+</Switch>
+```
+
+### Layouts avec Semantic HTML
+
+Skeleton recommande d'utiliser du HTML sémantique (`<header>`, `<main>`, `<aside>`, `<footer>`) combiné avec les classes utilitaires Tailwind pour créer des mises en page responsive.
+```svelte
+<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
+  <aside class="hidden md:block">Sidebar</aside>
+  <main>Content</main>
 </div>
 ```
 
-### Button Styles
+## Patterns Pratiques (Exemples Réels)
 
+### Navbar Responsive avec Blur
 ```svelte
-<button class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-colors">
-  Button
-</button>
+<script lang="ts">
+  import { Button } from '@skeletonlabs/skeleton-svelte';
+  let mobileMenuOpen = $state(false);
+</script>
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface-950-50 border-b border-surface-800-200 backdrop-blur-lg">
+  <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="text-xl font-bold">Vialto</a>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex gap-6">
+      <a href="/features" class="text-surface-300-700 hover:text-primary-500">Features</a>
+      <a href="/pricing" class="text-surface-300-700 hover:text-primary-500">Pricing</a>
+    </div>
+
+    <!-- Mobile Menu -->
+    <button onclick={() => mobileMenuOpen = !mobileMenuOpen} class="md:hidden">
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  {#if mobileMenuOpen}
+    <div class="md:hidden bg-surface-950-50 border-t border-surface-800-200">
+      <div class="container mx-auto px-4 py-4 flex flex-col gap-4">
+        <a href="/features">Features</a>
+        <a href="/pricing">Pricing</a>
+      </div>
+    </div>
+  {/if}
+</nav>
 ```
 
-### Input Styles
-
+### Cards Grid Layout
 ```svelte
-<input
-  class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-  placeholder="Enter text..."
-/>
+<div class="container mx-auto px-4 py-12">
+  <h2 class="text-3xl font-bold mb-8 text-surface-0-950">Nos Avantages</h2>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    {#each advantages as advantage}
+      <div class="card bg-surface-50-950 border border-surface-800-200 p-6 hover:border-primary-500 transition-colors">
+        <h3 class="text-xl font-semibold mb-2">{advantage.title}</h3>
+        <p class="text-surface-600-400">{advantage.description}</p>
+      </div>
+    {/each}
+  </div>
+</div>
 ```
 
-## Testing
+### Button avec Presets
+```svelte
+<!-- Primary Button -->
+<Button class="preset-filled-primary-500 w-full">Get Started</Button>
 
-Verify setup:
-1. `bun check` passes (no TypeScript errors)
-2. Dev server starts without errors
-3. CSS imports work (check browser DevTools)
-4. Theme switching works
-5. Custom CSS loads correctly
-6. Build succeeds with Tailwind v4 (no `@apply` errors)
+<!-- Outlined Button -->
+<Button class="preset-outlined-surface-800-200">Learn More</Button>
+<!-- Tonal Button -->
+<Button class="preset-tonal">Secondary</Button>
+```
 
-## Common Pitfalls
+## Svelte 5 Syntax Spécifique
+### Utilisation de children() au lieu de <slot />
+Dans les composants Layout, utilisez la nouvelle syntaxe Svelte 5 :
+```svelte
+<script lang="ts">
+  // ❌ Ancienne syntaxe Svelte 4
+  // <slot />
 
-1. **Wrong import order**: Must follow: tailwindcss → plugins → skeleton → skeleton-svelte
-2. **Component imports**: Do NOT import components from '@skeletonlabs/skeleton-svelte'
-3. **CSS order**: Import custom CSS AFTER main Skeleton UI imports
-4. **Theme attribute**: Set data-theme on html element, not body
-5. **Missing plugins**: Don't forget @tailwindcss/forms and @tailwindcss/typography plugins
-6. **CRITICAL**: Using `@apply` with utility classes in Svelte components causes build failures in Tailwind v4
+  // ✅ Nouvelle syntaxe Svelte 5
+  let { children } = $props();
+</script>
 
----
-**Skill updated with critical Tailwind v4 + Svelte best practices.**
+{@render children()}
+```
+### Runes dans les Composants
+```svelte
+<script lang="ts">
+  import { Button } from '@skeletonlabs/skeleton-svelte';
+
+  // State réactif
+  let count = $state(0);
+
+  // Valeur dérivée
+  const doubled = $derived(count * 2);
+
+  // Effet de bord
+  $effect(() => {
+    console.log('Count changed:', count);
+  });
+
+  function increment() {
+    count += 1;
+  }
+</script>
+
+<div class="p-4">
+  <p>Count: {count}, Doubled: {doubled}</p>
+  <Button onclick={increment}>Increment</Button>
+</div>
+```
+
+## Refactoring Workflow UI
+Si vous devez refactoriser toute l'UI d'un projet avec Skeleton UI, suivez ce processus étape par étape :
+
+### 1. Nettoyage
+Supprimez les fichiers CSS et composants obsolètes :
+```bash
+# Supprimer les fichiers CSS personnalisés
+rm src/app.css
+rm src/lib/ui/*.svelte  # Si vous aviez des composants UI personnalisés
+```
+
+### 2. Configuration
+Activez le thème dans `app.html` :
+```html
+<html data-theme="winter">
+```
+
+### 3. Layout (Navbar + Footer)
+Créez ou mettez à jour les composants de layout :
+```bash
+# Composants à créer
+src/lib/components/layout/navbar.svelte
+src/lib/components/layout/footer.svelte
+```
+### 4. Landing Page Components
+Créez les composants de la landing page :
+```bash
+src/routes/(landing)/hero.svelte
+src/routes/(landing)/reward.svelte
+src/routes/(landing)/howto.svelte
+src/routes/(landing)/cta.svelte
+```
+### 5. Public Routes
+Mettez à jour les routes publiques :
+```bash
+src/routes/(public)/login/+page.svelte
+src/routes/(public)/signup/+page.svelte
+src/routes/(public)/forgot-password/+page.svelte
+src/routes/(public)/reset-password/+page.svelte
+```
+### 6. Protected Routes
+Mettez à jour les routes protégées :
+```bash
+src/routes/(protected)/dashboard/+page.svelte
+src/routes/(protected)/referrals/+page.svelte
+src/routes/(protected)/gifts/+page.svelte
+```
+### 7. Admin Routes
+Mettez à jour les routes admin :
+```bash
+src/routes/(protected)/admin/+page.svelte
+```
+
+### Git Workflow pour le Refactoring
+```bash
+# Créer une branche de refactoring
+git checkout -b feat/refactor-ui-skeleton
+
+# Committer chaque étape
+git add -A && git commit -m "style: activate winter theme in app.html"
+git add -A && git commit -m "style: refactor navbar with Skeleton UI"
+# Merge dans main
+git checkout main && git merge feat/refactor-ui-skeleton
+git branch -d feat/refactor-ui-skeleton
+```
+
+## Conventions de Nommage
+Pour SvelteKit, les composants Skeleton sont importés depuis `@skeletonlabs/skeleton-svelte`. Il n'y a pas de préfixe obligatoire dans le code, mais il est recommandé de suivre la structure granulaire des composants (Root + Sub-parts).
+
+## Resources
+### Documentation Officielle
+- Docs Officielles : https://skeleton.dev/
+- GitHub : https://github.com/skeletonlabs/skeleton
+### Documentation LLM Optimisée
+- `llms-svelte.txt` : Documentation complète optimisée pour les LLMs (fichier présent dans ce skill)
+### Ressources Utiles
+- LLM Standard : https://llmstxt.org/
+- Shiki : https://shiki.style/ (pour le coloration syntaxique)
+- Zag.js : https://zagjs.com/ (framework sous-jacent des composants)

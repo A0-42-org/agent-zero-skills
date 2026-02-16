@@ -1,0 +1,511 @@
+# Skeleton Documentation
+
+
+## Get Started
+
+
+# Introduction
+
+
+Learn more about Skeleton and how it can serve you.
+
+
+Skeleton provides a uniform design language and structured framework for controlling the look and feel of your product and user experience. It serves as an opinionated design system that aims to greatly reduce the amount of time spent managing design elements and patterns, allowing you to more quickly build and manage your frontend interfaces at scale.
+
+
+<figure className="linker bg-noise">
+  <SkeletonBig className="aspect-square size-48 drop-shadow-md fill-current" />
+</figure>
+
+
+## In a Nutshell
+
+{
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Design System</h3>
+    <p className="text-surface-800-200">
+    This aims to augment Tailwind CSS. It provides themes, styled elements, and provides opinionated guardrails for integrating your fully
+    featured design system.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Components</h3>
+    <p className="text-surface-800-200">
+    Turnkey components built atop the foundation of{' '}
+    <a href="https://zagjs.com/" target="_blank" class="anchor">
+    Zag.js
+    </a>
+    . These automatically adapt to the Skeleton design system out of the box. Currently available for Svelte and React.
+    </p>
+    </div>
+  </div>
+
+
+}
+
+## Our Philosophy
+
+{
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Framework Agnostic</h3>
+    <p className="text-surface-800-200">
+    Skeleton's core features are framework agnostic, only requiring the use of{' '}
+    <a className="anchor" href="https://tailwindcss.com/" target="_blank" rel="external">
+    Tailwind CSS
+    </a>
+    . This provides full access to all design system features, while enabling you to standardize the design process for your framework of
+    choice.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Native-First</h3>
+    <p className="text-surface-800-200">
+    We aim to embrace the interface of the web, not replace it. This is why Skeleton defaults to semantic HTML elements and native browser
+    APIs. Beyond ease of use, we feel this offers a huge advantages to accessibility.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Simple Standards</h3>
+    <p className="text-surface-800-200">
+    We aim to standardize the design process, providing common conventions that are easy to learn and retain, whether you work alone or in
+    a team environment. Covering common fixtures such as themes, colors, typography, spacing, and more.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Utility-First</h3>
+    <p className="text-surface-800-200">
+    Skeleton embraces the{' '}
+    <a className="anchor" href="https://tailwindcss.com/docs/utility-first" target="_blank" rel="external">
+    utility-first
+    </a>{' '}
+    methodology for styling, supporting all features provided by{' '}
+    <a className="anchor" href="https://tailwindcss.com/" target="_blank" rel="external">
+    Tailwind
+    </a>
+    , while extending its capabilities in meaningful ways. Providing full support for the encapsulated components of the modern web.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Opt-In by Default</h3>
+    <p className="text-surface-800-200">
+    Most features in Skeleton are modular and opt-in by default. Enabling interface features like buttons and typography via dedicated
+    utility classes. This allows for a simple escape hatch when you need to draw outside the lines and generate custom interfaces.
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Adaptive</h3>
+    <p className="text-surface-800-200">
+    Skeleton is intended to adapt to the design and aesthetic of your project, while still providing reasonable defaults. Providing a
+    powerful{' '}
+    <a className="anchor" href="https://themes.skeleton.dev/" target="_blank" rel="external">
+    theme generator
+    </a>
+    for custom themes, while also supplying a curated set of themes for those less design savvy.
+    </p>
+    </div>
+  </div>
+
+
+}
+
+## Additional Benefits
+
+{
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Open Source</h3>
+    <p className="text-surface-800-200">
+    Skeleton is provided as{' '}
+    <a href="https://github.com/skeletonlabs/skeleton" target="_blank" class="anchor">
+    free and open-source software (FOSS)
+    </a>{' '}
+    under the{' '}
+    <a href="https://github.com/skeletonlabs/skeleton?tab=MIT-1-ov-file#readme" target="_blank" class="anchor">
+    MIT License
+    </a>
+    .
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">The Community</h3>
+    <p className="text-surface-800-200">
+    A vast community of users and contributors across{' '}
+    <a href="https://github.com/skeletonlabs/skeleton" target="_blank" class="anchor">
+    GitHub
+    </a>
+    ,{' '}
+    <a href="https://discord.gg/EXqV7W8MtY" target="_blank" class="anchor">
+    Discord
+    </a>
+    , and{' '}
+    <a href="https://bsky.app/profile/skeleton.dev" target="_blank" class="anchor">
+    Bluesky
+    </a>
+    .
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Frequent Updates</h3>
+    <p className="text-surface-800-200">
+    Skeleton has maintained a frequent release cadence over for years. Just take a look at our{' '}
+    <a href="https://github.com/skeletonlabs/skeleton/releases" target="_blank" class="anchor">
+    Releases
+    </a>
+    .
+    </p>
+    </div>
+    <div className="card preset-outlined-surface-200-800 bg-surface-50-950 p-10 space-y-4">
+    <h3 className="h3">Community Tools</h3>
+    <p className="text-surface-800-200">
+    We promote community-based projects that help augment Skeleton and improve your productivity, such as the{' '}
+    <a href="https://www.etesie.dev/figma" target="_blank" rel="noopener noreferrer" class="anchor">
+    Figma UI Kit
+    </a>
+    .
+    </p>
+    </div>
+  </div>
+
+
+}
+
+# Installation
+
+
+Learn how to install and setup Skeleton for your project.
+
+
+## Guides
+
+<NavigationGrid filter={(doc) => doc.id.includes('installation/')} class="md:grid-cols-2" />
+
+## Mixing UI Libraries
+
+Skeleton's design system is perfect for complementing headless component libraries, such as [Bits UI](/docs/\[framework]/integrations/bits-ui), [Melt UI](/docs/\[framework]/integrations/melt-ui), [Radix](/docs/\[framework]/integrations/radix-ui), and [Zag.js](https://zagjs.com/). As well as "Tailwind component" libraries such as the [Tailwind Plus](https://tailwindcss.com/plus). Supporting any component system that supports Tailwind, but very specifically allows you to insert or substitute Skeleton-provided utility classes.
+
+
+### Unsupported Libraries
+
+Unfortunately, Skeleton cannot integrate with [Flowbite React](https://flowbite-react.com/), [Flowbite Svelte](https://flowbite-svelte.com/), or [Daisy UI](https://daisyui.com/) at this time. Similar to Skeleton, these libraries make changes to Tailwind that directly overlaps with many of our core features, including class names and color values.
+
+# Fundamentals
+
+An introduction to the core concepts of Skeleton.
+
+Skeleton is comprised of three pillars - the design system, our extensions to Tailwind, and an optional suite of framework-specific components. Together these form a comprehensive solution for designing and implementing complex web interfaces at scale.
+
+***
+
+## Design System
+
+Explore each pillar of the Skeleton design system. Provided via the Skeleton core.
+<NavigationGrid filter={(doc) => doc.id.includes('design/')} class="md:grid-cols-2" />
+***
+## Tailwind Components
+
+Tailwind components that act as primitives for creating complex interfaces. Provided via the Skeleton core.
+<NavigationGrid filter={(doc) => doc.id.includes('tailwind-components/')} class="md:grid-cols-2" />
+***
+## Framework Components
+
+Skeleton also offers optional component packages for select component frameworks. Each component automatically adapts to Skeleton's design system. While still allowing a high level of customization.
+
+### Supported Frameworks
+\| Framework | NPM Package                     | Description                     |
+\| --------- | ------------------------------- | ------------------------------- |
+\| React     | `@skeletonlabs/skeleton-react`  | Contains all React components.  |
+\| Svelte    | `@skeletonlabs/skeleton-svelte` | Contains all Svelte components. |
+
+### Powered by Zag.js
+Skeleton's components are built on **Zag.js**, which provides a collection of framework-agnostic UI component patterns to manage logic and state. Zag is actively maintained by industry veterans, such as [Segun Adebayo](https://github.com/segunadebayo) - the creator and core maintainer for [Chakra UI](https://www.chakra-ui.com/), [Ark UI](https://ark-ui.com/), and [PandaCSS](https://panda-css.com/).
+<iframe class="aspect-video" src="https://www.youtube-nocookie.com/embed/SLPBmP588Hk?si=NJLvt4aMrevTnQbY" title="Skeleton + Zag.js: Building Cross-Framework Components" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<figure class="linker bg-noise">
+  <a class="btn preset-filled" href="https://zagjs.com/" target="_blank">
+    View Zag.js
+  </a>
+</figure>
+
+### Importing Components
+You may import components per each Skeleton framework as follows.
+```ts
+import { Avatar } from '@skeletonlabs/skeleton-svelte';
+```
+This also includes access to the component prop types.
+```ts
+import type { AvatarRootProps, ... } from '@skeletonlabs/skeleton-svelte';
+```
+### Composed Pattern
+Skeleton components are granular. This offers direct access to all children within the tree, similar to working with raw HTML. This allows passing in arbitrary props and attributes directly to the the template within. Including: `required`, `data-*`, `style`, `class`, and more.
+```svelte
+<Avatar>
+<Avatar.Image src="https://i.pravatar.cc/150?img=48" />
+<Avatar.Fallback>SK</Avatar.Fallback>
+</Avatar>
+```
+### Styling Components
+Skeleton components implement a universal convention for accepting CSS utility classes via the `class` attribute. Use this to pass any CSS utility class.
+```svelte
+<Avatar class="rounded-2xl">
+<Avatar.Image src="https://i.pravatar.cc/150?img=48" class="greyscale" />
+<Avatar.Fallback>SK</Avatar.Fallback>
+</Avatar>
+```
+### Extensible Markup
+Skeleton components provide a mechanism for overwriting the internal HTML with custom markup. Use the `element` prop to provide a custom element, this prop accepts a function which the `attributes` are passed into. Then spread the `attributes` to your custom elements. Note that this is an optional and advanced feature aimed at power users, and should not be needed for normal usage.
+```svelte
+<Accordion>
+<Accordion.Item value="item-1">
+<h3>
+<Accordion.ItemTrigger>
+{#snippet element(attributes)}
+<button {...attributes}>My Own Button</button>
+{/snippet}
+</Accordion.ItemTrigger>
+</h3>
+<Accordion.ItemContent>Content for Item 1</Accordion.ItemContent>
+</Accordion.Item>
+</Accordion>
+```
+### Custom Animations
+Using the extensible markup pattern, you may implement custom animations. We showcase this below with [Svelte Transitions](https://svelte.dev/docs/svelte/transition), but you could also use framework agnostic solutions such as [Motion](https://motion.dev/), [Anime.js](https://animejs.com/), or [Animate.css](https://animate.style/).
+```svelte
+<script lang="ts">
+import { Accordion } from '@skeletonlabs/skeleton-svelte';
+import { slide } from 'svelte/transition';
+</script>
+
+<Accordion>
+{#each ['1', '2', '3'] as item (item)}
+<Accordion.Item value="item-{item}">
+<h3>
+<Accordion.ItemTrigger>Item {item}</Accordion.ItemTrigger>
+</h3>
+<Accordion.ItemContent>
+{#snippet element(attributes)}
+{#if !attributes.hidden}
+<div {...attributes} transition:slide>Content for item {item}</div>
+{/if}
+{/snippet}
+</Accordion.ItemContent>
+</Accordion.Item>
+{/each}
+</Accordion>
+```
+1. Implement the `element` snippet to gain access to the `attributes`.
+2. Spread the `attributes` to the custom element, a `<div>` in this example.
+3. Add the `transition:slide` and configure your preferred options.
+4. Then implement the wrapping `#if` block that triggers transitions when `attribute.hidden` is toggled.
+
+### Data Model Pattern
+Skeleton components maintain a uniform pattern for handling data flow in and out. We lean into the Zag convention for this, which handles this explictly with a prop for data in and event handler for data out. As opposed to two-way binding (such as `bind:` in Svelte). You can see this in practice below for the Switch component.
+{/* prettier-ignore */}
+```svelte
+<script lang="ts">
+import { Switch } from '@skeletonlabs/skeleton-svelte';
+let checked = $state(false);
+</script>
+
+<Switch checked={checked} onCheckedChange={(e) => (checked = e.checked)}>
+<Switch.Control>
+<Switch.Thumb />
+</Switch.Control>
+<Switch.Label>Label</Switch.Label>
+<Switch.HiddenInput />
+</Switch>
+```
+In this example the Switch component uses `checked` to pass state in, and `onCheckedChange` to listen and update then the state is modified internally. Please note the prop, event prop, and key within the event payload may vary from component to component. For example:
+* `<Accordion>` - handled via `open` / `onOpenChange` / `e.change`
+* `<Slider>` - handled via `value` / `onValueChange` / `e.value`
+* `<Stepper>` - handled via `step` / `onStepChange` / `e.step`
+This pattern is utilized for all relevant components, and is documented via the [API Reference](/docs/framework-components/switch#api-reference) table per component.
+
+### Provider Pattern
+Most Skeleton components also support the Provider Pattern. This utilizes a provider component that replaces the root and provides access to the underlying component APIs. In practice, this allows direct access to Zag.js API features, such as programmatic control for overlay components, the ability to clear input components, and more.
+```svelte
+<script lang="ts">
+import { Portal, Tooltip, useTooltip } from '@skeletonlabs/skeleton-svelte';
+
+
+const id = $props.id();
+const tooltip = useTooltip({ id });
+</script>
+
+<button type="button" onclick={() => tooltip().setOpen(!tooltip().open)}>Trigger</button>
+
+<Tooltip.Provider value={tooltip}>
+<Tooltip.Trigger>Anchor</Tooltip.Trigger>
+<Portal>
+<Tooltip.Positioner>
+<Tooltip.Content>Content</Tooltip.Content>
+</Tooltip.Positioner>
+</Portal>
+</Tooltip.Provider>
+```
+> Note: Svelte requires passing `id` because `$props.id` is not available outside the component's `<script>` block.
+
+### Learn More
+For a comprehensive guide to how Skeleton implements components, refer to our [contribution guidelines](/docs/\[framework]/resources/contribute/components).
+```
+```
+# Core API
+
+Learn about the specific features Skeleton introduces to Tailwind.
+
+The heart of Skeleton is our framework agnostic core package. This adapts and extends Tailwind to introduce our global styles, color system, typography, and more. This section details all available Skeleton-provided utility classes and theme properties.
+
+## @base
+Extends Tailwind's base layer with a set of opinionated global styles.
+<figure class="linker bg-noise">
+  <a class="btn preset-filled" href="https://github.com/skeletonlabs/skeleton/blob/main/packages/skeleton/src/base/globals.css" target="_blank">
+    View Global Styles
+  </a>
+</figure>
+
+* Sets the root color scheme to match Dark Mode settings.
+* Updates scrollbars to utilize theme colors.
+* Updates global text selection to utilize theme colors.
+* Defines the `<body>` background colors and base font styles.
+* Implements global default styles for disabled states, such as buttons.
+
+## @theme
+Uses Tailwind's `@theme` to implement a variety of new properties and utility classes.
+<figure class="linker bg-noise">
+  <a class="btn preset-filled" href="https://github.com/skeletonlabs/skeleton/blob/main/packages/skeleton/src/base/theme.css" target="_blank">
+    View Theme Properties
+  </a>
+</figure>
+
+### Colors
+Extends colors to include the [Skeleton color palette](/docs/\[framework]/design/colors).
+\| Class                                 | Theme Property                       |
+\| ------------------------------------- | ------------------------------------ |
+\| `[property]-[color]-[shade]`          | {`--`}color-\[color]-\[shade]          |
+\| `[property]-[color]-contrast-[shade]` | {`--`}color-\[color]-contrast-\[shade] |
+\| `body-background-color`               | {`--`}body-background-color          |
+\| `body-background-color-dark`          | {`--`}body-background-color-dark     |
+
+### Color Pairings
+Extends colors to implement [Color Pairing](/docs/\[framework]/design/colors#color-pairings), which balance colors between light and dark mode.
+\| Class                                | Theme Property                      |
+\| ------------------------------------ | ----------------------------------- |
+\| `[property]-[color]-[shade]-[shade]` | {`--`}color-\[color]-\[shade]-\[shade] |
+
+### Spacing
+Integrates Tailwind's [spacing property](https://tailwindcss.com/docs/functions-and-directives#spacing-function) to modify [dynamic scaling](/docs/\[framework]/design/spacing) for various utility classes.
+\| Class     | Theme Property |
+\| --------- | -------------- |
+\| (various) | {`--`}spacing  |
+
+### Typography
+Introduces a [typographic scale](https://designcode.io/typographic-scales) to all Tailwind [font sizes](https://tailwindcss.com/docs/font-size) using the following formula.
+```plaintext
+--text-{size}: calc({remSize} * var(--text-scaling));
+--text-{size}--line-height: calc(calc(1 / {remSize}) * var(--text-scaling));
+```
+
+#### Base
+Controls the style of the global page text.
+\| Class                  | Theme Property             |
+\| ---------------------- | -------------------------- |
+\| `base-font-color`      | {`--`}base-font-color      |
+\| `base-font-color-dark` | {`--`}base-font-color-dark |
+\| `base-font-family`     | {`--`}base-font-family     |
+\| `base-font-size`       | {`--`}base-font-size       |
+\| `base-line-height`     | {`--`}base-line-height     |
+\| `base-font-weight`     | {`--`}base-font-weight     |
+\| `base-font-style`      | {`--`}base-font-style      |
+\| `base-letter-spacing`  | {`--`}base-letter-spacing  |
+
+#### Heading
+Controls the style of the heading text.
+\| Class                     | Theme Property                |
+\| ------------------------- | ----------------------------- |
+\| `heading-font-color`      | {`--`}heading-font-color      |
+\| `heading-font-color-dark` | {`--`}heading-font-color-dark |
+\| `heading-font-family`     | {`--`}heading-font-family     |
+\| `heading-font-size`       | {`--`}heading-font-size       |
+\| `heading-line-height`     | {`--`}heading-line-height     |
+\| `heading-font-weight`     | {`--`}heading-font-weight     |
+\| `heading-font-style`      | {`--`}heading-font-style      |
+\| `heading-letter-spacing`  | {`--`}heading-letter-spacing  |
+
+#### Anchor
+Controls the style of anchor links.
+\| Class                           | Theme Property                      |
+\| ------------------------------- | ----------------------------------- |
+\| `anchor-font-color`             | {`--`}anchor-font-color             |
+\| `anchor-font-color-dark`        | {`--`}anchor-font-color-dark        |
+\| `anchor-font-family`            | {`--`}anchor-font-family            |
+\| `anchor-font-size`              | {`--`}anchor-font-size              |
+\| `anchor-line-height`            | {`--`}anchor-line-height            |
+\| `anchor-font-weight`            | {`--`}anchor-font-weight            |
+\| `anchor-font-style`             | {`--`}anchor-font-style             |
+\| `anchor-letter-spacing`         | {`--`}anchor-letter-spacing         |
+\| `anchor-text-decoration`        | {`--`}anchor-text-decoration        |
+\| `anchor-text-decoration-active` | {`--`}anchor-text-decoration-active |
+\| `anchor-text-decoration-focus`  | {`--`}anchor-text-decoration-focus  |
+\| `anchor-text-decoration-hover`  | {`--`}anchor-text-decoration-hover  |
+
+### Radius
+Extends Tailwind's radius properties with theme-specific sizes.
+\| Class               | Theme Property         |
+\| ------------------- | ---------------------- |
+\| `rounded-base`      | {`--`}radius-base      |
+\| `rounded-container` | {`--`}radius-container |
+
+### Edges
+Sets the default width for border, divide, and ring width to match the active theme properties.
+\| Class    | Theme Property             |
+\| -------- | -------------------------- |
+\| `border` | {`--`}default-border-width |
+\| `ring`   | {`--`}default-ring-width   |
+\| `divide` | {`--`}default-divide-width |
+
+## @utility
+<figure class="linker bg-noise">
+  <a href="https://github.com/skeletonlabs/skeleton/blob/main/packages/skeleton/src/utilities" target="_blank" class="btn preset-filled">
+    View Utilities
+  </a>
+</figure>
+
+### Tailwind Components
+Allow you to style semantic HTML elements with utility classes.
+<NavigationGrid filter={(doc) => doc.id.includes('tailwind/')} class="md:grid-cols-2" />
+
+## @variant
+<figure class="linker bg-noise">
+  <a href="https://github.com/skeletonlabs/skeleton/blob/main/packages/skeleton/src/variants" target="_blank" class="btn preset-filled">
+    View Variants
+  </a>
+</figure>
+
+### Themes
+Enables you to target and style elements for a particular theme.
+```html
+<div class="bg-green-500 theme-cerberus:bg-red-500">...</div>
+<div class="bg-green-500 theme-mona:bg-red-500">...</div>
+<div class="bg-green-500 theme-vox:bg-red-500">...</div>
+```
+
+## Optional
+
+### Presets
+Provides a canned set of styles for use with buttons, badges, cards, and more.
+<figure class="linker bg-noise">
+  <a href={resolvePath(props.Astro, '/docs/[framework]/design/presets')} class="btn preset-filled">
+    Browse Presets
+  </a>
+</figure>
+
+### Preset Themes
+Provides a hand curated set of themes for Skeleton.
+<figure class="linker bg-noise">
+  <a href={resolvePath(props.Astro, '/docs/[framework]/design/themes')} class="btn preset-filled">
+    Browse Themes
+  </a>
+</figure>
