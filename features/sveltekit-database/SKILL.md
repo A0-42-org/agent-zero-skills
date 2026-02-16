@@ -6,10 +6,10 @@ Complete Drizzle ORM patterns for SvelteKit projects with PostgreSQL.
 
 ```bash
 # Core dependencies
-bun add drizzle-orm postgres
+pnpm add drizzle-orm postgres
 
 # Development dependencies
-bun add -D drizzle-kit @types/pg
+pnpm add -D drizzle-kit @types/pg
 ```
 
 ## Configuration

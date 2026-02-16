@@ -56,22 +56,22 @@ Before using this workflow, ensure you have these skills:
 
 ```bash
 # Create new SvelteKit project
-bun create svelte@latest my-dashboard
+pnpm create svelte@latest my-dashboard
 
 cd my-dashboard
 
 # Install dependencies
-bun add @skeletonlabs/skeleton-svelte
-bun add -d @tailwindcss/vite @skeletonlabs/tailwindcss-plugin tailwindcss postcss autoprefixer
+pnpm add @skeletonlabs/skeleton-svelte
+pnpm add -d @tailwindcss/vite @skeletonlabs/tailwindcss-plugin tailwindcss postcss autoprefixer
 
 # Install required packages
-bun add drizzle-orm better-auth zod svelte-dnd-action
-bun add -D drizzle-kit
+pnpm add drizzle-orm better-auth zod svelte-dnd-action
+pnpm add -D drizzle-kit
 
 # Install database driver (choose one)
-bun add postgres  # For PostgreSQL
+pnpm add postgres  # For PostgreSQL
 # OR
-bun add better-sqlite3  # For SQLite
+pnpm add better-sqlite3  # For SQLite
 ```
 
 #### 1.2 Configure Skeleton UI
@@ -154,10 +154,10 @@ export const analyticsEvents = sqliteTable('analytics_events', {
 
 ```bash
 # Generate migration
-bunx drizzle-kit generate
+pnpm dlx drizzle-kit generate
 
 # Apply migration
-bunx drizzle-kit migrate
+pnpm dlx drizzle-kit migrate
 ```
 
 ### Step 3: Dashboard Layout

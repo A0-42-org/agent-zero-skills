@@ -22,13 +22,13 @@ Perfect for:
 
 ```bash
 # Core dependency
-bun add svelte-dnd-action
+pnpm add svelte-dnd-action
 
 # Optional: Chart libraries for ChartWidget
-bun add chart.js svelte-chartjs
+pnpm add chart.js svelte-chartjs
 
 # Optional: Icon libraries
-bun add lucide-svelte
+pnpm add lucide-svelte
 ```
 
 ## Data Structure
@@ -652,7 +652,7 @@ $effect(() => {
 
 After setup, verify:
 
-1. `bun check` passes (no TypeScript errors)
+1. `pnpm check` passes (no TypeScript errors)
 2. Dev server starts without errors
 3. Drag-and-drop works smoothly
 4. Widget positions are saved to database

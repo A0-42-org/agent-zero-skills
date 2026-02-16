@@ -8,12 +8,12 @@ Complete setup for new SvelteKit projects with TypeScript, ESLint, Prettier, Tai
 
 ```bash
 # Create new SvelteKit project with TypeScript
-bunx sv create my-project --template skeleton --types typescript
+pnpm dlx sv create my-project --template skeleton --types typescript
 
 cd my-project
 
 # Install dependencies
-bun install
+pnpm install
 ```
 
 ### Option 2: Initialize existing project
@@ -22,22 +22,22 @@ If you have an existing project, install required dependencies:
 
 ```bash
 # Core dependencies
-bun add -D @sveltejs/kit svelte
+pnpm add -D @sveltejs/kit svelte
 
 # TypeScript
-bun add -D typescript tslib
+pnpm add -D typescript tslib
 
 # ESLint
-bun add -D eslint eslint-config-prettier eslint-plugin-svelte eslint-plugin-node @typescript-eslint/eslint-plugin @typescript-eslint/parser
+pnpm add -D eslint eslint-config-prettier eslint-plugin-svelte eslint-plugin-node @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
 # Prettier
-bun add -D prettier prettier-plugin-svelte prettier-plugin-tailwindcss
+pnpm add -D prettier prettier-plugin-svelte prettier-plugin-tailwindcss
 
 # Tailwind CSS v4
-bun add -D tailwindcss
+pnpm add -D tailwindcss
 
 # Playwright
-bun add -D @playwright/test
+pnpm add -D @playwright/test
 ```
 
 ## Configuration Files
@@ -267,7 +267,7 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'bun run dev',
+    command: 'pnpm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI
   }
@@ -363,11 +363,11 @@ my-project/
 
 After setup, verify:
 
-1. `bun check` passes (no TypeScript errors)
-2. `bun lint` passes (no ESLint errors)
-3. `bun format` works (no Prettier errors)
-4. `bun dev` starts without errors
-5. `bun test` runs Playwright tests
+1. `pnpm check` passes (no TypeScript errors)
+2. `pnpm lint` passes (no ESLint errors)
+3. `pnpm format` works (no Prettier errors)
+4. `pnpm dev` starts without errors
+5. `pnpm test` runs Playwright tests
 6. Browser loads at http://localhost:5173
 
 ## Common Pitfalls

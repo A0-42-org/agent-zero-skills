@@ -34,11 +34,11 @@ Use this skill when:
 
 ```bash
 # Install performance tools
-bun add -D @sveltejs/adapter-auto
+pnpm add -D @sveltejs/adapter-auto
 
 # Optional: Performance monitoring
-bun add @vercel/analytics
-bun add -d @sveltejs/vite-plugin-svelte
+pnpm add @vercel/analytics
+pnpm add -d @sveltejs/vite-plugin-svelte
 ```
 
 ## Core Web Vitals
@@ -401,7 +401,7 @@ export default {
 
 ```bash
 # Use Vite image optimization plugin
-bun add -d vite-plugin-imagemin
+pnpm add -d vite-plugin-imagemin
 ```
 
 ```typescript

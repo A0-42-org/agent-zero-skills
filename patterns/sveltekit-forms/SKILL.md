@@ -32,7 +32,7 @@ Use this skill when:
 
 ```bash
 # Install Zod for validation
-bun add zod
+pnpm add zod
 
 # Skeleton UI components are available via @skeletonlabs/skeleton-svelte
 ```
