@@ -1,9 +1,9 @@
 ---
 name: "sveltekit-forms"
-description: "Form handling and validation patterns for SvelteKit. Covers Zod validation, server actions, error handling, progressive enhancement, and reusable form components using Skeleton UI."
+description: "Form handling and validation patterns for SvelteKit. Covers Zod validation, server actions, error handling, progressive enhancement, and reusable form components."
 version: "1.1.0"
 author: "Agent Zero Team"
-tags: ["sveltekit", "forms", "validation", "zod", "server-actions", "skeleton-ui", "patterns"]
+tags: ["sveltekit", "forms", "validation", "zod", "server-actions", "patterns"]
 trigger_patterns:
   - "create form"
   - "form validation"
@@ -42,8 +42,7 @@ pnpm add zod
 ```svelte
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
-  import type { ActionData } from './$types';
+    import type { ActionData } from './$types';
 
   // Form data interface
   interface FormData {
@@ -65,38 +64,37 @@ pnpm add zod
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-  <AppInput 
-    name="email" 
-    type="email" 
-    placeholder="your@email.com" 
-    label="Email"
-  />
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   {#if errors.email}
-    <AppAlert severity="error" title="Email Error">
-      {errors.email}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {errors.email}
+</div>
   {/if}
   
-  <AppInput 
-    name="password" 
-    type="password" 
-    placeholder="•••••••••" 
-    label="Password"
-  />
+  <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   {#if errors.password}
-    <AppAlert severity="error" title="Password Error">
-      {errors.password}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {errors.password}
+</div>
   {/if}
   
-  <AppButton type="submit" disabled={isSubmitting}>
+  <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
     {isSubmitting ? 'Submitting...' : 'Submit'}
-  </AppButton>
+  </button>
   
   {#if success}
-    <AppAlert severity="success" title="Success">
-      Form submitted successfully!
-    </AppAlert>
+    <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  Form submitted successfully!
+</div>
   {/if}
 </form>
 ```
@@ -282,8 +280,7 @@ export const actions = {
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { zodClient } from 'sveltekit-superforms';
-  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
-  import { loginSchema, type LoginFormData } from '$lib/schemas';
+    import { loginSchema, type LoginFormData } from '$lib/schemas';
   
   let { form }: { form: ActionData } = $props();
   
@@ -319,33 +316,31 @@ export const actions = {
       clientErrors = {};
     }
   }}>
-  <AppInput 
-    name="email" 
-    type="email" 
-    label="Email"
-    placeholder="your@email.com"
-  />
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   {#if form?.errors?.email || clientErrors?.email}
-    <AppAlert severity="error" title="Email Error">
-      {form?.errors?.email || clientErrors?.email}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form?.errors?.email || clientErrors?.email}
+</div>
   {/if}
   
-  <AppInput 
-    name="password" 
-    type="password" 
-    label="Password"
-    placeholder="•••••••••"
-  />
+  <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   {#if form?.errors?.password || clientErrors?.password}
-    <AppAlert severity="error" title="Password Error">
-      {form?.errors?.password || clientErrors?.password}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {form?.errors?.password || clientErrors?.password}
+</div>
   {/if}
   
-  <AppButton type="submit" disabled={isSubmitting}>
+  <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
     {isSubmitting ? 'Submitting...' : 'Login'}
-  </AppButton>
+  </button>
 </form>
 ```
 
@@ -356,8 +351,7 @@ export const actions = {
 ```svelte
 <!-- src/lib/components/InputField.svelte -->
 <script lang="ts">
-  import { AppInput, AppAlert } from '@skeletonlabs/skeleton-svelte';
-  
+    
   interface Props {
     name: string;
     label?: string;
@@ -383,20 +377,16 @@ export const actions = {
 </script>
 
 <div>
-  <AppInput
-    id={name}
-    name={name}
-    type={type}
-    placeholder={placeholder}
-    label={label}
-    required={required}
-    value={value}
-  />
+  <div class="mb-4">
+  <label for="input" class="block text-sm font-medium mb-1">Input</label>
+  <input id="input" name="input" type="text"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   
   {#if hasError}
-    <AppAlert severity="error" title="Error">
-      {errorMessage}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Error</strong>
+  {errorMessage}
+</div>
   {/if}
 </div>
 ```
@@ -407,8 +397,7 @@ export const actions = {
 <!-- src/lib/components/Form.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppInput, AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
-  import InputField from './InputField.svelte';
+    import InputField from './InputField.svelte';
   import type { ActionData } from './$types';
   
   interface Props {
@@ -434,14 +423,15 @@ export const actions = {
 >
   {@render children?.(errors)}
   
-  <AppButton type="submit" disabled={isSubmitting}>
+  <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
     {isSubmitting ? 'Submitting...' : 'Submit'}
-  </AppButton>
+  </button>
   
   {#if success}
-    <AppAlert severity="success" title="Success">
-      {success}
-    </AppAlert>
+    <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  {success}
+</div>
   {/if}
 </form>
 ```
@@ -454,61 +444,97 @@ export const actions = {
 <!-- src/routes/login/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppInput, AppButton, AppAlert, AppCard } from '@skeletonlabs/skeleton-svelte';
-  import type { PageServerData, ActionData } from './$types';
+    import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
   let isSubmitting = $state(false);
 </script>
 
-<AppCard>
-  <h1 slot="header">Login</h1>
-  
-  <form method="POST" use:enhance={() => {
+<div class="border rounded-lg shadow p-6">
+  <h1 class="text-xl font-bold mb-4">Login</h1><form method="POST" use:enhance={() => {
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-    <AppInput
-      name="email"
-      type="email"
-      label="Email"
-      placeholder="your@email.com"
-      required
-    />
+    <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.email}
-      <AppAlert severity="error" title="Email Error">
-        {form.errors.email}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form.errors.email}
+</div>
     {/if}
     
-    <AppInput
-      name="password"
-      type="password"
-      label="Password"
-      placeholder="•••••••••"
-      required
-    />
+    <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.password}
-      <AppAlert severity="error" title="Password Error">
-        {form.errors.password}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {form.errors.password}
+</div>
     {/if}
     
-    <AppButton type="submit" disabled={isSubmitting}>
+    <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
       {isSubmitting ? 'Logging in...' : 'Login'}
-    </AppButton>
+    </button>
     
     {#if form?.success}
-      <AppAlert severity="success" title="Success">
-        Logged in successfully!
-      </AppAlert>
+      <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  Logged in successfully!
+</div>
     {/if}
   </form>
   
   <p>
     Don't have an account? <a href="/signup">Sign up</a>
   </p>
-</AppCard>
+
+<form method="POST" use:enhance={() => {
+    onsubmit: () => { isSubmitting = true; },
+    onresult: () => { isSubmitting = false; }
+  }}>
+    <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.email}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form.errors.email}
+</div>
+    {/if}
+    
+    <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.password}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {form.errors.password}
+</div>
+    {/if}
+    
+    <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      {isSubmitting ? 'Logging in...' : 'Login'}
+    </button>
+    
+    {#if form?.success}
+      <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  Logged in successfully!
+</div>
+    {/if}
+  </form>
+  
+  <p>
+    Don't have an account? <a href="/signup">Sign up</a>
+  </p>
+</div>
 ```
 
 ### Signup Form with Skeleton UI
@@ -517,8 +543,7 @@ export const actions = {
 <!-- src/routes/signup/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppInput, AppButton, AppAlert, AppCard, AppCheckbox } from '@skeletonlabs/skeleton-svelte';
-  import type { PageServerData, ActionData } from './$types';
+    import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
   let isSubmitting = $state(false);
@@ -526,87 +551,161 @@ export const actions = {
   const passwordsMatch = $state(true);
 </script>
 
-<AppCard>
-  <h1 slot="header">Sign Up</h1>
-  
-  <form method="POST" use:enhance={() => {
+<div class="border rounded-lg shadow p-6">
+  <h1 class="text-xl font-bold mb-4">Sign Up</h1><form method="POST" use:enhance={() => {
     onsubmit: () => { isSubmitting = true; },
     onresult: () => { isSubmitting = false; }
   }}>
-    <AppInput
-      name="username"
-      type="text"
-      label="Username"
-      placeholder="yourusername"
-      required
-    />
+    <div class="mb-4">
+  <label for="username" class="block text-sm font-medium mb-1">Username</label>
+  <input id="username" name="username" type="text" placeholder="yourusername"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.username}
-      <AppAlert severity="error" title="Username Error">
-        {form.errors.username}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Username Error</strong>
+  {form.errors.username}
+</div>
     {/if}
     
-    <AppInput
-      name="email"
-      type="email"
-      label="Email"
-      placeholder="your@email.com"
-      required
-    />
+    <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.email}
-      <AppAlert severity="error" title="Email Error">
-        {form.errors.email}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form.errors.email}
+</div>
     {/if}
     
-    <AppInput
-      name="password"
-      type="password"
-      label="Password"
-      placeholder="•••••••••"
-      required
-    />
+    <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.password}
-      <AppAlert severity="error" title="Password Error">
-        {form.errors.password}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {form.errors.password}
+</div>
     {/if}
     
-    <AppInput
-      name="confirmPassword"
-      type="password"
-      label="Confirm Password"
-      placeholder="•••••••••"
-      required
-    />
+    <div class="mb-4">
+  <label for="confirmPassword" class="block text-sm font-medium mb-1">Confirm Password</label>
+  <input id="confirmPassword" name="confirmPassword" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
     {#if form?.errors?.confirmPassword}
-      <AppAlert severity="error" title="Confirm Password Error">
-        {form.errors.confirmPassword}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Confirm Password Error</strong>
+  {form.errors.confirmPassword}
+</div>
     {/if}
     
-    <AppCheckbox name="terms" label="I agree to terms and conditions" required />
+    <div class="mb-4">
+  <label class="flex items-center">
+    <input type="checkbox" name="terms"required class="rounded mr-2" />
+    <span class="text-sm">I agree to terms and conditions</span>
+  </label>
+</div>
     {#if form?.errors?.terms}
-      <AppAlert severity="error" title="Terms Error">
-        {form.errors.terms}
-      </AppAlert>
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Terms Error</strong>
+  {form.errors.terms}
+</div>
     {/if}
     
-    <AppButton type="submit" disabled={isSubmitting}>
+    <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
       {isSubmitting ? 'Creating account...' : 'Sign Up'}
-    </AppButton>
+    </button>
     
     {#if form?.success}
-      <AppAlert severity="success" title="Success">
-        Account created successfully!
-      </AppAlert>
+      <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  Account created successfully!
+</div>
     {/if}
   </form>
   
   <p>
     Already have an account? <a href="/login">Login</a>
   </p>
-</AppCard>
+
+<form method="POST" use:enhance={() => {
+    onsubmit: () => { isSubmitting = true; },
+    onresult: () => { isSubmitting = false; }
+  }}>
+    <div class="mb-4">
+  <label for="username" class="block text-sm font-medium mb-1">Username</label>
+  <input id="username" name="username" type="text" placeholder="yourusername"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.username}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Username Error</strong>
+  {form.errors.username}
+</div>
+    {/if}
+    
+    <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" placeholder="your@email.com"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.email}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form.errors.email}
+</div>
+    {/if}
+    
+    <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.password}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Password Error</strong>
+  {form.errors.password}
+</div>
+    {/if}
+    
+    <div class="mb-4">
+  <label for="confirmPassword" class="block text-sm font-medium mb-1">Confirm Password</label>
+  <input id="confirmPassword" name="confirmPassword" type="password" placeholder="•••••••••"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+    {#if form?.errors?.confirmPassword}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Confirm Password Error</strong>
+  {form.errors.confirmPassword}
+</div>
+    {/if}
+    
+    <div class="mb-4">
+  <label class="flex items-center">
+    <input type="checkbox" name="terms"required class="rounded mr-2" />
+    <span class="text-sm">I agree to terms and conditions</span>
+  </label>
+</div>
+    {#if form?.errors?.terms}
+      <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Terms Error</strong>
+  {form.errors.terms}
+</div>
+    {/if}
+    
+    <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      {isSubmitting ? 'Creating account...' : 'Sign Up'}
+    </button>
+    
+    {#if form?.success}
+      <div class="bg-green-50 border-green-200 text-green-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Success</strong>
+  Account created successfully!
+</div>
+    {/if}
+  </form>
+  
+  <p>
+    Already have an account? <a href="/login">Login</a>
+  </p>
+</div>
 ```
 
 ## Error Handling with Skeleton UI
@@ -615,8 +714,7 @@ export const actions = {
 
 ```svelte
 <script lang="ts">
-  import { AppAlert } from '@skeletonlabs/skeleton-svelte';
-  import type { ActionData } from './$types';
+    import type { ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
   
@@ -627,15 +725,17 @@ export const actions = {
 </script>
 
 {#if globalError}
-  <AppAlert severity="error" title="Error">
-    {globalError}
-  </AppAlert>
+  <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Error</strong>
+  {globalError}
+</div>
 {/if}
 
 {#if hasErrors}
-  <AppAlert severity="warning" title="Warning">
-    Please fix the errors below.
-  </AppAlert>
+  <div class="bg-yellow-50 border-yellow-200 text-yellow-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Warning</strong>
+  Please fix the errors below.
+</div>
 {/if}
 ```
 
@@ -676,9 +776,15 @@ The form should work without JavaScript:
 ```svelte
 <form method="POST" action="/login">
   <!-- This works without JavaScript -->
-  <AppInput name="email" type="email" label="Email" required />
-  <AppInput name="password" type="password" label="Password" required />
-  <AppButton type="submit">Login</AppButton>
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+  <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</button>
 </form>
 ```
 
@@ -687,8 +793,7 @@ The form should work without JavaScript:
 ```svelte
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppInput, AppButton } from '@skeletonlabs/skeleton-svelte';
-  
+    
   let isSubmitting = $state(false);
 </script>
 
@@ -697,11 +802,17 @@ The form should work without JavaScript:
     onresult: () => { isSubmitting = false; }
   }}>
   <!-- Enhanced with JavaScript -->
-  <AppInput name="email" type="email" label="Email" required />
-  <AppInput name="password" type="password" label="Password" required />
-  <AppButton type="submit" disabled={isSubmitting}>
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+  <div class="mb-4">
+  <label for="password" class="block text-sm font-medium mb-1">Password</label>
+  <input id="password" name="password" type="password"required class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+  <button type="submit"disabled class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
     {isSubmitting ? 'Submitting...' : 'Login'}
-  </AppButton>
+  </button>
 </form>
 ```
 
@@ -713,8 +824,7 @@ The form should work without JavaScript:
 <!-- src/routes/create/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { AppButton, AppCard } from '@skeletonlabs/skeleton-svelte';
-  import type { PageServerData, ActionData } from './$types';
+    import type { PageServerData, ActionData } from './$types';
   
   let { form }: { form: ActionData } = $props();
   let currentStep = $state(0);
@@ -738,8 +848,8 @@ The form should work without JavaScript:
   }
 </script>
 
-<AppCard>
-  <div class="steps">
+<div class="border rounded-lg shadow p-6">
+<div class="steps">
     {#each steps as step, index}
       <div class="step" class:active={index === currentStep}>
         {step}
@@ -760,16 +870,17 @@ The form should work without JavaScript:
     
     <div class="actions">
       {#if currentStep > 0}
-        <AppButton onclick={prevStep} variant="outline">Back</AppButton>
+        <button type="submit" class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded">Back</button>
       {/if}
       {#if currentStep < steps.length - 1}
-        <AppButton onclick={nextStep}>Next</AppButton>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Next</button>
       {:else}
-        <AppButton type="submit">Create Page</AppButton>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Create Page</button>
       {/if}
     </div>
   </form>
-</AppCard>
+
+</div>
 
 <style>
   .steps {
@@ -831,13 +942,19 @@ export const actions = {
 </form>
 ```
 
-### 3. Use Skeleton UI Components
+### 3. Use Tailwind CSS for Styling
 
 ```svelte
 <!-- ✅ GOOD - Use Skeleton UI components -->
-<AppInput name="email" type="email" label="Email" />
-<AppButton type="submit">Submit</AppButton>
-<AppAlert severity="error">Error message</AppAlert>
+<div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+<button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+<div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Error</strong>
+  Error message
+</div>
 
 
 <!-- ❌ BAD - Custom components -->
@@ -874,7 +991,7 @@ Before finishing a form:
 - [ ] Accessible labels for all inputs
 - [ ] Password fields have proper type
 - [ ] CSRF protection (handled by SvelteKit)
-- [ ] Skeleton UI components used (AppInput, AppButton, AppAlert)
+- [ ] Tailwind CSS styling for all form elements
 
 ## Common Pitfalls
 
@@ -885,8 +1002,14 @@ Before finishing a form:
 <div class="error">{form.errors.email}</div>
 
 <!-- ✅ GOOD - Skeleton UI components -->
-<AppInput name="email" type="email" label="Email" />
-<AppAlert severity="error">{form.errors.email}</AppAlert>
+<div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
+<div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Error</strong>
+  {form.errors.email}
+</div>
 ```
 
 ### 2. Not Validating on Server-Side
@@ -916,12 +1039,12 @@ export const actions = {
 ```svelte
 <!-- ❌ BAD - Doesn't work without JavaScript -->
 <form onsubmit={handleSubmit}>
-  <AppButton type="submit">Submit</AppButton>
+  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
 </form>
 
 <!-- ✅ GOOD - Works without JavaScript -->
 <form method="POST" action="/submit" use:enhance={() => { onsubmit: () => {...} }}>
-  <AppButton type="submit">Submit</AppButton>
+  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
 </form>
 ```
 
@@ -929,16 +1052,23 @@ export const actions = {
 ```svelte
 <!-- ❌ BAD - No error display -->
 <form method="POST">
-  <AppInput name="email" type="email" />
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
 </form>
 
 <!-- ✅ GOOD - Show errors with Skeleton UI -->
 <form method="POST">
-  <AppInput name="email" type="email" label="Email" />
+  <div class="mb-4">
+  <label for="email" class="block text-sm font-medium mb-1">Email</label>
+  <input id="email" name="email" type="email" class="border border-gray-300 rounded px-3 py-2 w-full" />
+</div>
   {#if form?.errors?.email}
-    <AppAlert severity="error" title="Email Error">
-      {form.errors.email}
-    </AppAlert>
+    <div class="bg-red-50 border-red-200 text-red-700 border p-3 rounded">
+  <strong class="block font-medium mb-1">Email Error</strong>
+  {form.errors.email}
+</div>
   {/if}
 </form>
 ```
