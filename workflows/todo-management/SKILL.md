@@ -1,405 +1,581 @@
 ---
 name: "todo-management"
-description: "Complete TODO management system for projects with single source of truth, progress tracking, checklists, and automatic consolidation."
-version: "1.0.0"
+description: "Complete task management system using GitHub Issues workflow with automatic branch/PR management. TODO files used only for analysis/documentation."
+version: "2.0.0"
 author: "Agent Zero Team"
-tags: ["todo", "workflow", "tracking", "documentation"]
+tags: ["github", "issues", "workflow", "tracking", "gh-cli"]
 trigger_patterns:
-  - "todo"
-  - "task list"
-  - "checklist"
-  - "progress tracking"
-  - "liste de tâches"
-  - "suivi de progression"
+  - "create task"
+  - "new issue"
+  - "create pr"
+  - "github workflow"
+  - "tâche github"
+  - "workflow issues"
 ---
 
-# TODO Management System
+# TODO Management System - GitHub Issues Workflow
 
-This skill provides a complete TODO management system with single source of truth, progress tracking, checklists, and automatic consolidation.
+This skill provides a complete task management system using **GitHub Issues** as the primary workflow with automatic branch creation, PR management, and merging. TODO files are used **ONLY** for analysis, documentation, and summaries when explicitly requested by the user.
 
-## Single TODO File Principle
+## Primary Workflow: GitHub Issues
 
-### Source of Truth
+### Why GitHub Issues?
 
-- Use **ONE** TODO file as the source of truth
-- Recommended filename: `TODO_IMPROVED.md`
-- Location: `docs/` folder in project root
-- **NEVER** maintain multiple TODO files simultaneously
+- **Single source of truth** for all tasks
+- Automatic branch creation and management
+- Built-in progress tracking with labels and milestones
+- Seamless PR workflow with issue linking
+- Automatic issue closure on PR merge
+- Complete history and audit trail
+- Team collaboration features
 
-### Why Single File?
+### Workflow Overview
 
-- Prevents confusion and duplication
-- Easier to maintain and track progress
-- Single source of truth for all stakeholders
-- Reduces merge conflicts
-- Simplifies progress reporting
+```mermaid
+graph LR
+    A[Create Issue] --> B[Auto-create Branch]
+    B --> C[Implement Task]
+    C --> D[Commit Changes]
+    D --> E[Create PR]
+    E --> F[Merge PR]
+    F --> G[Auto-close Issue]
+    F --> H[Auto-delete Branch]
+```
 
-### Recommended Structure
+## Step 1: Create Issue from Task
+
+### Command
+
+```bash
+# Create issue and checkout branch automatically
+gh issue create \
+  --title "feat(phase-X): task name" \
+  --body "Task description..." \
+  --assignee @me \
+  --label "phase-X" \
+  --checkout
+```
+
+### What This Does
+
+1. Creates a new GitHub issue with the specified title and body
+2. Assigns the issue to you (`@me`)
+3. Adds a label (e.g., `phase-1`, `phase-2`)
+4. **Automatically creates** a new branch named like `feature/task-name`
+5. **Automatically checks out** the new branch
+
+### Branch Naming Convention
+
+The `--checkout` flag creates branches following these patterns:
+
+- **Features**: `feature/task-name`
+- **Fixes**: `fix/bug-description`
+- **Chores**: `chore/maintenance-task`
+- **Documentation**: `docs/update-documentation`
+
+### Example
+
+```bash
+# Create issue for authentication feature
+gh issue create \
+  --title "feat(phase-3): implement user authentication" \
+  --body "Implement user registration, login, and password reset functionality with BetterAuth" \
+  --assignee @me \
+  --label "phase-3,authentication" \
+  --checkout
+
+# Output:
+# Creating issue in A0-42-org/vialto
+# Created issue #42: feat(phase-3): implement user authentication
+# Switched to branch 'feature/implement-user-authentication'
+```
+
+### Issue Body Template
+
+```markdown
+## Task Description
+Brief description of what needs to be done.
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## Technical Details
+- Database changes required
+- API endpoints to implement
+- Components to create
+
+## Testing
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Manual testing
+```
+
+## Step 2: Implement Task
+
+### Work on the Feature Branch
+
+```bash
+# You are now on the feature branch
+git branch  # Shows: feature/task-name
+
+# Implement your changes
+# ... code changes ...
+```
+
+### Commit Frequently
+
+```bash
+# Stage all changes
+git add .
+
+# Commit with conventional commit format
+git commit -m 'feat(phase-3): implement user registration'
+
+# Push to remote
+git push origin feature/task-name
+```
+
+### Multiple Commits
+
+For larger tasks, use multiple focused commits:
+
+```bash
+# Commit 1: Database schema
+git add drizzle/schema.ts
+git commit -m 'feat(phase-3): add user table to schema'
+git push
+
+# Commit 2: Service layer
+git add src/lib/server/user-service.ts
+git commit -m 'feat(phase-3): implement user service'
+git push
+
+# Commit 3: API routes
+git add src/routes/api/auth/
+git commit -m 'feat(phase-3): add authentication endpoints'
+git push
+```
+
+## Step 3: Create Pull Request
+
+### Command
+
+```bash
+# Create PR and link to issue
+gh pr create \
+  --title "feat(phase-3): implement user authentication" \
+  --body "Closes #<issue-number>" \
+  --base main
+```
+
+### What This Does
+
+1. Creates a pull request from your feature branch to `main`
+2. Links the PR to the original issue
+3. The `Closes #<issue-number>` keyword ensures the issue closes automatically when PR merges
+
+### Example
+
+```bash
+# Create PR for authentication feature
+gh pr create \
+  --title "feat(phase-3): implement user authentication" \
+  --body "Closes #42" \
+  --base main
+
+# Output:
+# Creating pull request for feature/implement-user-authentication into main in A0-42-org/vialto
+# https://github.com/A0-42-org/vialto/pull/15
+```
+
+### PR Body Template
+
+```markdown
+## Description
+This PR implements user authentication with BetterAuth, including:
+- User registration
+- Login functionality
+- Password reset
+
+## Changes
+- Add user table to database schema
+- Implement authentication service
+- Create API endpoints
+- Add form components
+
+## Testing
+- [ ] All tests passing
+- [ ] Manual testing completed
+
+## Checklist
+- [ ] Code follows project style guidelines
+- [ ] Self-review completed
+- [ ] Added necessary tests
+- [ ] Documentation updated
+
+Closes #42
+```
+
+## Step 4: Merge Pull Request
+
+### Command
+
+```bash
+# Merge PR automatically with branch deletion
+gh pr merge --merge --delete-branch
+```
+### What This Does
+
+1. Merges the PR using a **merge commit** (preserves history)
+2. **Automatically closes** the linked issue (#42)
+3. **Deletes the feature branch** from both local and remote
+
+### Merge Strategies
+
+| Strategy | Flag | Description | Use When |
+|----------|------|-------------|----------|
+| Merge commit | `--merge` | Creates merge commit | Most common, preserves history |
+| Squash | `--squash` | Squashes all commits | Clean history preferred |
+| Rebase | `--rebase` | Rebases onto target | Linear history required |
+
+### Example
+
+```bash
+# Merge the PR
+gh pr merge --merge --delete-branch
+
+# Output:
+# Merge pull request #15 (feature/implement-user-authentication) into main
+# ✓ Pull request merged
+# ✓ Branch deleted: feature/implement-user-authentication
+# ✓ Issue closed: #42
+```
+
+## Complete Workflow Example
+
+### Full End-to-End Example
+
+```bash
+# === STEP 1: Create Issue ===
+gh issue create \
+  --title "feat(phase-2): create landing page hero section" \
+  --body "Implement responsive hero section with CTA button and testimonial carousel" \
+  --assignee @me \
+  --label "phase-2,landing-page" \
+  --checkout
+
+# Output: Created issue #47, checked out branch 'feature/create-landing-page-hero-section'
+
+# === STEP 2: Implement Task ===
+# ... create src/routes/(landing)/hero.svelte ...
+# ... create src/lib/data/landing.ts ...
+
+git add .
+git commit -m 'feat(phase-2): add hero component and data'
+git push origin feature/create-landing-page-hero-section
+
+# === STEP 3: Create PR ===
+gh pr create \
+  --title "feat(phase-2): create landing page hero section" \
+  --body "Closes #47" \
+  --base main
+
+# Output: https://github.com/A0-42-org/vialto/pull/23
+
+# === STEP 4: Merge PR ===
+gh pr merge --merge --delete-branch
+
+# Output:
+# ✓ Pull request merged
+# ✓ Branch deleted: feature/create-landing-page-hero-section
+# ✓ Issue closed: #47
+
+# === BACK ON MAIN ===
+git pull origin main
+```
+
+## GitHub Labels Organization
+
+### Phase Labels
+
+```bash
+# Use phase labels to organize work
+--label "phase-0"      # Initialisation & Configuration
+--label "phase-1"      # Database Schema
+--label "phase-2"      # Landing Page
+--label "phase-3"      # Backend Core
+--label "phase-4"      # User Dashboard
+--label "phase-5"      # Admin Dashboard
+```
+
+### Type Labels
+
+```bash
+--label "feat"        # New feature
+--label "fix"         # Bug fix
+--label "chore"       # Maintenance
+--label "docs"        # Documentation
+--label "refactor"    # Refactoring
+--label "test"        # Tests
+```
+
+### Priority Labels
+
+```bash
+--label "priority:critical"
+--label "priority:high"
+--label "priority:medium"
+--label "priority:low"
+```
+
+### Status Labels
+
+```bash
+--label "status:in-progress"
+--label "status:review-needed"
+--label "status:blocked"
+--label "status:ready"
+```
+
+## Issue Management Commands
+
+### List Issues
+
+```bash
+# List all open issues
+gh issue list
+
+# List by label
+gh issue list --label "phase-3"
+
+# List assigned to you
+gh issue list --assignee @me
+
+# Show issue details
+gh issue view 42
+```
+
+### View Pull Requests
+
+```bash
+# List all open PRs
+gh pr list
+
+# View PR details
+gh pr view 15
+
+# Check PR status
+gh pr status
+```
+
+### Branch Management
+
+```bash
+# List all branches
+gh repo view --json defaultBranchRef,name
+
+# Switch to main after merge
+git checkout main
+git pull origin main
+
+# Clean up local branches
+git branch -d feature/task-name  # Safe delete (merged)
+git branch -D feature/task-name  # Force delete
+```
+
+## When to Use TODO Files
+
+### Primary Rule
+
+**TODO files are NOT for daily task management.** Use GitHub Issues for all active development tasks.
+
+### When to Create TODO Files
+
+Use TODO files ONLY when:
+
+1. **User explicitly requests** a TODO analysis
+2. Creating **project summary reports** for stakeholders
+3. **Documenting project structure** and architecture
+4. **Planning future phases** before implementation
+5. **Creating client reports** or documentation
+
+### TODO File Location
 
 ```
 project/
 ├── docs/
-│   └── TODO_IMPROVED.md  # Single source of truth
-├── PRD.md                # Product requirements
-└── CLIENT_REPORT.md      # Client reports
+│   ├── TODO_IMPROVED.md    # Analysis/summary only (NOT for active tasks)
+│   ├── PRD.md             # Product requirements
+│   └── CLIENT_REPORT.md   # Client reports
 ```
 
-## Progress Tracking Format
+### TODO File Purpose
 
-### Markdown Checkboxes with Progress Indicators
+- **High-level planning** and roadmapping
+- **Stakeholder communication** and reporting
+- **Historical documentation** of completed work
+- **Architecture summaries** and technical decisions
+- **Phase documentation** for reference
 
-```markdown
-## 📊 Progression globale
-- [x] **74%** - Projet en cours (51/69 étapes complétées)
+## Progress Tracking (Optional - for Documentation Only)
 
-## 🚀 Phase 0: Initialisation & Configuration ✅ COMPLETÉ
-### 0.1 Configuration de l'environnement
-- [x] Créer repository GitHub
-- [x] Cloner repository
-- [x] Configurer environnement local
-```
+### GitHub Issues as Progress Tracker
 
-### Progress Indicators
-
-| Indicator | Meaning | Usage |
-|-----------|---------|-------|
-| ✅ 100% | Fully completed | All tasks in phase done |
-| ⏳ 90% | Almost complete | 1-2 tasks remaining |
-| 🟡 45% | In progress | Multiple tasks done |
-| 🔜 0% | Not started | No tasks completed |
-
-### Global Progress Header
-
-Always include global progress at the top:
-
-```markdown
-## 📊 Progression globale
-- [x] **74%** - Projet en cours (51/69 étapes complétées)
-
-### Résumé des phases
-| Phase | État | Étapes |
-|-------|------|--------|
-| **Phase 0** - Initialisation | ✅ 100% | 3/3 |
-| **Phase 1** - Database Schema | ✅ 100% | 4/4 |
-| **Phase 2** - Landing Page | ⏳ 90% | 9/10 |
-| **Phase 3** - Backend Core | 🟡 80% | 8/10 |
-| **Phase 4** - User Dashboard | 🔜 0% | 0/8 |
-
-**Progression totale : 51/69 étapes (74%)**
-```
-
-## Phase-based Structure
-
-### Organize TODO by Phases
-
-```markdown
-## 🚀 Phase 3: Backend Core Features 🟡 80%
-
-### 3.1 Génération de Code de Parrainage
-- [ ] Créer algorithme de génération unique
-- [ ] Ajouter tests unitaires
-- [ ] Implémenter endpoint /api/referral-code
-- [ ] Documenter l'API
-
-### 3.2 Service de Parrainage
-- [x] Créer ReferralService
-- [x] Implémenter méthode createReferral
-- [x] Implémenter méthode getReferralsByUserId
-- [ ] Implémenter méthode updateReferralStatus
-```
-
-### Phase Naming Convention
-
-- Use numbered phases: `Phase 0`, `Phase 1`, etc.
-- Include descriptive title: `Phase 3: Backend Core Features`
-- Add progress indicator: `🟡 80%`
-- Use emoji for visual clarity: 🚀, 🛠️, 🎨, 🔧
-
-### Sub-task Organization
-
-Each phase should have:
-- Numbered subsections (3.1, 3.2, etc.)
-- Descriptive titles
-- Checkboxes for individual tasks
-- Detailed instructions for each task
-
-## Task Completion Sequence
-
-### After Completing EVERY Individual Task
-
-Follow this sequence **after EVERY task completion**:
-
-1. ✅ Check off task in TODO
-2. ✅ Update phase progress percentage
-3. ✅ Update global progress percentage
-4. ✅ Commit changes
-5. ✅ Push to GitHub **immediately**
-
-### Example Workflow
+GitHub Issues **ARE** the progress tracker. Use them directly:
 
 ```bash
-# 1. Implement the task
-# ... code changes ...
+# View all issues for a phase
+gh issue list --label "phase-3"
 
-# 2. Commit implementation
-git add .
-git commit -m 'feat(phase-3): implement user authentication'
-git push origin feature/phase-3-authentication
+# See closed/completed issues
+gh issue list --label "phase-3" --state closed
 
-# 3. Update TODO file
-# Check off task, update progress
-
-# 4. Commit TODO update
-git add docs/TODO_IMPROVED.md
-git commit -m 'docs(phase-3): update TODO - authentication completed'
-git push origin feature/phase-3-authentication
+# Check completion rate
+gh issue list --json number,state,title | jq '. | length'
 ```
 
-### Update Checklist
+### Summary Table for Documentation
 
-When updating TODO:
-
-- [ ] Mark completed tasks with `[x]`
-- [ ] Recalculate phase progress percentage
-- [ ] Update global progress percentage
-- [ ] Update summary table
-- [ ] Check total count matches completed tasks
-
-## Checklist Format
-
-### Detailed Checklists with Action Items
+When creating documentation or reports, you can summarize progress:
 
 ```markdown
-### 4.2 Implémentation Dashboard Overview
-- [ ] Créer `src/routes/(protected)/dashboard/+page.svelte`
-- [ ] Créer `src/routes/(protected)/dashboard/+page.server.ts`
-- [ ] Afficher carte infos utilisateur (nom, email, téléphone)
-- [ ] Afficher badge palier actuel (bronze/argent/or)
-- [ ] Afficher nombre total de parrainages
-- [ ] Afficher barre de progression vers palier suivant
-- [ ] Ajouter lien unique de parrainage avec bouton copier
-- [ ] Tester sur mobile et desktop
+## 📊 Progression globale - Phase 3
+
+### GitHub Issues Summary
+| Issue | Title | Status | Assignee |
+|-------|-------|--------|----------|
+| #42 | User authentication | ✅ Closed | @user |
+| #45 | Referral service | 🟡 In Progress | @user |
+| #48 | Gift management | 🔜 Open | - |
+
+**Progression : 1/3 issues completed (33%)**
 ```
 
-### Task Description Guidelines
+## Phase-based Structure (for Documentation)
 
-- Start with action verb (Créer, Implémenter, Ajouter)
-- Include file paths when applicable
-- Be specific about what to implement
-- Add acceptance criteria when needed
-- Include testing requirements
+### Organize Work by Phases
 
-## Progress Tracking Table
-
-### Include Summary Table at Top
+When creating planning documents or summaries:
 
 ```markdown
-## 📊 Progression globale
-- [x] **74%** - Projet en cours (51/69 étapes complétées)
+## 🚀 Phase 3: Backend Core Features
 
-### Résumé des phases
-| Phase | État | Étapes |
-|-------|------|--------|
-| **Phase 0** - Initialisation | ✅ 100% | 3/3 |
-| **Phase 1** - Database Schema | ✅ 100% | 4/4 |
-| **Phase 2** - Landing Page | ⏳ 90% | 9/10 |
-| **Phase 3** - Backend Core | 🟡 80% | 8/10 |
-| **Phase 4** - User Dashboard | 🔜 0% | 0/8 |
-| **Phase 5** - Admin Dashboard | 🔜 0% | 0/10 |
-
-**Progression totale : 51/69 étapes (74%)**
+### Issues Created
+- [x] #42 - User authentication
+- [x] #43 - Database schema
+- [ ] #45 - Referral service
+- [ ] #47 - Gift management
 ```
 
-### Table Maintenance
+### Phase Documentation
 
-- Update after each task completion
-- Keep table at the top of TODO file
-- Use consistent format
-- Calculate percentages accurately
+Use phases to organize **GitHub Issue labels** and **planning documents**:
 
-## TODO Consolidation Workflow
-
-### When Multiple TODO Files Exist
-
-If you find multiple TODO files:
-
-1. Compare content of all TODO files
-2. Merge tasks into single comprehensive file
-3. Remove outdated files
-4. Commit consolidation
-
-### Consolidation Example
-
-```bash
-# Identify TODO files
-docs/TODO.md (old, 550 lines)
-docs/TODO_IMPROVED.md (new, 629 lines)
-docs/TODO_OLD.md (very old, 300 lines)
-
-# 1. Compare and merge content
-# Keep most complete and recent version
-
-# 2. Remove old files
-git rm docs/TODO.md
-git rm docs/TODO_OLD.md
-
-# 3. Keep only new file
-docs/TODO_IMPROVED.md (single source of truth)
-
-# 4. Commit consolidation
-git add docs/TODO_IMPROVED.md
-git commit -m 'docs: consolidate TODO files - keep TODO_IMPROVED.md as single source of truth'
-git push origin main
-```
-
-### Consolidation Best Practices
-
-- Keep the most recent and complete version
-- Preserve all unique tasks
-- Update progress indicators
-- Remove duplicates
-- Document the consolidation in commit message
-
-## TODO Updates in Git Workflow
-
-### When to Update TODO
-
-TODO file updates should be:
-
-- **Committed AFTER** implementation commits
-- Use conventional commit format
-- Pushed **IMMEDIATELY** to GitHub
-- Never accumulated with other changes
-
-### Commit Format
-
-```bash
-# Format
-git commit -m 'docs(phase-X): update TODO - task description'
-
-# Examples
-git commit -m 'docs(phase-3): update TODO - authentication completed'
-git commit -m 'docs(phase-4): update TODO - dashboard overview done'
-git commit -m 'docs: update TODO - progress 74%'
-```
-
-### Update Sequence
-
-```bash
-# 1. Implement task
-git add .
-git commit -m 'feat(phase-3): implement authentication'
-
-# 2. Update TODO
-git add docs/TODO_IMPROVED.md
-git commit -m 'docs(phase-3): update TODO - authentication completed'
-
-# 3. Push both commits
-git push origin feature/phase-3-authentication
-```
+- Phase 0: Initialisation & Configuration
+- Phase 1: Database Schema
+- Phase 2: Landing Page
+- Phase 3: Backend Core
+- Phase 4: User Dashboard
+- Phase 5: Admin Dashboard
 
 ## Bilingual Support
 
-### Use Bilingual Task Descriptions
+### Issue Titles and Bodies
 
 ```markdown
-### 3.1 Authentication / Authentification
-- [ ] Create user registration / Créer inscription utilisateur
-- [ ] Implement login / Implémenter connexion
-- [ ] Add password reset / Ajouter réinitialisation mot de passe
+## Task Description / Description de la tâche
+Implement user registration / Implémenter l'inscription utilisateur
+
+## Criteria / Critères d'acceptation
+- [ ] Registration form / Formulaire d'inscription
+- [ ] Email validation / Validation par email
+- [ ] Error handling / Gestion des erreurs
 ```
 
 ### Language Guidelines
 
+- Use **English** for code-related terms
+- Use **French** for UI-related terms (if project is French)
 - Maintain consistency in language
 - Translate technical terms appropriately
-- Use English for code-related terms
-- Use French for UI-related terms (if project is French)
 
-## TODO File Template
+## Best Practices
 
-### Complete Template
+### Issue Creation
 
-```markdown
-# TODO IMPOUVÉ - Project Name
+1. **One task per issue** - Keep issues focused
+2. **Clear titles** - Use conventional commit format
+3. **Detailed descriptions** - Include acceptance criteria
+4. **Proper labels** - Use phase and type labels
+5. **Assign immediately** - Always assign to someone
 
-## 📊 Progression globale
-- [x] **X%** - Projet en cours (A/B étapes complétées)
+### Commit Guidelines
 
-### Résumé des phases
-| Phase | État | Étapes |
-|-------|------|--------|
-| **Phase 0** - Initialisation | ✅ 100% | 3/3 |
-| **Phase 1** - Title | 🔜 0% | 0/X |
-| **Phase 2** - Title | 🔜 0% | 0/X |
-
-**Progression totale : A/B étapes (X%)**
-
----
-
-## 🚀 Phase 0: Initialisation & Configuration ✅ 100%
-
-### 0.1 Configuration de l'environnement
-- [x] Créer repository GitHub
-- [x] Cloner repository
-- [x] Configurer environnement local
-
----
-
-## 🚀 Phase 1: Title 🔜 0%
-
-### 1.1 Subsection Title
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
-
----
-
-## 🚀 Phase 2: Title 🔜 0%
-
-### 2.1 Subsection Title
-- [ ] Task 1
-- [ ] Task 2
+```bash
+# Use conventional commit format
+feat(phase-X): description
+fix(phase-X): description
+docs(phase-X): description
+refactor(phase-X): description
+test(phase-X): description
 ```
+
+### Pull Request Best Practices
+
+1. **Link to issues** - Always use `Closes #<number>`
+2. **Descriptive titles** - Match issue title
+3. **Detailed bodies** - Explain changes clearly
+4. **Review before merge** - Self-review your PRs
+5. **Delete branches** - Always use `--delete-branch`
+
+### Workflow Discipline
+
+- **Always create an issue** before starting work
+- **Always use `--checkout`** for automatic branch management
+- **Always link PR to issue** with `Closes #<number>`
+- **Always merge with `--delete-branch`** to clean up
+- **Always pull main** after merge to stay updated
 
 ## Quick Reference
 
-### Progress Indicators
-
-```markdown
-✅ 100% - Fully completed
-⏳ 90% - Almost complete
-🟡 45% - In progress
-🔜 0% - Not started
-```
-
-### Update After Task
+### Complete Workflow
 
 ```bash
-# 1. Implement task
-git add . && git commit -m 'feat(phase-X): description'
+# 1. Create issue + branch
+gh issue create --title "feat(phase-X): task" --body "Description" --assignee @me --label "phase-X" --checkout
 
-# 2. Update TODO
-git add docs/TODO_IMPROVED.md
-git commit -m 'docs(phase-X): update TODO - task completed'
+# 2. Implement + commit
+git add . && git commit -m 'feat(phase-X): description' && git push
 
-# 3. Push
-git push origin feature/phase-X-step-Y
+# 3. Create PR
+gh pr create --title "feat(phase-X): task" --body "Closes #<issue>" --base main
+
+# 4. Merge + cleanup
+gh pr merge --merge --delete-branch
+git checkout main && git pull
 ```
 
-### Consolidate Multiple TODOs
+### Issue Management
 
 ```bash
-# Remove old files
-git rm docs/TODO.md
-git rm docs/TODO_OLD.md
+gh issue list                    # List issues
+gh issue view <number>            # View issue
+gh pr list                        # List PRs
+gh pr view <number>               # View PR
+gh pr status                      # PR status
+```
 
-# Keep single file
-git add docs/TODO_IMPROVED.md
-git commit -m 'docs: consolidate TODO files - keep TODO_IMPROVED.md as single source of truth'
-git push origin main
+### Branch Commands
+
+```bash
+git branch                        # Show current branch
+git checkout main                 # Switch to main
+git pull origin main              # Update main
+git branch -d <branch>            # Delete merged branch
 ```
 
 ---
 
-**Use this system to maintain a single source of truth and track project progress effectively.**
+**Use GitHub Issues as your primary task management system. TODO files are for analysis and documentation only.**
