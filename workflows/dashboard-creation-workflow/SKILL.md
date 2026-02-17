@@ -55,14 +55,10 @@ Before using this workflow, ensure you have these skills:
 #### 1.1 Initialize SvelteKit Project
 
 ```bash
-# Create new SvelteKit project
-pnpm create svelte@latest my-dashboard
+# Create new SvelteKit project with all required tools
+npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-dashboard
 
 cd my-dashboard
-
-# Install dependencies
-pnpm add @skeletonlabs/skeleton-svelte
-pnpm add -d @tailwindcss/vite @skeletonlabs/tailwindcss-plugin tailwindcss postcss autoprefixer
 
 # Install required packages
 pnpm add drizzle-orm better-auth zod svelte-dnd-action

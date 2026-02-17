@@ -346,8 +346,8 @@ git push origin main
 ### 4. Wrong Technology Stack
 ```bash
 # ❌ BAD - Using BUN (not installed in Docker)
-bun install
-bun add @skeletonlabs/skeleton-svelte
+pnpm install
+pnpm add @skeletonlabs/skeleton-svelte
 
 # ✅ GOOD - Using PNPM
 pnpm install

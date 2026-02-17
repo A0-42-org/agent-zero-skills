@@ -58,8 +58,8 @@ STRIPE_PRICE_ID_ELITE=price_...
 ### Dependencies
 
 ```bash
-bun add stripe
-bun add -d @types/stripe
+pnpm add stripe
+pnpm add -d @types/stripe
 ```
 
 ### Database Schema (Drizzle)

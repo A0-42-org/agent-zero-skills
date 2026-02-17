@@ -40,14 +40,10 @@ This workflow calls these skills conditionally based on your needs:
 #### 1.1 Create SvelteKit Project
 
 ```bash
-# Create new SvelteKit project
-pnpm create svelte@latest my-app
+# Create new SvelteKit project with all required tools
+npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-app
 
 cd my-app
-
-# Install dependencies
-pnpm add @skeletonlabs/skeleton-svelte
-pnpm add -d @tailwindcss/vite @skeletonlabs/tailwindcss-plugin tailwindcss postcss autoprefixer
 
 # Install required packages for optional features
 pnpm add drizzle-orm zod nanoid
@@ -462,8 +458,8 @@ export const actions = {
 ### 5. Not Using PNPM
 ```bash
 # ❌ BAD - Using BUN
-bun install
-bun add @skeletonlabs/skeleton-svelte
+pnpm install
+pnpm add @skeletonlabs/skeleton-svelte
 
 # ✅ GOOD - Using PNPM
 pnpm install

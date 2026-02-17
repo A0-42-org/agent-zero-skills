@@ -42,13 +42,8 @@ This meta-skill does ONE thing perfectly: **create a generic dashboard with base
 ### Step 1: Initialize SvelteKit Project
 
 ```bash
-# Create new SvelteKit project
-pnpm create svelte@latest my-dashboard
-
-# Select options:
-# - Which Svelte app template? Skeleton Project
-# - Add type checking? Yes (TypeScript)
-# - Select additional options: ESLint, Prettier, Playwright
+# Create new SvelteKit project with all required tools
+npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-dashboard
 
 cd my-dashboard
 

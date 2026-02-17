@@ -68,7 +68,7 @@ Always ask about quality gates - these are project-specific:
 What quality commands must pass for each user story?
    A. pnpm typecheck && pnpm lint
    B. npm run typecheck && npm run lint
-   C. bun run typecheck && bun run lint
+   C. pnpm run typecheck && pnpm run lint
    D. Other: [specify your commands]
 
 For UI stories, should we include browser verification?
@@ -238,7 +238,7 @@ D. Other
 What quality commands must pass for each story?
 A. pnpm typecheck && pnpm lint
 B. npm run typecheck && npm run lint
-C. bun run typecheck
+C. pnpm run typecheck
 D. Other: [specify]
 
 - 

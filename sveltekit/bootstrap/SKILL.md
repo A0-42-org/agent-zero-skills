@@ -7,8 +7,8 @@ Complete setup for new SvelteKit projects with TypeScript, ESLint, Prettier, Tai
 ### Option 1: Create new project from scratch
 
 ```bash
-# Create new SvelteKit project with TypeScript
-pnpm dlx sv create my-project --template skeleton --types typescript
+# Create new SvelteKit project with all required tools
+npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-project
 
 cd my-project
 
@@ -106,26 +106,6 @@ Ensure your package.json has the following scripts:
 }
 ```
 
-### 3. svelte.config.js
-
-```javascript
-import adapter from '@sveltejs/adapter-auto';
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  kit: {
-    adapter: adapter(),
-    alias: {
-      $lib: './src/lib',
-      $components: './src/lib/components',
-      $utils: './src/lib/utils',
-      $stores: './src/lib/stores'
-    }
-  }
-};
-
-export default config;
-```
 
 ### 4. vite.config.ts
 
