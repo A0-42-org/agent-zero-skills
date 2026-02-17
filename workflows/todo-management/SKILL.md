@@ -406,7 +406,7 @@ Use TODO files ONLY when:
 ```
 project/
 ├── docs/
-│   ├── TODO_IMPROVED.md    # Analysis/summary only (NOT for active tasks)
+│   ├── todo.md    # Analysis/summary only (NOT for active tasks)
 │   ├── PRD.md             # Product requirements
 │   └── CLIENT_REPORT.md   # Client reports
 ```
