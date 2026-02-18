@@ -92,9 +92,10 @@ export default {
 Create `src/routes/layout.css`:
 
 ```css
+/* Tailwind CSS v4 - Using @tailwindcss/vite plugin */
 @import 'tailwindcss';
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
+/* Note: @skeletonlabs/skeleton CSS imports are not compatible with Tailwind v4 */
+/* Use Skeleton components from @skeletonlabs/skeleton-svelte package instead */
 ```
 
 #### 1.3 Configure Environment Variables
@@ -212,7 +213,7 @@ Create `src/lib/components/widgets/WidgetBase.svelte`:
 ```svelte
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { AppCard, AppButton } from '@skeletonlabs/skeleton-svelte';
+  // Note: AppCard replaced with HTML + Tailwind CSS
 
   interface Props {
     title: string;
@@ -224,26 +225,26 @@ Create `src/lib/components/widgets/WidgetBase.svelte`:
   let { title, children, onRemove, onEdit }: Props = $props();
 </script>
 
-<AppCard>
-  <div class="widget-header" slot="header">
+<div class="border rounded-lg shadow">
+  <div class="widget-header p-4 border-b">
     <h3>{title}</h3>
     <div class="widget-actions">
       {#if onEdit}
-        <AppButton variant="ghost" size="sm" onclick={onEdit}>
+        <button class="hover:bg-gray-100 text-gray-700 px-3 py-1.5 rounded text-sm" onclick={onEdit}>
           Edit
-        </AppButton>
+        </button>
       {/if}
       {#if onRemove}
-        <AppButton variant="ghost" size="sm" onclick={onRemove}>
+        <button class="hover:bg-gray-100 text-gray-700 px-3 py-1.5 rounded text-sm" onclick={onRemove}>
           Remove
-        </AppButton>
+        </button>
       {/if}
     </div>
   </div>
-  <div class="widget-content">
+  <div class="widget-content p-4">
     {@render children()}
   </div>
-</AppCard>
+</div>
 
 <style>
   .widget-header {
@@ -455,7 +456,7 @@ Create `src/routes/dashboard/+page.svelte`:
   import StatWidget from '$lib/components/widgets/StatWidget.svelte';
   import ChartWidget from '$lib/components/widgets/ChartWidget.svelte';
   import ListWidget from '$lib/components/widgets/ListWidget.svelte';
-  import { AppButton, AppAlert } from '@skeletonlabs/skeleton-svelte';
+  // Note: AppButton and AppAlert replaced with HTML + Tailwind CSS
   import type { PageServerData, ActionData } from './$types';
 
   interface Widget {
@@ -517,9 +518,9 @@ Create `src/routes/dashboard/+page.svelte`:
 <div class="dashboard">
   <div class="dashboard-header">
     <h1>Dashboard</h1>
-    <AppButton onclick={() => window.location.href = '/dashboard/widgets'}>
+    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" onclick={() => window.location.href = '/dashboard/widgets'}>
       Add Widget
-    </AppButton>
+    </button>
   </div>
   
   {#if form?.success}
@@ -805,7 +806,7 @@ Create `src/lib/components/ThemeSelector.svelte`:
 <script lang="ts">
   import { getContext } from 'svelte';
   import type { ThemeContext } from './ThemeProvider.svelte';
-  import { AppButton, AppSelect } from '@skeletonlabs/skeleton-svelte';
+  import { AppSelect } from '@skeletonlabs/skeleton-svelte';
 
   type Theme = 'modern' | 'cerberus' | 'rocket';
   
@@ -885,15 +886,15 @@ Before completing the dashboard:
 
 ### 1. Not Using Skeleton UI Components
 ```svelte
-<!-- ❌ BAD - Custom components -->
+<!-- ❌ BAD - Custom components without styling -->
 <div class="card">
   <h3>Title</h3>
 </div>
 
-<!-- ✅ GOOD - Skeleton UI components -->
-<AppCard>
-  <h3 slot="header">Title</h3>
-</AppCard>
+<!-- ✅ GOOD - HTML + Tailwind CSS (AppCard removed in v4) -->
+<div class="border rounded-lg shadow p-4">
+  <h3 class="font-medium">Title</h3>
+</div>
 ```
 
 ### 2. Not Using svelte-dnd-action Correctly
