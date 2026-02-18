@@ -1,13 +1,13 @@
 # FontSource (Variable Fonts for SvelteKit)
 
-FontSource skill for adding variable fonts to SvelteKit projects with Tailwind CSS and SkeletonUI. Use this skill when you need to add high-quality variable fonts to your project.
+FontSource skill for adding variable fonts to SvelteKit projects with Tailwind CSS v4 and Skeleton UI v4.12.0. Use this skill when you need to add high-quality variable fonts to your project.
 
 ## Use Case
 
 Use this skill when:
 - Adding variable fonts to a SvelteKit project
-- Configuring Tailwind CSS for custom fonts
-- Using SkeletonUI with custom typography
+- Configuring Tailwind CSS v4 for custom fonts
+- Using Skeleton UI v4.12.0 with custom typography
 - Building a project with multiple font families
 - Need fonts for body text, headings, and code
 
@@ -51,8 +51,6 @@ Update `src/app.css`:
 
 ```css
 @import 'tailwindcss';
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
 
 /* Import variable fonts */
 @import "@fontsource-variable/inter/index.css";
@@ -71,31 +69,37 @@ Update `src/app.css`:
 }
 ```
 
-### Step 3: Configure Tailwind CSS
+### Step 3: Configure Vite for Skeleton UI v4.12.0
 
-Update `tailwind.config.js`:
+Update `vite.config.ts`:
 
-```javascript
-import { skeleton } from '@skeletonlabs/tailwindcss-plugin';
+```typescript
+import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
+import skeleton from '@skeletonlabs/skeleton-svelte';
 
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['var(--font-family-base)', 'sans-serif'],
-        heading: ['var(--font-family-heading)', 'sans-serif'],
-        code: ['var(--font-family-code)', 'monospace'],
-        subheading: ['var(--font-family-subheading)', 'sans-serif'],
-        ui: ['var(--font-family-ui)', 'sans-serif'],
-      },
-    },
-  },
-  plugins: [
-    skeleton({ themes: ['modern'] })
-  ],
-};
+export default defineConfig({
+plugins: [
+dcss(),
+()
+]
+});
+```
+
+Add data-theme to `src/app.html`:
+
+```html
+<!doctype html>
+<html lang="en" data-theme="winter">
+<head>
+charset="utf-8" />
+k rel="icon" href="%sveltekit.assets%/favicon.png" />
+name="viewport" content="width=device-width, initial-scale=1" />
+ data-sveltekit-preload-data="hover">
+style="display: contents">%sveltekit.body%</div>
+</body>
+</html>
 ```
 
 ## Usage
@@ -167,16 +171,14 @@ Variable fonts support a range of weights. Use Tailwind's font-weight utilities:
 <p class="font-extrabold">Extra Bold (800)</p>
 ```
 
-## SkeletonUI Integration
+## Skeleton UI Integration
 
-### Configure SkeletonUI Font Variables
+### Configure Skeleton UI Font Variables
 
-Update `src/app.css` with SkeletonUI font variables:
+Update `src/app.css` with Skeleton UI font variables:
 
 ```css
 @import 'tailwindcss';
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
 
 /* Import variable fonts */
 @import "@fontsource-variable/inter/index.css";
@@ -190,8 +192,8 @@ Update `src/app.css` with SkeletonUI font variables:
   --font-family-code: 'Fira Code Variable', monospace;
 }
 
-/* SkeletonUI typography variables */
-[data-theme='svelteForge'] {
+/* Skeleton UI typography variables */
+[data-theme='winter'] {
   --base-font-family: var(--font-family-base);
   --heading-font-family: var(--font-family-heading);
   --base-font-weight: normal;
@@ -286,17 +288,14 @@ ls node_modules/@fontsource-variable/
 
 ### Fonts not applying
 
-1. Check Tailwind configuration:
-```javascript
-// Correct
-fontFamily: {
-  sans: ['var(--font-family-base)', 'sans-serif'],
-}
+1. Check Tailwind CSS configuration:
+```typescript
+// Correct in vite.config.ts
+import skeleton from '@skeletonlabs/skeleton-svelte';
 
-// Incorrect
-fontFamily: {
-  sans: ['Inter', 'sans-serif'],
-}
+export default defineConfig({
+  plugins: [tailwindcss(), skeleton()]
+});
 ```
 
 2. Check if CSS variables are defined:
@@ -318,12 +317,12 @@ fontFamily: {
 - [FontSource Documentation](https://fontsource.org/docs/getting-started/install)
 - [FontSource Fonts](https://fontsource.org/fonts)
 - [Variable Fonts Guide](https://developer.chrome.com/docs/css/variable-fonts)
-- [Tailwind CSS Typography](https://tailwindcss.com/docs/font-family)
-- [SkeletonUI Typography](https://skeleton.dev/docs/styles/typography)
+- [Tailwind CSS v4 Typography](https://tailwindcss.com/docs/font-family)
+- [Skeleton UI v4 Documentation](https://skeleton.dev/docs)
 
 ---
 **Use this skill to add high-quality variable fonts to your SvelteKit project.**
 
-**Version**: 1.0.0  
-**Tags**: sveltekit, fonts, fontsource, variable-fonts, tailwind, typography, skeletonui  
+**Version**: 2.0.0
+**Tags**: sveltekit, fonts, fontsource, variable-fonts, tailwind-v4, typography, skeleton-ui
 **Triggers**: add fonts, fontsource, variable fonts, install fonts, typography, custom fonts, font setup, font configuration
