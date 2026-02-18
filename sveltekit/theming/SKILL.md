@@ -146,9 +146,6 @@ Import custom theme CSS files in your layout:
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
-@import "@skeletonlabs/skeleton";
-@import "@skeletonlabs/skeleton-svelte";
-
 /* Import custom brand styles */
 @import "../lib/themes/brand-styles/luxury.css";
 @import "../lib/themes/brand-styles/neon.css";
@@ -376,9 +373,9 @@ You can style elements differently per theme:
 
 ```svelte
 <!-- Use Tailwind arbitrary values with theme properties -->
-<Card class="bg-[var(--color-surface-100-900)] theme-cerberus:bg-red-500">
+<div class="card bg-[var(--color-surface-100-900)] theme-cerberus:bg-red-500">
   Content
-</Card>
+</div>
 ```
 
 ## Custom Theme Examples
@@ -471,14 +468,14 @@ Skeleton components automatically use theme properties:
 
 ```svelte
 <!-- Button with theme-aware colors -->
-<AppButton variant="filled">
+<button class="btn btn-filled">
   Click me
-</AppButton>
+</button>
 
 <!-- Card with surface color -->
-<Card class="bg-surface-100-900">
+<div class="card bg-surface-100-900">
   Content
-</Card>
+</div>
 ```
 
 ### Custom Component Styling
@@ -522,7 +519,7 @@ src/routes/
 
 ## Common Pitfalls
 
-1. **Wrong import order**: Must follow: tailwindcss → plugins → skeleton → skeleton-svelte → custom themes
+1. **Wrong import order**: Must follow: tailwindcss → plugins → custom themes
 2. **Missing data-theme**: Theme won\'t apply without `data-theme` attribute on HTML
 3. **CSS variable naming**: Must use Skeleton UI\'s property naming convention (`--color-primary-500`)
 4. **TypeScript errors**: Ensure CSS variables are properly typed if using strict mode
@@ -534,7 +531,7 @@ src/routes/
 
 After setup, verify:
 
-1. `bun check` passes (no TypeScript errors)
+1. `pnpm check` passes (no TypeScript errors)
 2. Dev server starts without errors
 3. Theme switching works (all themes apply correctly)
 4. Theme persists across page refreshes
