@@ -40,13 +40,12 @@ Assurez-vous d'utiliser le plugin Vite Tailwind :
 ```ts
 // vite.config.ts
 import tailwindcss from '@tailwindcss/vite';
-import skeleton from '@skeletonlabs/skeleton-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default {
   plugins: [
     tailwindcss(),
-    skeleton(),
+    
     sveltekit()
   ]
 };

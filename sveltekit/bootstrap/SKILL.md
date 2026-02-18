@@ -116,14 +116,11 @@ Ensure your package.json has the following scripts:
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
-import skeleton from '@skeletonlabs/skeleton-svelte';
 
 export default defineConfig({
   plugins: [
     sveltekit(),
-    tailwindcss(),
-    skeleton()
-  ],
+    tailwindcss(),],
   server: {
     port: 5174,
     host: true

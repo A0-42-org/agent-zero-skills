@@ -77,7 +77,6 @@ Update `vite.config.ts`:
 import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
-import skeleton from '@skeletonlabs/skeleton-svelte';
 
 export default defineConfig({
 plugins: [
@@ -291,10 +290,9 @@ ls node_modules/@fontsource-variable/
 1. Check Tailwind CSS configuration:
 ```typescript
 // Correct in vite.config.ts
-import skeleton from '@skeletonlabs/skeleton-svelte';
 
 export default defineConfig({
-  plugins: [tailwindcss(), skeleton()]
+  plugins: [tailwindcss(),]
 });
 ```
 
