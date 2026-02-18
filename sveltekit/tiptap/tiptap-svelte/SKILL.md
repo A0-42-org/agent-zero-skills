@@ -1,7 +1,14 @@
 ---
 name: tiptap-svelte
-description: Setup Tiptap editor with SvelteKit and Svelte 5. Use when adding WYSIWYG editing capabilities to Svelte applications. Covers Tiptap installation, component creation with Svelte 5 runes, toolbar configuration, and data persistence.
+description: Setup Tiptap editor with SvelteKit and Svelte 5. Use when adding WYSIWYG
+  editing capabilities to Svelte applications. Covers Tiptap installation, component
+  creation with Svelte 5 runes, toolbar configuration, and data persistence.
 license: MIT
+trigger_patterns:
+- tiptap
+- tiptap editor
+- wysiwyg editor
+- rich text editor svelte
 ---
 
 # Tiptap Editor for SvelteKit

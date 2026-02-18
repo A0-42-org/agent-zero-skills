@@ -1,7 +1,16 @@
 ---
 name: better-auth-svelte
-description: Install and configure BetterAuth authentication system for SvelteKit projects. Use when setting up email/password authentication, OAuth providers, session management, and protected routes with BetterAuth and SvelteKit. Covers database setup with Drizzle, route structure, and common pitfalls to avoid.
+description: Install and configure BetterAuth authentication system for SvelteKit
+  projects. Use when setting up email/password authentication, OAuth providers, session
+  management, and protected routes with BetterAuth and SvelteKit. Covers database
+  setup with Drizzle, route structure, and common pitfalls to avoid.
 license: MIT
+trigger_patterns:
+- better-auth
+- better auth
+- authentication setup
+- oauth integration
+- email password auth
 ---
 
 # BetterAuth for SvelteKit

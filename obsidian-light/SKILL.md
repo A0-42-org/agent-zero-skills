@@ -1,6 +1,14 @@
 ---
 name: obsidian-light
-description: Work with Obsidian vaults using native Agent Zero capabilities (Markdown reading/writing) without obsidian-cli dependency. Perfect for remote agents that cannot access local vaults.
+description: Work with Obsidian vaults using native Agent Zero capabilities (Markdown
+  reading/writing) without obsidian-cli dependency. Perfect for remote agents that
+  cannot access local vaults.
+trigger_patterns:
+- obsidian
+- obsidian vault
+- markdown notes
+- work with obsidian
+- read markdown
 ---
 
 # Obsidian Light - Agent Zero Native Approach

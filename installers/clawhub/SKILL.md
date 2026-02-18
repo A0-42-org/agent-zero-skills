@@ -1,6 +1,13 @@
 ---
 name: clawhub-installer
-description: Download, analyze, and install skills from ClawHub. Automatically downloads ZIP from ClawHub URL, extracts, performs security analysis, and asks for user confirmation before installation.
+description: Download, analyze, and install skills from ClawHub. Automatically downloads
+  ZIP from ClawHub URL, extracts, performs security analysis, and asks for user confirmation
+  before installation.
+trigger_patterns:
+- clawhub
+- install from clawhub
+- download skill from clawhub
+- clawhub marketplace
 ---
 
 # ClawHub Skill Installer
