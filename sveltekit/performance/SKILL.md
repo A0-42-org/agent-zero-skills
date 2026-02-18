@@ -39,6 +39,7 @@ pnpm add -D @sveltejs/adapter-auto
 # Optional: Performance monitoring
 pnpm add @vercel/analytics
 pnpm add -d @sveltejs/vite-plugin-svelte
+```
 
 ## Code Splitting
 
@@ -64,6 +65,7 @@ pnpm add -d @sveltejs/vite-plugin-svelte
 {#if showHeavy && HeavyComponent}
   <svelte:component this={HeavyComponent} />
 {/if}
+```
 
 ### Dynamic Imports in Server Actions
 
@@ -77,6 +79,7 @@ export const actions = {
     return processLargeData();
   }
 };
+```
 
 ### Lazy Loading Routes
 
@@ -84,6 +87,7 @@ export const actions = {
 // src/routes/+layout.ts
 export const prerender = false; // Disable prerendering for dynamic content
 export const ssr = true; // Enable SSR for initial load
+```
 
 ## SSR/CSR Optimization
 
@@ -99,6 +103,7 @@ export const prerender = true;
 
 // src/routes/dashboard/+page.ts (CSR only)
 export const ssr = false;
+```
 
 ### Client-Only Component
 
@@ -117,6 +122,7 @@ export const ssr = false;
 {#if mounted}
   {@render children?.()}
 {/if}
+```
 
 ### Cache-Control Directives
 
@@ -154,30 +160,43 @@ export async function cachedFetch<T>(
   
   return data;
 }
+```
 
 ## Bundle Optimization
 
-### Vite Configuration
+### Vite Configuration (Tailwind CSS v4 + Skeleton UI v4.12.0)
 
 ```typescript
 // vite.config.ts
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+import skeleton from '@skeletonlabs/skeleton-svelte';
 
 export default defineConfig({
-  plugins: [sveltekit()],
+  plugins: [
+    sveltekit(),
+    tailwindcss(),
+    skeleton()
+  ],
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['svelte'],
+          // Skeleton UI v4.12.0 - the package still exists
           ui: ['@skeletonlabs/skeleton'],
           icons: ['lucide-svelte']
         }
       }
     }
+  },
+  server: {
+    port: 5174,
+    host: true
   }
 });
+```
 
 ### Code Splitting by Route
 
@@ -193,12 +212,14 @@ export default {
     inlineStyleThreshold: 0
   }
 };
+```
 
 ### Image Compression
 
 ```bash
 # Use Vite image optimization plugin
 pnpm add -d vite-plugin-imagemin
+```
 
 ### WebP Conversion
 
@@ -213,12 +234,13 @@ pnpm add -d vite-plugin-imagemin
   <source srcset={imageSrc} type="image/webp" />
   <img src={fallbackSrc} alt="Optimized image" />
 </picture>
+```
 
 ### Index Optimization
 
 ```typescript
 // src/lib/db/schema.ts
-import { pgTable, index } from 'drizzle-orm/pg-core';
+import { pgTable, index, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -229,6 +251,7 @@ export const users = pgTable('users', {
   emailIndex: index('email_index').on(table.email),
   createdAtIndex: index('created_at_index').on(table.createdAt)
 }));
+```
 
 ### Batch Operations
 
@@ -244,12 +267,16 @@ await db.insert(users).values([
 for (const user of users) {
   await db.insert(users).values(user);
 }
+```
+
 ### Vercel Analytics
+
 ```typescript
 // src/hooks.client.ts
 import { inject } from '@vercel/analytics';
 
 inject();
+```
 
 ### Prefetching Links
 
@@ -284,19 +311,23 @@ inject();
     <a href={link.href}>{link.label}</a>
   {/each}
 </nav>
+```
 
 ### 2. Enable SSR for Initial Load
+
 ```typescript
 // ✅ GOOD - Enable SSR
 export const ssr = true;
 
 // ❌ BAD - Disable SSR
 export const ssr = false;
+```
 
 ### 4. Optimize Images
+
 ```svelte
 <!-- ✅ GOOD - Optimized image -->
-<img 
+<img
   src="/images/photo.webp"
   srcset="/images/photo-800.jpg 800w, /images/photo-1600.jpg 1600w"
   sizes="(max-width: 800px) 100vw, 50vw"
@@ -306,6 +337,7 @@ export const ssr = false;
 
 <!-- ❌ BAD - Unoptimized image -->
 <img src="/large-photo.jpg" alt="Large photo" />
+```
 
 ## Performance Checklist
 
@@ -326,13 +358,17 @@ Before deploying, verify:
 ## Common Pitfalls
 
 ### 1. No Code Splitting
+
 ```typescript
 // ❌ BAD - No code splitting
 import HeavyComponent from '$lib/components/Heavy.svelte';
 
 // ✅ GOOD - Dynamic import
 const Component = await import('$lib/components/Heavy.svelte');
+```
+
 ### 3. No Caching Headers
+
 ```typescript
 // ❌ BAD - No cache headers
 export async function GET() {
@@ -347,8 +383,10 @@ export async function GET() {
     }
   });
 }
+```
 
 ### 5. No Database Indexes
+
 ```typescript
 // ❌ BAD - No indexes
 export const users = pgTable('users', {
@@ -363,3 +401,4 @@ export const users = pgTable('users', {
 }, (table) => ({
   emailIndex: index('email_index').on(table.email)
 }));
+```
