@@ -34,7 +34,10 @@ pnpm add -D eslint eslint-config-prettier eslint-plugin-svelte eslint-plugin-nod
 pnpm add -D prettier prettier-plugin-svelte prettier-plugin-tailwindcss
 
 # Tailwind CSS v4
-pnpm add -D tailwindcss
+pnpm add -D tailwindcss @tailwindcss/vite
+
+# Skeleton UI v4
+pnpm add @skeletonlabs/skeleton @skeletonlabs/skeleton-svelte
 
 # Playwright
 pnpm add -D @playwright/test
@@ -112,15 +115,17 @@ Ensure your package.json has the following scripts:
 ```typescript
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import tailwindcss from 'tailwindcss';
+import tailwindcss from '@tailwindcss/vite';
+import skeleton from '@skeletonlabs/skeleton-svelte';
 
 export default defineConfig({
   plugins: [
     sveltekit(),
-    tailwindcss()
+    tailwindcss(),
+    skeleton()
   ],
   server: {
-    port: 5173,
+    port: 5174,
     host: true
   }
 });
@@ -221,7 +226,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5174',
     trace: 'on-first-retry'
   },
   projects: [
@@ -248,7 +253,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'pnpm run dev',
-    url: 'http://localhost:5173',
+    url: 'http://localhost:5174',
     reuseExistingServer: !process.env.CI
   }
 });
