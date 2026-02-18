@@ -30,21 +30,23 @@ pnpm add @skeletonlabs/skeleton-svelte @skeletonlabs/skeleton
 Dans votre fichier `app.css` (global stylesheet) :
 
 ```css
-@import '@skeletonlabs/skeleton-svelte';
+@import 'tailwindcss';
+/* PAS d'import de @skeletonlabs/skeleton ou @skeletonlabs/skeleton-svelte */
 ```
 
 ### Configuration Tailwind v4
 
 Assurez-vous d'utiliser le plugin Vite Tailwind :
-
 ```ts
 // vite.config.ts
 import tailwindcss from '@tailwindcss/vite';
+import skeleton from '@skeletonlabs/skeleton-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default {
   plugins: [
     tailwindcss(),
+    skeleton(),
     sveltekit()
   ]
 };
