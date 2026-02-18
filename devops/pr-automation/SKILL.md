@@ -149,7 +149,7 @@ fi
 ## Project-Specific Rules for Vialto
 
 - **Must follow AGENTS.md guidelines**
-- **Must use bun package manager** (not npm)
+- **Must use pnpm package manager** (not npm)
 - **Tests required for all features** (TDD)
 - **Documentation required** (TODO.md, DIRECTIVES.md)
 - **No secrets in code** (use .env variables)
