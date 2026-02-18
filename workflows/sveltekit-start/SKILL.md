@@ -114,15 +114,13 @@ Create `src/app.css`:
 
 ```css
 @import 'tailwindcss';
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
 ```
 
 Update `src/app.html`:
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="winter">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
@@ -253,21 +251,37 @@ Create `src/lib/components/ui/Button.svelte`:
 ```svelte
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { AppButton as Button } from '@skeletonlabs/skeleton-svelte';
 
   interface Props {
     children: Snippet;
     variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
     size?: 'sm' | 'md' | 'lg';
     onclick?: () => void;
+    type?: 'submit' | 'button' | 'reset';
+    disabled?: boolean;
   }
 
-  let { children, variant = 'primary', size = 'md', onclick }: Props = $props();
+  let { children, variant = 'primary', size = 'md', onclick, type = 'button', disabled = false }: Props = $props();
+
+  const variantClasses: Record<string, string> = {
+    primary: 'bg-blue-500 hover:bg-blue-600 text-white',
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800',
+    ghost: 'hover:bg-gray-100 text-gray-700',
+    danger: 'bg-red-500 hover:bg-red-600 text-white'
+  };
+
+  const sizeClasses: Record<string, string> = {
+    sm: 'px-2 py-1 text-sm',
+    md: 'px-4 py-2',
+    lg: 'px-6 py-3 text-lg'
+  };
+
+  $: baseClasses = `${variantClasses[variant]} ${sizeClasses[size]} rounded transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`;
 </script>
 
-<Button {variant} {size} {onclick}>
+<button {type} {disabled} class={baseClasses} on:click={onclick}>
   {@render children()}
-</Button>
+</button>
 ```
 
 #### 5.3 Add Theme Management
@@ -423,17 +437,18 @@ APP_URL=http://localhost:5173
 @import 'tailwindcss';
 ```
 
-### 3. Not Using SkeletonUI v4 Components
+### 3. Using Obsolete SkeletonUI Components
 ```svelte
-<!-- ❌ BAD - Custom components -->
-<div class="card">
-  <h3>Title</h3>
-</div>
-
-<!-- ✅ GOOD - SkeletonUI v4 components -->
+<!-- ❌ BAD - Obsolete components -->
 <AppCard>
   <h3 slot="header">Title</h3>
 </AppCard>
+
+<!-- ✅ GOOD - HTML + Tailwind CSS -->
+<div class="border rounded-lg shadow p-6">
+  <h1 class="text-xl font-bold mb-4">Title</h1>
+  <p>Content goes here</p>
+</div>
 ```
 
 ### 4. Not Using Server Actions
@@ -453,17 +468,6 @@ export const actions = {
     return { success: true };
   },
 };
-```
-
-### 5. Not Using PNPM
-```bash
-# ❌ BAD - Using BUN
-pnpm install
-pnpm add @skeletonlabs/skeleton-svelte
-
-# ✅ GOOD - Using PNPM
-pnpm install
-pnpm add @skeletonlabs/skeleton-svelte
 ```
 
 ## Next Steps
