@@ -1,3 +1,22 @@
+---
+name: analytics
+description: Web analytics integration using privacy-friendly solutions like Plausible, Fathom, or Umami.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - analytics
+  - tracking
+  - privacy
+  - web-analytics
+  - metrics
+trigger_patterns:
+  - analytics
+  - web analytics
+  - plausible
+  - fathom
+  - umami
+---
+
 # SvelteKit Analytics
 
 Complete analytics system for SvelteKit projects including event tracking, dashboards, and statistics.

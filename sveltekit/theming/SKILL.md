@@ -1,3 +1,22 @@
+---
+name: theming
+description: Theme management for SvelteKit with dark/light mode, color schemes, and user preferences.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - theme
+  - dark-mode
+  - styling
+  - colors
+  - preferences
+trigger_patterns:
+  - theme
+  - dark mode
+  - theming sveltekit
+  - color scheme
+  - theme toggle
+---
+
 # SvelteKit Theming
 
 Complete theming system for SvelteKit projects using Skeleton UI v4 and Tailwind CSS v4.

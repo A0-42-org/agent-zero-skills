@@ -1,3 +1,21 @@
+---
+name: skeleton-ui
+description: Skeleton UI integration for SvelteKit with Tailwind CSS theming and component library.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - skeleton
+  - tailwind
+  - ui
+  - components
+  - theming
+trigger_patterns:
+  - skeleton ui
+  - skeleton components
+  - tailwind ui sveltekit
+  - ui library
+---
+
 # Skeleton UI for SvelteKit
 
 ## Description

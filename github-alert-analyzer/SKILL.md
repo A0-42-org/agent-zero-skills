@@ -1,3 +1,22 @@
+---
+name: github-alert-analyzer
+description: Analyze GitHub Dependabot alerts and security advisories with automated remediation suggestions.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - github
+  - security
+  - dependabot
+  - alerts
+  - remediation
+trigger_patterns:
+  - github alerts
+  - dependabot
+  - security alerts
+  - analyze vulnerabilities
+  - remediate alerts
+---
+
 # GitHub Alert Analyzer - Skill Agent Zero
 
 ## Rôle

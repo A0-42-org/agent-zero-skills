@@ -1,3 +1,21 @@
+---
+name: bootstrap
+description: Bootstrap CSS framework integration for SvelteKit projects with components and responsive utilities.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - bootstrap
+  - css
+  - ui
+  - responsive
+  - framework
+trigger_patterns:
+  - bootstrap
+  - bootstrap css
+  - bootstrap sveltekit
+  - bootstrap components
+---
+
 # SvelteKit Bootstrap - Project Initialization
 
 Complete setup for new SvelteKit projects with TypeScript, ESLint, Prettier, Tailwind CSS v4, Playwright.

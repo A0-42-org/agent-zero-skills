@@ -1,3 +1,21 @@
+---
+name: sveltekit-start
+description: Quick SvelteKit project starter with pre-configured setup, ESLint, Prettier, and TypeScript.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - sveltekit
+  - starter
+  - template
+  - setup
+  - boilerplate
+trigger_patterns:
+  - sveltekit start
+  - sveltekit starter
+  - sveltekit template
+  - new sveltekit project
+---
+
 # SvelteKit Start Workflow
 
 Complete workflow for initializing a SvelteKit project with modern stack: Svelte 5 runes, SkeletonUI v4, Tailwind CSS v4, Drizzle ORM, and BetterAuth.

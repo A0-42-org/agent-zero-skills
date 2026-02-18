@@ -1,3 +1,21 @@
+---
+name: dashboard-template
+description: Admin dashboard template with sidebar, charts, tables, and authentication for SvelteKit.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - dashboard
+  - admin
+  - template
+  - ui
+  - charts
+trigger_patterns:
+  - dashboard template
+  - admin dashboard
+  - dashboard starter
+  - admin panel
+---
+
 # Dashboard Template (GNU Meta-Skill)
 
 Generic dashboard template for SvelteKit + SkeletonUI v4 with drag-and-drop functionality and svelteForge theme switching. This meta-skill follows GNU philosophy: do ONE thing perfectly, don't overcomplicate.

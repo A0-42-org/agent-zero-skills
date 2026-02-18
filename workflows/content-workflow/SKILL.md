@@ -1,3 +1,21 @@
+---
+name: content-workflow
+description: Content creation and publishing workflow with markdown, images, and SEO optimization.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - content
+  - cms
+  - markdown
+  - seo
+  - publishing
+trigger_patterns:
+  - content workflow
+  - content creation
+  - markdown workflow
+  - blog workflow
+---
+
 # Content Workflow
 
 Complete workflow for creating high-quality marketing copy and content for SaaS applications.

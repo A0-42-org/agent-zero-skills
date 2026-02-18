@@ -1,3 +1,21 @@
+---
+name: orchestrate-dashboard
+description: Project orchestration dashboard for managing multiple Agent Zero tasks and workflows.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - orchestration
+  - dashboard
+  - tasks
+  - management
+  - workflow
+trigger_patterns:
+  - orchestrate dashboard
+  - task dashboard
+  - workflow dashboard
+  - agent orchestration
+---
+
 # Orchestrate Dashboard - Workflow
 
 Créer un dashboard admin complet en utilisant des compétences atomiques.

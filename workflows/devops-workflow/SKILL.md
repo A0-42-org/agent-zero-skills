@@ -1,3 +1,21 @@
+---
+name: devops-workflow
+description: DevOps automation including CI/CD pipelines, deployments, and infrastructure management.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - devops
+  - ci-cd
+  - deployment
+  - automation
+  - infrastructure
+trigger_patterns:
+  - devops workflow
+  - ci cd
+  - deployment automation
+  - infrastructure
+---
+
 # DevOps Workflow
 
 Complete workflow for deploying applications using Dokploy, OpenCode integration, and GitHub CLI automation.

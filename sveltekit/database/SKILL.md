@@ -1,3 +1,21 @@
+---
+name: database
+description: Database setup and management patterns for SvelteKit with connection pooling and query patterns.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - database
+  - sql
+  - postgres
+  - mysql
+  - connection
+trigger_patterns:
+  - database setup
+  - database connection
+  - postgres setup
+  - mysql setup
+---
+
 # SvelteKit Database - Drizzle ORM Patterns
 
 Complete Drizzle ORM patterns for SvelteKit projects with PostgreSQL.

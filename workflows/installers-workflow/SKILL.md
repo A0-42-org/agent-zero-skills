@@ -1,3 +1,21 @@
+---
+name: installers-workflow
+description: Skill installation automation with package managers, dependency resolution, and setup.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - installation
+  - automation
+  - dependencies
+  - setup
+  - workflow
+trigger_patterns:
+  - installers workflow
+  - skill installation
+  - automated installation
+  - dependency workflow
+---
+
 # Installers Workflow
 
 Complete workflow for installing Agent Zero skills from external marketplaces (ClawHub and skills.sh).

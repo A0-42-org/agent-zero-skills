@@ -1,3 +1,22 @@
+---
+name: stripe-integration
+description: Complete Stripe payment integration for SvelteKit with checkout, webhooks, and subscription management.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - stripe
+  - payment
+  - checkout
+  - subscription
+  - sveltekit
+trigger_patterns:
+  - stripe
+  - stripe payment
+  - stripe checkout
+  - stripe subscription
+  - payment gateway
+---
+
 # Stripe Integration for SvelteKit SaaS
 
 ## When to Use

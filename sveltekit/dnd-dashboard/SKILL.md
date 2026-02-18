@@ -1,3 +1,21 @@
+---
+name: dnd-dashboard
+description: Drag and drop dashboard builder with sortable widgets and customizable layout.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - drag-drop
+  - dashboard
+  - widgets
+  - sortable
+  - interactive
+trigger_patterns:
+  - drag drop dashboard
+  - dnd dashboard
+  - sortable dashboard
+  - widget dashboard
+---
+
 # SvelteKit DnD Dashboard
 
 Build sortable, customizable dashboards with drag-and-drop widgets for SvelteKit projects.

@@ -1,3 +1,21 @@
+---
+name: himalaya
+description: Email management using Himalaya CLI. Read, send, and manage emails from terminal.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - email
+  - cli
+  - terminal
+  - mail
+  - productivity
+trigger_patterns:
+  - himalaya
+  - email terminal
+  - cli email
+  - send email terminal
+---
+
 # Email Client - Skill Agent Zero
 
 ## Rôle

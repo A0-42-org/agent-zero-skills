@@ -1,3 +1,22 @@
+---
+name: superforms
+description: Form validation and handling for SvelteKit using superforms with zod schema validation.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - forms
+  - validation
+  - zod
+  - sveltekit
+  - superforms
+trigger_patterns:
+  - superforms
+  - form validation
+  - zod forms
+  - sveltekit forms
+  - form handling
+---
+
 # SvelteKit Superforms - Base
 
 Configuration de base avec SvelteKit Superforms + Zod (OBLIGATOIRE).

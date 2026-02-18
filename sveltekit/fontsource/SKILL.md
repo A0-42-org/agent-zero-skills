@@ -1,3 +1,21 @@
+---
+name: fontsource
+description: Open-source font integration using Fontsource with self-hosting and performance optimization.
+version: 1.0.0
+author: Agent Zero Team
+tags:
+  - fonts
+  - typography
+  - self-hosting
+  - performance
+  - design
+trigger_patterns:
+  - fontsource
+  - fonts
+  - self-hosted fonts
+  - typography sveltekit
+---
+
 # FontSource (Variable Fonts for SvelteKit)
 
 FontSource skill for adding variable fonts to SvelteKit projects with Tailwind CSS v4 and Skeleton UI v4.12.0. Use this skill when you need to add high-quality variable fonts to your project.
