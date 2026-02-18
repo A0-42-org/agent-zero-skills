@@ -141,15 +141,14 @@ You can create custom themes using Skeleton UI\'s theme properties and CSS varia
 Import custom theme CSS files in your layout:
 
 ```css
-/* src/routes/layout.css */
-@import "tailwindcss";
-@plugin "@tailwindcss/forms";
-@plugin "@tailwindcss/typography";
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
 
-/* Import custom brand styles */
-@import "../lib/themes/brand-styles/luxury.css";
-@import "../lib/themes/brand-styles/neon.css";
-@import "../lib/themes/brand-styles/svelteforge.css";
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
 ## Theme Provider Pattern

@@ -31,7 +31,13 @@ Dans votre fichier `app.css` (global stylesheet) :
 
 ```css
 @import 'tailwindcss';
-/* PAS d'import de @skeletonlabs/skeleton ou @skeletonlabs/skeleton-svelte */
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
 ### Configuration Tailwind v4

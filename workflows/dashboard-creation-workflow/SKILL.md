@@ -92,10 +92,14 @@ export default {
 Create `src/routes/layout.css`:
 
 ```css
-/* Tailwind CSS v4 - Using @tailwindcss/vite plugin */
 @import 'tailwindcss';
-/* Note: @skeletonlabs/skeleton CSS imports are not compatible with Tailwind v4 */
-/* Use Skeleton components from @skeletonlabs/skeleton-svelte package instead */
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
 #### 1.3 Configure Environment Variables

@@ -51,22 +51,13 @@ Update `src/app.css`:
 
 ```css
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
 
-/* Import variable fonts */
-@import "@fontsource-variable/inter/index.css";
-@import "@fontsource-variable/space-grotesk/index.css";
-@import "@fontsource-variable/fira-code/index.css";
-@import "@fontsource-variable/manrope/index.css";
-@import "@fontsource-variable/nunito/index.css";
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
 
-/* Font families */
-:root {
-  --font-family-base: 'Inter Variable', sans-serif;
-  --font-family-heading: 'Space Grotesk Variable', sans-serif;
-  --font-family-code: 'Fira Code Variable', monospace;
-  --font-family-subheading: 'Manrope Variable', sans-serif;
-  --font-family-ui: 'Nunito Variable', sans-serif;
-}
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
 ### Step 3: Configure Vite for Skeleton UI v4.12.0
@@ -178,28 +169,13 @@ Update `src/app.css` with Skeleton UI font variables:
 
 ```css
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
 
-/* Import variable fonts */
-@import "@fontsource-variable/inter/index.css";
-@import "@fontsource-variable/space-grotesk/index.css";
-@import "@fontsource-variable/fira-code/index.css";
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
 
-/* Font families */
-:root {
-  --font-family-base: 'Inter Variable', sans-serif;
-  --font-family-heading: 'Space Grotesk Variable', sans-serif;
-  --font-family-code: 'Fira Code Variable', monospace;
-}
-
-/* Skeleton UI typography variables */
-[data-theme='winter'] {
-  --base-font-family: var(--font-family-base);
-  --heading-font-family: var(--font-family-heading);
-  --base-font-weight: normal;
-  --heading-font-weight: bold;
-  --base-font-size: 1rem;
-  --text-scaling: 1.067;
-}
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
 ### Font Classes
