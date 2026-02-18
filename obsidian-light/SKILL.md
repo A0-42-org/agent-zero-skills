@@ -9,6 +9,14 @@ trigger_patterns:
 - markdown notes
 - work with obsidian
 - read markdown
+version: 1.0.0
+author: Agent Zero Team
+tags:
+- obsidian
+- markdown
+- notes
+- vault
+- knowledge
 ---
 
 # Obsidian Light - Agent Zero Native Approach

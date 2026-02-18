@@ -9,6 +9,14 @@ trigger_patterns:
 - tiptap editor
 - wysiwyg editor
 - rich text editor svelte
+version: 1.0.0
+author: Agent Zero Team
+tags:
+- editor
+- wysiwyg
+- rich-text
+- sveltekit
+- tiptap
 ---
 
 # Tiptap Editor for SvelteKit

@@ -13,6 +13,13 @@ trigger_patterns:
 - landing page copy
 - improve copy
 - product description
+author: Agent Zero Team
+tags:
+- marketing
+- copy
+- writing
+- content
+- cta
 ---
 
 # Copywriting

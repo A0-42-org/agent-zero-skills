@@ -1,24 +1,27 @@
 ---
 name: pr-automation
-description: Automated Pull Request management for Agent Zero including PR review, quality checks, and merge workflows. Use this skill for automating PR lifecycle from creation to merge.
+description: Automated Pull Request management for Agent Zero including PR review,
+  quality checks, and merge workflows. Use this skill for automating PR lifecycle
+  from creation to merge.
 version: 1.0.0
 tags:
-  - github
-  - pr-automation
-  - pull-request
-  - code-review
-  - merge
-  - workflows
-  - ci-cd
+- github
+- pr-automation
+- pull-request
+- code-review
+- merge
+- workflows
+- ci-cd
 trigger_patterns:
-  - "pr review"
-  - "pr automation"
-  - "pull request"
-  - "merge pr"
-  - "pr checks"
-  - "pr quality"
-  - "automated review"
-  - "pr workflow"
+- pr review
+- pr automation
+- pull request
+- merge pr
+- pr checks
+- pr quality
+- automated review
+- pr workflow
+author: Agent Zero Team
 ---
 
 # PR Automation Skill

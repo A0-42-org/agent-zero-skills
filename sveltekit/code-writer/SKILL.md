@@ -9,6 +9,14 @@ trigger_patterns:
 - svelte 5 code
 - write svelte component
 - svelte documentation
+version: 1.0.0
+author: Agent Zero Team
+tags:
+- svelte
+- documentation
+- code-analysis
+- cli
+- components
 ---
 
 # Svelte 5 Code Writer

@@ -11,6 +11,14 @@ trigger_patterns:
 - authentication setup
 - oauth integration
 - email password auth
+version: 1.0.0
+author: Agent Zero Team
+tags:
+- authentication
+- auth
+- security
+- sveltekit
+- oauth
 ---
 
 # BetterAuth for SvelteKit

@@ -8,6 +8,14 @@ trigger_patterns:
 - install from clawhub
 - download skill from clawhub
 - clawhub marketplace
+version: 1.0.0
+author: Agent Zero Team
+tags:
+- skills
+- installation
+- automation
+- security
+- marketplace
 ---
 
 # ClawHub Skill Installer
