@@ -57,6 +57,13 @@ Update `src/app.css`:
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton-svelte';
 
+/* FontSource Variable Fonts */
+@import "@fontsource-variable/inter/index.css";
+@import "@fontsource-variable/space-grotesk/index.css";
+@import "@fontsource-variable/fira-code/index.css";
+@import "@fontsource-variable/manrope/index.css";
+@import "@fontsource-variable/nunito/index.css";
+
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
 
@@ -174,6 +181,13 @@ Update `src/app.css` with Skeleton UI font variables:
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton-svelte';
+
+/* FontSource Variable Fonts */
+@import "@fontsource-variable/inter/index.css";
+@import "@fontsource-variable/space-grotesk/index.css";
+@import "@fontsource-variable/fira-code/index.css";
+@import "@fontsource-variable/manrope/index.css";
+@import "@fontsource-variable/nunito/index.css";
 
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 ```
