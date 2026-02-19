@@ -57,10 +57,10 @@ FontSource provides self-hostable variable fonts for the web. It's better than G
 
 ```bash
 # Install individual fonts
-pnpm add @fontsource-variable/inter @fontsource-variable/space-grotesk @fontsource-variable/fira-code
+bun add @fontsource-variable/inter @fontsource-variable/space-grotesk @fontsource-variable/fira-code
 
 # Or install all commonly used fonts
-pnpm add @fontsource-variable/inter @fontsource-variable/space-grotesk @fontsource-variable/fira-code @fontsource-variable/manrope @fontsource-variable/nunito
+bun add @fontsource-variable/inter @fontsource-variable/space-grotesk @fontsource-variable/fira-code @fontsource-variable/manrope @fontsource-variable/nunito
 ```
 
 ### Step 2: Import Fonts in CSS

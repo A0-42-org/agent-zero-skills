@@ -220,21 +220,21 @@ class UserService {
 
 ```bash
 # Generate migration from schema changes
-pnpm exec drizzle-kit generate
+bun exec drizzle-kit generate
 ```
 
 ### Push Changes (Development)
 
 ```bash
 # Push schema changes directly (development only)
-pnpm exec drizzle-kit push
+bun exec drizzle-kit push
 ```
 
 ### Run Migrations (Production)
 
 ```bash
 # Run migrations in production
-pnpm exec drizzle-kit migrate
+bun exec drizzle-kit migrate
 ```
 
 ### Drizzle Config

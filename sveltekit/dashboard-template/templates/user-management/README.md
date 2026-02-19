@@ -6,8 +6,8 @@ These templates provide user management functionality (CRUD) for your dashboard.
 
 Install Drizzle ORM:
 ```bash
-pnpm add drizzle-orm better-sqlite3
-pnpm add -D drizzle-kit
+bun add drizzle-orm better-sqlite3
+bun add -D drizzle-kit
 ```
 
 ## Components

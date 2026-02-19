@@ -52,7 +52,7 @@ This meta-skill does ONE thing perfectly: **create a generic dashboard with base
 - **SkeletonUI v4** - UI component library
 - **Tailwind CSS v4** - Styling
 - **Svelte 5 Runes** - Modern Svelte syntax
-- **pnpm** - Package manager
+- **bun** - Package manager
 - **svelte-dnd-action** - Drag-and-drop library
 
 ## Installation
@@ -61,15 +61,15 @@ This meta-skill does ONE thing perfectly: **create a generic dashboard with base
 
 ```bash
 # Create new SvelteKit project with all required tools
-npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-dashboard
+npx sv create --types ts --install bun --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-dashboard
 
 cd my-dashboard
 
 # Install dependencies
-pnpm install
+bun install
 
 # Install svelte-dnd-action for drag-and-drop
-pnpm add svelte-dnd-action
+bun add svelte-dnd-action
 ```
 
 ### Step 2: Configure Theme System (svelteForge)
@@ -225,7 +225,7 @@ If you need authentication, use `auth/` templates:
 
 ```bash
 # Install BetterAuth
-pnpm add better-auth
+bun add better-auth
 
 # Copy auth templates
 cp /a0/usr/skills/sveltekit/dashboard-template/templates/auth/*.svelte src/lib/components/
@@ -250,8 +250,8 @@ If you need user management, use `user-management/` templates:
 
 ```bash
 # Install Drizzle ORM
-pnpm add drizzle-orm better-sqlite3
-pnpm add -D drizzle-kit
+bun add drizzle-orm better-sqlite3
+bun add -D drizzle-kit
 
 # Copy user management templates
 cp /a0/usr/skills/sveltekit/dashboard-template/templates/user-management/*.svelte src/lib/components/
@@ -416,7 +416,7 @@ Ensure `AppShell` is properly configured:
 Make sure `svelte-dnd-action` is installed:
 
 ```bash
-pnpm add svelte-dnd-action
+bun add svelte-dnd-action
 ```
 
 And the component uses the action:

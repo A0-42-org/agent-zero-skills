@@ -66,9 +66,9 @@ This lets users respond with "1A, 2C" for quick iteration.
 Always ask about quality gates - these are project-specific:
 
 What quality commands must pass for each user story?
-   A. pnpm typecheck && pnpm lint
+   A. bun typecheck && bun lint
    B. npm run typecheck && npm run lint
-   C. pnpm run typecheck && pnpm run lint
+   C. bun run typecheck && bun run lint
    D. Other: [specify your commands]
 
 For UI stories, should we include browser verification?
@@ -105,8 +105,8 @@ CRITICAL: List the commands that must pass for every user story.
 ## Quality Gates
 
 These commands must pass for every user story:
-- `pnpm typecheck` - Type checking
-- `pnpm lint` - Linting
+- `bun typecheck` - Type checking
+- `bun lint` - Linting
 
 For UI stories, also include:
 - Verify in browser using dev-browser skill
@@ -236,9 +236,9 @@ D. Other
 
 - 
 What quality commands must pass for each story?
-A. pnpm typecheck && pnpm lint
+A. bun typecheck && bun lint
 B. npm run typecheck && npm run lint
-C. pnpm run typecheck
+C. bun run typecheck
 D. Other: [specify]
 
 - 
@@ -269,9 +269,9 @@ Add dark mode support to ralph-tui to reduce eye strain during long orchestratio
 
 These commands must pass for every user story:
 
-- pnpm typecheck - Type checking
+- bun typecheck - Type checking
 
-- pnpm lint - Linting
+- bun lint - Linting
 
 For UI stories, also include:
 

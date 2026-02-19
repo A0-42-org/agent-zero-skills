@@ -6,7 +6,7 @@ These templates provide authentication functionality for your dashboard.
 
 Install BetterAuth:
 ```bash
-pnpm add better-auth
+bun add better-auth
 ```
 
 ## Components

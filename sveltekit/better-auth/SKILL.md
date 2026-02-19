@@ -28,8 +28,8 @@ Quick setup for BetterAuth authentication in SvelteKit projects.
 ## Installation
 
 ```bash
-pnpm add better-auth drizzle-orm postgres
-pnpm add -D drizzle-kit @types/pg
+bun add better-auth drizzle-orm postgres
+bun add -D drizzle-kit @types/pg
 ```
 
 ## Critical: Use Correct Imports
@@ -333,8 +333,8 @@ export const load: LayoutServerLoad = async ({ request }) => {
 
 After setup, verify:
 
-1. `pnpm check` passes (no TypeScript errors)
-2. `pnpm lint` passes (no ESLint/Prettier errors)
+1. `bun check` passes (no TypeScript errors)
+2. `bun lint` passes (no ESLint/Prettier errors)
 3. Dev server starts without errors
 4. No React import errors (use `better-auth/svelte`)
 5. Database migrations run successfully

@@ -26,12 +26,12 @@ Complete setup for new SvelteKit projects with TypeScript, ESLint, Prettier, Tai
 
 ```bash
 # Create new SvelteKit project with all required tools
-npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-project
+npx sv create --types ts --install bun --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-project
 
 cd my-project
 
 # Install dependencies
-pnpm install
+bun install
 ```
 
 ### Option 2: Initialize existing project
@@ -40,25 +40,25 @@ If you have an existing project, install required dependencies:
 
 ```bash
 # Core dependencies
-pnpm add -D @sveltejs/kit svelte
+bun add -D @sveltejs/kit svelte
 
 # TypeScript
-pnpm add -D typescript tslib
+bun add -D typescript tslib
 
 # ESLint
-pnpm add -D eslint eslint-config-prettier eslint-plugin-svelte eslint-plugin-node @typescript-eslint/eslint-plugin @typescript-eslint/parser
+bun add -D eslint eslint-config-prettier eslint-plugin-svelte eslint-plugin-node @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
 # Prettier
-pnpm add -D prettier prettier-plugin-svelte prettier-plugin-tailwindcss
+bun add -D prettier prettier-plugin-svelte prettier-plugin-tailwindcss
 
 # Tailwind CSS v4
-pnpm add -D tailwindcss @tailwindcss/vite
+bun add -D tailwindcss @tailwindcss/vite
 
 # Skeleton UI v4
-pnpm add @skeletonlabs/skeleton @skeletonlabs/skeleton-svelte
+bun add @skeletonlabs/skeleton @skeletonlabs/skeleton-svelte
 
 # Playwright
-pnpm add -D @playwright/test
+bun add -D @playwright/test
 ```
 
 ## Configuration Files
@@ -267,7 +267,7 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'pnpm run dev',
+    command: 'bun run dev',
     url: 'http://localhost:5174',
     reuseExistingServer: !process.env.CI
   }
@@ -285,7 +285,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
+bun-debug.log*
 
 # OS
 .DS_Store
@@ -363,11 +363,11 @@ my-project/
 
 After setup, verify:
 
-1. `pnpm check` passes (no TypeScript errors)
-2. `pnpm lint` passes (no ESLint errors)
-3. `pnpm format` works (no Prettier errors)
-4. `pnpm dev` starts without errors
-5. `pnpm test` runs Playwright tests
+1. `bun check` passes (no TypeScript errors)
+2. `bun lint` passes (no ESLint errors)
+3. `bun format` works (no Prettier errors)
+4. `bun dev` starts without errors
+5. `bun test` runs Playwright tests
 6. Browser loads at http://localhost:5173
 
 ## Common Pitfalls

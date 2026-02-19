@@ -59,18 +59,18 @@ This workflow calls these skills conditionally based on your needs:
 
 ```bash
 # Create new SvelteKit project with all required tools
-npx sv create --types ts --install pnpm --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-app
+npx sv create --types ts --install bun --template minimal --add eslint prettier tailwind="plugins:typography,forms" mcp="ide:opencode" devtools-json my-app
 
 cd my-app
 
 # Install required packages for optional features
-pnpm add drizzle-orm zod nanoid
-pnpm add -D drizzle-kit
+bun add drizzle-orm zod nanoid
+bun add -D drizzle-kit
 
 # Install database driver (choose one)
-pnpm add postgres  # For PostgreSQL
+bun add postgres  # For PostgreSQL
 # OR
-pnpm add better-sqlite3  # For SQLite
+bun add better-sqlite3  # For SQLite
 ```
 
 #### 1.2 Configure Project
@@ -200,10 +200,10 @@ export default {
 
 ```bash
 # Generate migration
-pnpm dlx drizzle-kit generate
+bunx drizzle-kit generate
 
 # Apply migration
-pnpm dlx drizzle-kit migrate
+bunx drizzle-kit migrate
 ```
 
 ### Step 4: Authentication Setup (OPTIONAL)
@@ -211,7 +211,7 @@ pnpm dlx drizzle-kit migrate
 #### 4.1 Install BetterAuth
 
 ```bash
-pnpm add better-auth
+bun add better-auth
 ```
 
 #### 4.2 Configure BetterAuth
@@ -248,7 +248,7 @@ BETTER_AUTH_URL=http://localhost:5173
 #### 5.1 Add Form Handling
 
 ```bash
-pnpm add zod sveltekit-superforms
+bun add zod sveltekit-superforms
 ```
 
 Create `src/lib/forms/schema.ts`:

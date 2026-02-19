@@ -26,8 +26,8 @@ Setup Tiptap WYSIWYG editor in SvelteKit with Svelte 5 runes.
 ## Installation
 
 ```bash
-pnpm add @tiptap/core @tiptap/starter-kit @tiptap/pm
-pnpm add -D @tiptap/pm
+bun add @tiptap/core @tiptap/starter-kit @tiptap/pm
+bun add -D @tiptap/pm
 ```
 
 ## Basic Tiptap Component
@@ -406,7 +406,7 @@ Create a readonly editor for preview. **IMPORTANT**: This MUST be a separate com
 ### Rich Text Features
 
 ```bash
-pnpm add @tiptap/extension-link @tiptap/extension-image @tiptap/extension-code-block-lowlight
+bun add @tiptap/extension-link @tiptap/extension-image @tiptap/extension-code-block-lowlight
 ```
 
 ```typescript
@@ -432,7 +432,7 @@ editor = new Editor({
 ### Table Support
 
 ```bash
-pnpm add @tiptap/extension-table @tiptap/extension-table-row
+bun add @tiptap/extension-table @tiptap/extension-table-row
 ```
 
 ## Styling
@@ -466,7 +466,7 @@ Tailwind CSS classes for Tiptap content:
 Or use Tailwind Typography plugin:
 
 ```bash
-pnpm add -D @tailwindcss/typography
+bun add -D @tailwindcss/typography
 ```
 
 For **Tailwind CSS v4**, use `@plugin` syntax in your CSS:
@@ -504,9 +504,9 @@ Then use in HTML:
 
 After setup, verify:
 
-1. `pnpm check` passes (no TypeScript errors)
-2. `pnpm lint` passes (no ESLint/Prettier errors)
-3. Dev server starts without errors (`pnpm dev`)
+1. `bun check` passes (no TypeScript errors)
+2. `bun lint` passes (no ESLint/Prettier errors)
+3. Dev server starts without errors (`bun dev`)
 4. Editor renders without console errors
 5. Toolbar buttons activate/deactivate correctly
 6. Content updates on typing

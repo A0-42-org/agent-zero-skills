@@ -350,8 +350,8 @@ bun install
 bun add @skeletonlabs/skeleton-svelte
 
 # ✅ GOOD - Using PNPM
-pnpm install
-pnpm add @skeletonlabs/skeleton-svelte
+bun install
+bun add @skeletonlabs/skeleton-svelte
 ```
 
 ## Next Steps

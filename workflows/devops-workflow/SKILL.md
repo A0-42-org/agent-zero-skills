@@ -126,16 +126,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
+          cache: 'bun'
       
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: Install bun
+        uses: bun/action-setup@v2
       
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
       
       - name: Build application
-        run: pnpm build
+        run: bun build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
@@ -178,9 +178,9 @@ gh secret set DOKPLOY_TOKEN
 
 ```json
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "bun build",
   "outputDirectory": "build",
-  "installCommand": "pnpm install",
+  "installCommand": "bun install",
   "nodeVersion": "18"
 }
 ```
@@ -221,8 +221,8 @@ gh run view --log
 
 ```bash
 # Add monitoring tools
-pnpm add @sentry/node
-pnpm add -D @sentry/vite-plugin
+bun add @sentry/node
+bun add -D @sentry/vite-plugin
 ```
 
 #### 5.2 Configure Sentry
@@ -242,7 +242,7 @@ Sentry.init({
 
 ```bash
 # Add logging
-pnpm add pino
+bun add pino
 ```
 
 ### Step 6: Automation
@@ -321,18 +321,18 @@ DATABASE_URL=${{ secrets.DATABASE_URL }}
 - name: Install dependencies
   run: npm install
 
-# ✅ GOOD - Using pnpm
+# ✅ GOOD - Using bun
 - name: Setup Node.js
   uses: actions/setup-node@v4
   with:
     node-version: '18'
-    cache: 'pnpm'
+    cache: 'bun'
 
-- name: Install pnpm
-  uses: pnpm/action-setup@v2
+- name: Install bun
+  uses: bun/action-setup@v2
 
 - name: Install dependencies
-  run: pnpm install --frozen-lockfile
+  run: bun install --frozen-lockfile
 ```
 
 ### 3. Not Specifying Node Version

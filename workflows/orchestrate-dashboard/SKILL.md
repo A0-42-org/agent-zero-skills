@@ -36,7 +36,7 @@ This workflow requires the following skills:
 **→ Follow the `sveltekit/bootstrap` skill** to initialize a new SvelteKit project.
 
 ```bash
-pnpm create svelte@latest my-dashboard
+bun create svelte@latest my-dashboard
 # Select: TypeScript, Skeleton UI, Tailwind CSS
 ```
 

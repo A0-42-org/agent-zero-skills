@@ -34,11 +34,11 @@ Use this skill when:
 
 ```bash
 # Install performance tools
-pnpm add -D @sveltejs/adapter-auto
+bun add -D @sveltejs/adapter-auto
 
 # Optional: Performance monitoring
-pnpm add @vercel/analytics
-pnpm add -d @sveltejs/vite-plugin-svelte
+bun add @vercel/analytics
+bun add -d @sveltejs/vite-plugin-svelte
 ```
 
 ## Code Splitting
@@ -215,7 +215,7 @@ export default {
 
 ```bash
 # Use Vite image optimization plugin
-pnpm add -d vite-plugin-imagemin
+bun add -d vite-plugin-imagemin
 ```
 
 ### WebP Conversion

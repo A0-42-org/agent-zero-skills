@@ -40,7 +40,7 @@ skeleton, components, design, layout
 ### Installation des paquets
 
 ```bash
-pnpm add @skeletonlabs/skeleton-svelte @skeletonlabs/skeleton
+bun add @skeletonlabs/skeleton-svelte @skeletonlabs/skeleton
 ```
 
 ### Configuration CSS

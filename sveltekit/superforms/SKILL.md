@@ -24,7 +24,7 @@ Configuration de base avec SvelteKit Superforms + Zod (OBLIGATOIRE).
 ## Installation
 
 ```bash
-pnpm add -D sveltekit-superforms zod
+bun add -D sveltekit-superforms zod
 ```
 
 ## Configuration

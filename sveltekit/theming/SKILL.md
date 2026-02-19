@@ -549,7 +549,7 @@ src/routes/
 
 After setup, verify:
 
-1. `pnpm check` passes (no TypeScript errors)
+1. `bun check` passes (no TypeScript errors)
 2. Dev server starts without errors
 3. Theme switching works (all themes apply correctly)
 4. Theme persists across page refreshes

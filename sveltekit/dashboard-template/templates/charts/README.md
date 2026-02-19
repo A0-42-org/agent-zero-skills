@@ -8,7 +8,7 @@ No additional installation required - these charts use Canvas API.
 
 Alternatively, install Chart.js for more advanced features:
 ```bash
-pnpm add chart.js
+bun add chart.js
 ```
 
 ## Components

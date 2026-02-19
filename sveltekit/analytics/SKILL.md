@@ -37,10 +37,10 @@ Implement comprehensive analytics for:
 
 ```bash
 # Optional: Chart libraries for dashboards
-pnpm add chart.js svelte-chartjs
+bun add chart.js svelte-chartjs
 
 # Optional: ApexCharts for advanced visualizations
-pnpm add apexcharts
+bun add apexcharts
 ```
 
 ## Database Schema (Drizzle ORM)
@@ -609,7 +609,7 @@ export async function getUserStats(userId: string) {
 ## Testing
 
 After setup, verify:
-1. `pnpm check` passes (no TypeScript errors)
+1. `bun check` passes (no TypeScript errors)
 2. Dev server starts without errors
 3. Database tables created successfully
 4. Event tracking works (events are logged)
