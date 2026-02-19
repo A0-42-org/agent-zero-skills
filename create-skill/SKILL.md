@@ -43,7 +43,7 @@ This script will automatically install:
 
 ### Why Bun?
 
-- **Fast**: Bun is faster than npm and pnpm
+- **Fast**: Bun is the fastest package manager
 - **Compatible**: Works with all npm packages
 - **Standard**: All Agent Zero skills use bun
 
@@ -388,13 +388,12 @@ git commit -m 'feat: add new skill'
 git push origin main
 ```
 
-### 4. Wrong Technology Stack
-```bash
-# ❌ BAD - Using PNPM (not installed in Docker)
-pnpm install
-pnpm add @skeletonlabs/skeleton-svelte
+### 4. Package Manager
 
-# ✅ GOOD - Using Bun
+All Agent Zero skills use **Bun** as the standard package manager.
+
+```bash
+# Standard commands
 bun install
 bun add @skeletonlabs/skeleton-svelte
 ```
