@@ -20,6 +20,51 @@ trigger_patterns:
 
 Complete setup for new SvelteKit projects with TypeScript, ESLint, Prettier, Tailwind CSS v4, Playwright.
 
+## Prerequisites
+
+### Package Manager: Bun
+
+This skill uses **Bun** as the package manager. Before running any commands, verify that bun is installed:
+
+```bash
+bun --version
+```
+
+#### Failsafe: Installing Bun
+
+If bun is not installed, run the initialization script:
+
+```bash
+bash /a0/usr/init-tools.sh
+```
+
+This script will automatically install:
+- Bun (JavaScript package manager)
+- GitHub CLI (gh)
+
+### Why Bun?
+
+- **Fast**: Bun is faster than npm and pnpm
+- **Compatible**: Works with all npm packages
+- **Standard**: All Agent Zero skills use bun
+
+### Common Bun Commands
+
+| Command | Description |
+|---------|-------------|
+| `bun install` | Install dependencies |
+| `bun add <package>` | Add dependency |
+| `bun add -D <package>` | Add dev dependency |
+| `bun run <script>` | Run npm script |
+| `bunx <package>` | Execute npm package directly |
+| `bun create <template>` | Create new project |
+| `bun dev` | Start dev server |
+| `bun build` | Build project |
+| `bun test` | Run tests |
+
+---
+
+
 ## Installation
 
 ### Option 1: Create new project from scratch
