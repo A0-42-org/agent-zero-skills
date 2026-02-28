@@ -44,7 +44,7 @@ This script will automatically install:
 
 ### Why Bun?
 
-- **Fast**: Bun is faster than npm and pnpm
+- **Fast**: Bun is fast
 - **Compatible**: Works with all npm packages
 - **Standard**: All Agent Zero skills use bun
 
