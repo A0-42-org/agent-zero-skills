@@ -41,13 +41,6 @@ This script will automatically install:
 - Bun (JavaScript package manager)
 - GitHub CLI (gh)
 
-### Why Bun?
-
-- **Fast**: Bun is the fastest package manager
-- **Compatible**: Works with all npm packages
-- **Standard**: All Agent Zero skills use bun
-
-### Common Bun Commands
 
 | Command | Description |
 |---------|-------------|
